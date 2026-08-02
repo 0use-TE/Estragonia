@@ -9,6 +9,12 @@ public partial class HelloWorldView : UserControl {
 
 	public HelloWorldView() {
 		InitializeComponent();
+		ClickMeButton.Click += OnClickMeButtonClick;
+	}
+
+	private void OnClickMeButtonClick(object? sender, RoutedEventArgs e) {
+		_clickCount++;
+		ClickStatus.Text = $"Clicked {_clickCount} time(s).";
 	}
 
 }
