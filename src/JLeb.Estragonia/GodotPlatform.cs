@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using Avalonia;
 using Avalonia.Controls.Platform;
@@ -27,18 +28,26 @@ internal static class GodotPlatform {
 	public static void Initialize() {
 		AvaloniaSynchronizationContext.AutoInstall = false; // Godot has its own sync context, don't replace it
 
+		EnsureAssetLoader(null);
+
+		// Avalonia 12 no longer reads IDispatcherImpl from AvaloniaLocator (that path is obsolete / DEBUG-throws).
+		// Platforms must call InitializeUIThreadDispatcher, same as Win32/Browser/etc.
+		var dispatcherImpl = new GodotDispatcherImpl(Thread.CurrentThread);
+		Avalonia.Threading.Dispatcher.InitializeUIThreadDispatcher(dispatcherImpl);
+
 		var platformGraphics = new GodotVkPlatformGraphics();
 		var renderTimer = new ManualRenderTimer();
+		var renderLoop = RenderLoop.FromTimer(renderTimer);
 
 		AvaloniaLocator.CurrentMutable
 			.Bind<IClipboard>().ToConstant(new GodotClipboard())
 			.Bind<ICursorFactory>().ToConstant(new GodotCursorFactory())
-			.Bind<IDispatcherImpl>().ToConstant(new GodotDispatcherImpl(Thread.CurrentThread))
 			.Bind<IKeyboardDevice>().ToConstant(GodotDevices.Keyboard)
 			.Bind<IPlatformGraphics>().ToConstant(platformGraphics)
 			.Bind<IPlatformIconLoader>().ToConstant(new StubPlatformIconLoader())
 			.Bind<IPlatformSettings>().ToConstant(new GodotPlatformSettings())
 			.Bind<IRenderTimer>().ToConstant(renderTimer)
+			.Bind<IRenderLoop>().ToConstant(renderLoop)
 			.Bind<IWindowingPlatform>().ToConstant(new GodotWindowingPlatform())
 			.Bind<IStorageProviderFactory>().ToConstant(new GodotStorageProviderFactory())
 			.Bind<PlatformHotkeyConfiguration>().ToConstant(CreatePlatformHotKeyConfiguration())
@@ -46,6 +55,26 @@ internal static class GodotPlatform {
 
 		s_renderTimer = renderTimer;
 		s_compositor = new AvCompositor(platformGraphics);
+	}
+
+	/// <summary>
+	/// Ensures <see cref="IAssetLoader"/> is registered for XAML <c>avares</c> / image sources.
+	/// Godot's assembly load context can leave the standard runtime registration missing.
+	/// </summary>
+	public static void EnsureAssetLoader(Assembly? defaultAssembly) {
+		AssetLoader.RegisterResUriParsers();
+
+		if (AvaloniaLocator.Current.GetService<IAssetLoader>() is not { } assetLoader) {
+			assetLoader = new StandardAssetLoader(defaultAssembly);
+			AvaloniaLocator.CurrentMutable.Bind<IAssetLoader>().ToConstant(assetLoader);
+		}
+		else if (defaultAssembly is not null) {
+			assetLoader.SetDefaultAssembly(defaultAssembly);
+		}
+
+		if (AvaloniaLocator.Current.GetService<IRuntimePlatform>() is null) {
+			AvaloniaLocator.CurrentMutable.Bind<IRuntimePlatform>().ToSingleton<StandardRuntimePlatform>();
+		}
 	}
 
 	private static PlatformHotkeyConfiguration CreatePlatformHotKeyConfiguration()

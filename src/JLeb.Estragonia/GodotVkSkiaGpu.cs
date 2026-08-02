@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text.Unicode;
 using Avalonia;
 using Avalonia.Platform;
+using Avalonia.Platform.Surfaces;
 using Avalonia.Skia;
 using Godot;
 using SkiaSharp;
@@ -24,6 +25,9 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 
 	public bool IsLost
 		=> _grContext.IsAbandoned;
+
+	IPlatformGraphicsContext? ISkiaGpu.PlatformGraphicsContext
+		=> null;
 
 	public unsafe GodotVkSkiaGpu() {
 		_renderingDevice = RenderingServer.GetRenderingDevice();
@@ -122,10 +126,16 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 	IDisposable IPlatformGraphicsContext.EnsureCurrent()
 		=> EmptyDisposable.Instance;
 
-	ISkiaGpuRenderTarget? ISkiaGpu.TryCreateRenderTarget(IEnumerable<object> surfaces)
-		=> surfaces.OfType<GodotSkiaSurface>().FirstOrDefault() is { } surface
+	bool ISkiaGpu.IsReadyToCreateRenderTarget(IEnumerable<IPlatformRenderSurface> surfaces)
+		=> surfaces.OfType<GodotSkiaSurface>().Any(surface => !surface.IsDisposed);
+
+	ISkiaGpuRenderTarget? ISkiaGpu.TryCreateRenderTarget(IEnumerable<IPlatformRenderSurface> surfaces)
+		=> surfaces.OfType<GodotSkiaSurface>().FirstOrDefault(surface => !surface.IsDisposed) is { } surface
 			? new GodotSkiaRenderTarget(surface, _grContext, _barrierHelper)
 			: null;
+
+	IScopedResource<GRContext>? ISkiaGpu.TryGetGrContext()
+		=> ScopedResource<GRContext>.Create(_grContext, static () => { });
 
 	public GodotSkiaSurface CreateSurface(PixelSize size, double renderScaling) {
 		size = new PixelSize(Math.Max(size.Width, 1), Math.Max(size.Height, 1));
@@ -175,7 +185,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 
 		var skSurface = SKSurface.Create(
 			_grContext,
-			new GRBackendRenderTarget(size.Width, size.Height, 1, grVkImageInfo),
+			new GRBackendRenderTarget(size.Width, size.Height, grVkImageInfo),
 			GRSurfaceOrigin.TopLeft,
 			SKColorType.Rgba8888,
 			new SKSurfaceProperties(SKPixelGeometry.RgbHorizontal)

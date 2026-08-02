@@ -28,7 +28,7 @@ public abstract class View : UserControl {
 		focusableChild?.Focus();
 	}
 
-	protected override void OnGotFocus(GotFocusEventArgs e) {
+	protected override void OnGotFocus(FocusChangedEventArgs e) {
 		_lastFocusedChild = e.Source as Control;
 		base.OnGotFocus(e);
 	}

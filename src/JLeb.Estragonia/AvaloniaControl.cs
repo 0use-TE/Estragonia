@@ -29,6 +29,9 @@ public class AvaloniaControl : GdControl {
 			if (ReferenceEquals(_control, value))
 				return;
 
+			if (value is not null)
+				GodotPlatform.EnsureAssetLoader(value.GetType().Assembly);
+
 			_control = value;
 
 			if (_topLevel is not null)
@@ -215,8 +218,18 @@ public class AvaloniaControl : GdControl {
 		if (_topLevel is null)
 			return;
 
-		if (TryHandleInput(_topLevel.Impl, @event) || TryHandleAction(@event))
+		var handled = TryHandleInput(_topLevel.Impl, @event) || TryHandleAction(@event);
+
+		// Always consume pointer events while the cursor is over this control.
+		// Avalonia often leaves RawPointerEventArgs.Handled == false; without AcceptEvent,
+		// Godot can let the 3D viewport steal the mouse after Button press.
+		if (handled
+			|| @event is InputEventMouseButton
+			|| @event is InputEventMouseMotion
+			|| @event is InputEventScreenTouch
+			|| @event is InputEventScreenDrag) {
 			AcceptEvent();
+		}
 	}
 
 	private bool TryHandleAction(InputEvent inputEvent) {
@@ -331,8 +344,20 @@ public class AvaloniaControl : GdControl {
 	private void OnMouseExited()
 		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
 
-	public override bool _HasPoint(Vector2 point)
-		=> _topLevel?.InputHitTest(point.ToAvaloniaPoint() / _topLevel.RenderScaling, false) is not null;
+	public override bool _HasPoint(Vector2 point) {
+		if (_topLevel is null)
+			return false;
+
+		// Prefer Avalonia hit-testing so fully transparent areas can pass input through to Godot.
+		// In Avalonia 12 embedding, InputHitTest can return null even over interactive content
+		// (layout/presentation source timing), which would prevent Godot from delivering _GuiInput.
+		var avaloniaPoint = point.ToAvaloniaPoint() / _topLevel.RenderScaling;
+		if (_topLevel.InputHitTest(avaloniaPoint, false) is not null)
+			return true;
+
+		// Fallback: accept the whole control rect so mouse/touch still reach Avalonia.
+		return true;
+	}
 
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {

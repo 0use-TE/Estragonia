@@ -29,12 +29,14 @@ public class ExtendedListBox : ListBox {
 					e.Handled = true;
 				break;
 			case Key.Space:
-				e.Handled = UpdateSelectionFromEventSource(e.Source);
+				e.Handled = e.Source is Control spaceSource && UpdateSelectionFromEvent(spaceSource, e);
 				break;
 			case Key.Enter:
 				// handle only if we changed the selection, otherwise let Enter bubble up so the user can accept the view
 				var selectedIndex = SelectedIndex;
-				e.Handled = UpdateSelectionFromEventSource(e.Source) && SelectedIndex != selectedIndex;
+				e.Handled = e.Source is Control enterSource
+					&& UpdateSelectionFromEvent(enterSource, e)
+					&& SelectedIndex != selectedIndex;
 				break;
 		}
 	}

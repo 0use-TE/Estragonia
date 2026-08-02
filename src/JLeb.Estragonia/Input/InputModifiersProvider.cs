@@ -35,6 +35,19 @@ internal static class InputModifiersProvider {
 				if ((buttonMask & MouseButtonMask.MbXbutton2) != 0)
 					modifiers |= RawInputModifiers.XButton2MouseButton;
 
+				// Godot's ButtonMask is the state after the event. On press, some paths omit the
+				// button that just went down — Avalonia needs it present for IsLeftButtonPressed.
+				if (inputEventMouse is InputEventMouseButton { Pressed: true } mouseButton) {
+					modifiers |= mouseButton.ButtonIndex switch {
+						GdMouseButton.Left => RawInputModifiers.LeftMouseButton,
+						GdMouseButton.Right => RawInputModifiers.RightMouseButton,
+						GdMouseButton.Middle => RawInputModifiers.MiddleMouseButton,
+						GdMouseButton.Xbutton1 => RawInputModifiers.XButton1MouseButton,
+						GdMouseButton.Xbutton2 => RawInputModifiers.XButton2MouseButton,
+						_ => RawInputModifiers.None
+					};
+				}
+
 				if (inputEventMouse is InputEventMouseMotion { PenInverted: true })
 					modifiers |= RawInputModifiers.PenInverted;
 			}

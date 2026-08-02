@@ -8,7 +8,7 @@
 	mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
 	x:Class="GameMenu.UI.MainView"
 	x:DataType="ui:MainViewModel"
-	RenderOptions.TextRenderingMode="Antialias">
+	TextOptions.TextRenderingMode="Antialias">
 
 	<Design.DesignStyle>
 		<Style Selector="ui|MainView">

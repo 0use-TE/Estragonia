@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
 using Avalonia.Platform;
+using Avalonia.Platform.Surfaces;
 using Godot;
 using JLeb.Estragonia.Input;
 using AvCompositor = Avalonia.Rendering.Composition.Compositor;
@@ -70,8 +71,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
 
-	IEnumerable<object> ITopLevelImpl.Surfaces
-		=> GetOrCreateSurfaces();
+	IPlatformRenderSurface[] ITopLevelImpl.Surfaces
+		=> new IPlatformRenderSurface[] { GetOrCreateSurface() };
 
 	AcrylicPlatformCompensationLevels ITopLevelImpl.AcrylicCompensationLevels
 		=> new(1.0, 1.0, 1.0);
@@ -96,9 +97,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public GodotSkiaSurface GetOrCreateSurface()
 		=> _surface ??= CreateSurface();
-
-	private IEnumerable<object> GetOrCreateSurfaces()
-		=> new object[] { GetOrCreateSurface() };
 
 	[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Doesn't affect correctness")]
 	public void SetRenderSize(PixelSize renderSize, double renderScaling) {

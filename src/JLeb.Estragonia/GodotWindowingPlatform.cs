@@ -14,6 +14,11 @@ internal sealed class GodotWindowingPlatform : IWindowingPlatform {
 	public ITopLevelImpl CreateEmbeddableTopLevel()
 		=> throw CreateNotImplementedException();
 
+	public void GetWindowsZOrder(ReadOnlySpan<IWindowImpl> windows, Span<long> zOrder) {
+		for (var i = 0; i < zOrder.Length; i++)
+			zOrder[i] = i;
+	}
+
 	private static NotImplementedException CreateNotImplementedException()
 		=> new("Sub windows aren't implemented yet");
 

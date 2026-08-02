@@ -34,14 +34,14 @@ internal sealed class JoypadDevice : IJoypadDevice {
 		if (routedEvent is null)
 			return;
 
-		var element = rawArgs.Root.FocusManager?.GetFocusedElement() ?? rawArgs.Root;
+		var element = rawArgs.Root.FocusManager?.GetFocusedElement() ?? rawArgs.Root.RootElement;
 		var args = new JoypadButtonEventArgs(routedEvent, element, this, rawArgs.Button);
 		element.RaiseEvent(args);
 		rawArgs.Handled = args.Handled;
 	}
 
 	private void ProcessAxisEvent(RawJoypadAxisEventArgs rawArgs) {
-		var element = rawArgs.Root.FocusManager?.GetFocusedElement() ?? rawArgs.Root;
+		var element = rawArgs.Root.FocusManager?.GetFocusedElement() ?? rawArgs.Root.RootElement;
 		var args = new JoypadAxisEventArgs(JoypadEvents.JoypadAxisMovedEvent, element, this, rawArgs.Axis, rawArgs.AxisValue);
 		element.RaiseEvent(args);
 		rawArgs.Handled = args.Handled;

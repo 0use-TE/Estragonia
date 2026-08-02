@@ -1,8 +1,8 @@
-<Project Sdk="Godot.NET.Sdk/4.3.0">
+<Project Sdk="Godot.NET.Sdk/4.7.1">
 
 	<PropertyGroup>
 		<AssemblyTitle>Estragonia GameMenu Sample</AssemblyTitle>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<EnableDynamicLoading>true</EnableDynamicLoading>
 		<Nullable>enable</Nullable>
 		<AnalysisMode>Recommended</AnalysisMode>
@@ -21,8 +21,8 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Themes.Simple" Version="[11.2.3]" />
-		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="[11.2.0.1]" />
+		<PackageReference Include="Avalonia.Themes.Simple" Version="12.0.0" />
+		<PackageReference Include="Xaml.Behaviors.Avalonia" Version="12.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 	</ItemGroup>
 

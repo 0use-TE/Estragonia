@@ -98,4 +98,14 @@ internal sealed class BclStorageFolder : IStorageBookmarkFolder {
 		return Task.FromResult<IStorageFolder?>(new BclStorageFolder(newFolder));
 	}
 
+	public Task<IStorageFile?> GetFileAsync(string name) {
+		var fileInfo = new FileInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
+		return Task.FromResult<IStorageFile?>(fileInfo.Exists ? new BclStorageFile(fileInfo) : null);
+	}
+
+	public Task<IStorageFolder?> GetFolderAsync(string name) {
+		var directoryInfo = new DirectoryInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
+		return Task.FromResult<IStorageFolder?>(directoryInfo.Exists ? new BclStorageFolder(directoryInfo) : null);
+	}
+
 }

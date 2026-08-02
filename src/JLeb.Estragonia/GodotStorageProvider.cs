@@ -33,6 +33,14 @@ internal sealed class GodotStorageProvider : IStorageProvider {
 		return files.Count > 0 ? files[0] : null;
 	}
 
+	public async Task<SaveFilePickerResult> SaveFilePickerWithResultAsync(FilePickerSaveOptions options) {
+		var file = await SaveFilePickerAsync(options);
+		return new SaveFilePickerResult {
+			File = file,
+			SelectedFileType = null
+		};
+	}
+
 	public Task<IReadOnlyList<IStorageFolder>> OpenFolderPickerAsync(FolderPickerOpenOptions options) {
 		var folders = Array.Empty<IStorageFolder>();
 		var dialog = CreateDialog(options, FileDialog.FileModeEnum.OpenDir);

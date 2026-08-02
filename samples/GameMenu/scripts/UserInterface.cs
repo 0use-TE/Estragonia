@@ -27,6 +27,7 @@ public sealed partial class UserInterface : AvaloniaControl {
 		};
 		_ = _mainViewModel.EnsureLoadedAsync();
 
+		GodotAvalonia.EnsureAssetLoader(typeof(App).Assembly);
 		Control = new MainView {
 			DataContext = _mainViewModel
 		};

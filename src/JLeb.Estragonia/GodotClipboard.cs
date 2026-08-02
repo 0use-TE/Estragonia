@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
@@ -9,24 +9,35 @@ namespace JLeb.Estragonia;
 /// <summary>An implementation of <see cref="IClipboard"/> that uses Godot clipboard methods.</summary>
 internal sealed class GodotClipboard : IClipboard {
 
-	public Task<string?> GetTextAsync()
-		=> Task.FromResult<string?>(DisplayServer.ClipboardGet());
-
-	public Task SetTextAsync(string? text) {
-		DisplayServer.ClipboardSet(text);
+	public Task ClearAsync() {
+		DisplayServer.ClipboardSet(String.Empty);
 		return Task.CompletedTask;
 	}
 
-	public Task ClearAsync()
-		=> SetTextAsync(String.Empty);
-
-	public Task SetDataObjectAsync(IDataObject data)
+	public Task FlushAsync()
 		=> Task.CompletedTask;
 
-	public Task<string[]> GetFormatsAsync()
-		=> Task.FromResult(Array.Empty<string>());
+	public async Task SetDataAsync(IAsyncDataTransfer? dataTransfer) {
+		if (dataTransfer is null) {
+			DisplayServer.ClipboardSet(String.Empty);
+			return;
+		}
 
-	public Task<object?> GetDataAsync(string format)
-		=> Task.FromResult<object?>(null);
+		var text = await dataTransfer.TryGetTextAsync();
+		DisplayServer.ClipboardSet(text ?? String.Empty);
+	}
+
+	public Task<IAsyncDataTransfer?> TryGetDataAsync() {
+		var text = DisplayServer.ClipboardGet();
+		if (String.IsNullOrEmpty(text))
+			return Task.FromResult<IAsyncDataTransfer?>(null);
+
+		var transfer = new DataTransfer();
+		transfer.Add(DataTransferItem.CreateText(text));
+		return Task.FromResult<IAsyncDataTransfer?>(transfer);
+	}
+
+	public Task<IAsyncDataTransfer?> TryGetInProcessDataAsync()
+		=> TryGetDataAsync();
 
 }

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Avalonia.Platform;
 using Avalonia.Skia;
 using SkiaSharp;
 
@@ -13,8 +14,10 @@ internal sealed class GodotSkiaRenderTarget : ISkiaGpuRenderTarget {
 	private readonly VkBarrierHelper _barrierHelper;
 
 	[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Doesn't affect correctness")]
-	public bool IsCorrupted
-		=> _surface.IsDisposed || _grContext.IsAbandoned || _renderScaling != _surface.RenderScaling;
+	public PlatformRenderTargetState State
+		=> _surface.IsDisposed || _grContext.IsAbandoned || _renderScaling != _surface.RenderScaling
+			? PlatformRenderTargetState.Corrupted
+			: PlatformRenderTargetState.Ready;
 
 	public GodotSkiaRenderTarget(GodotSkiaSurface surface, GRContext grContext, VkBarrierHelper barrierHelper) {
 		_renderScaling = surface.RenderScaling;
@@ -23,7 +26,7 @@ internal sealed class GodotSkiaRenderTarget : ISkiaGpuRenderTarget {
 		_barrierHelper = barrierHelper;
 	}
 
-	public ISkiaGpuRenderSession BeginRenderingSession()
+	public ISkiaGpuRenderSession BeginRenderingSession(IRenderTarget.RenderTargetSceneInfo sceneInfo)
 		=> new GodotSkiaGpuRenderSession(_surface, _grContext, _barrierHelper);
 
 	public void Dispose() {

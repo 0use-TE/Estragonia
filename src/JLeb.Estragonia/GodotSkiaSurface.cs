@@ -1,4 +1,5 @@
 ﻿using System;
+using Avalonia.Platform.Surfaces;
 using Avalonia.Skia;
 using Godot;
 using SkiaSharp;
@@ -7,7 +8,7 @@ using static JLeb.Estragonia.VkInterop;
 namespace JLeb.Estragonia;
 
 /// <summary>Encapsulates a Skia surface along with the Godot texture it comes from.</summary>
-internal sealed class GodotSkiaSurface : ISkiaSurface {
+internal sealed class GodotSkiaSurface : ISkiaSurface, IPlatformRenderSurface {
 
 	public SKSurface SkSurface { get; }
 
@@ -26,6 +27,9 @@ internal sealed class GodotSkiaSurface : ISkiaSurface {
 	public ulong DrawCount { get; set; }
 
 	public bool IsDisposed { get; private set; }
+
+	bool IPlatformRenderSurface.IsReady
+		=> !IsDisposed;
 
 	public void TransitionLayoutTo(VkImageLayout newLayout) {
 		if (LastLayout == newLayout)
