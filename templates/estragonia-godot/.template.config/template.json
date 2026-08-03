@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "0use-TE / Estragonia contributors",
+  "classifications": [ "Godot", "Avalonia", "UI", "Game" ],
+  "identity": "Ouse.Estragonia.Templates.Godot",
+  "groupIdentity": "Ouse.Estragonia.Templates",
+  "name": "Estragonia Godot App",
+  "shortName": "estragonia",
+  "description": "Godot 4 + Avalonia (Estragonia) starter with Autoload and UiHost already wired.",
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "sourceName": "EstragoniaApp",
+  "preferNameDirectory": true,
+  "symbols": {
+    "GodotProjectName": {
+      "type": "parameter",
+      "datatype": "text",
+      "displayName": "Godot project name",
+      "description": "Godot / C# project name (assembly + root namespace). Must be a valid C# identifier.",
+      "replaces": "GodotGame",
+      "fileRename": "GodotGame",
+      "defaultValue": "GodotGame"
+    }
+  },
+  "primaryOutputs": [
+    { "path": "EstragoniaApp.sln" },
+    { "path": "project.godot" },
+    { "path": "GodotGame.csproj" },
+    { "path": "README.md" }
+  ]
+}

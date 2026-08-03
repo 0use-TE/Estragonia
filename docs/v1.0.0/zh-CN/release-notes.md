@@ -1,11 +1,14 @@
 # 更新说明
 
-## 1.4.0（分支维护）
+## 1.0.0
 
-- 适配 Avalonia 12 / Godot 4.7 / .NET 10
-- CPM 统一包版本
-- `UiHost`；Avalonia 12 资源与 Dispatcher 修复
-- DocFX + API 生成（`api/`、`_site/` 不入库）
-- README 重写；保留原作者 MIT 署名
+本维护分支的首个版本：
 
-更早版本见上游 [MrJul/Estragonia](https://github.com/MrJul/Estragonia)。
+- Avalonia 12 / Godot 4.7 / .NET 10
+- CPM 统一包版本（`Directory.Packages.props`）
+- `UiHost`、输入穿透、Avalonia 12 Dispatcher / 资源加载修复
+- DocFX 文档 + GitHub Pages 工作流
+- `dotnet new estragonia` 项目模板
+- NuGet 包名：**`Ouse.Estragonia`**（上游包名仍为 `JLeb.Estragonia`）
+
+基于 [MrJul/Estragonia](https://github.com/MrJul/Estragonia)（MIT）。更早上游版本见原仓库。

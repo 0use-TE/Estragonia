@@ -7,7 +7,7 @@
 		<AnalysisMode>Recommended</AnalysisMode>
 
 		<IsPackable>true</IsPackable>
-		<PackageId>JLeb.Estragonia</PackageId>
+		<PackageId>Ouse.Estragonia</PackageId>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Description>Bridge embedding Avalonia UI inside Godot 4 (Vulkan / Skia).</Description>

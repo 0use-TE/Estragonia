@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/vs-2017.3.host",
+  "order": 0,
+  "defaultSymbolVisibility": true,
+  "symbolInfo": [
+    {
+      "id": "GodotProjectName",
+      "name": {
+        "text": "Godot project name"
+      },
+      "description": {
+        "text": "C# project / assembly / namespace name (must be a valid C# identifier)."
+      },
+      "isVisible": true
+    }
+  ]
+}

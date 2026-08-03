@@ -32,6 +32,8 @@ _reflect/
 _reflect.cs
 *.Backup.tmp
 *.tmp
+nupkgs/
+_template_test/
 
 ## OS
 Thumbs.db

@@ -3,9 +3,14 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:vm="using:HelloWorld.ViewModels"
 	mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
-	x:Class="HelloWorld.HelloWorldView"
-	x:Name="Root">
+	x:Class="HelloWorld.Views.HelloWorldView"
+	x:DataType="vm:HelloWorldViewModel">
+
+	<Design.DataContext>
+		<vm:HelloWorldViewModel />
+	</Design.DataContext>
 
 	<UserControl.Styles>
 
@@ -123,8 +128,8 @@
 				<TabItem Header="交互">
 					<StackPanel Margin="8" Spacing="12">
 						<TextBlock Text="Avalonia → Godot" Opacity="0.75" />
-						<Button Classes="accent" Content="把 Ouse 染红" Click="Button_Click" />
-						<Button Classes="accent" Content="把 Ouse 恢复" Click="OnResetOuseClick" />
+						<Button Classes="accent" Content="把 Ouse 染红" Command="{Binding PaintOuseCommand}" />
+						<Button Classes="accent" Content="把 Ouse 恢复" Command="{Binding ResetOuseCommand}" />
 						<TextBlock TextWrapping="Wrap" Opacity="0.65"
 							Text="空白区域可穿透到 Godot；点到控件时由 Avalonia 吞事件。" />
 					</StackPanel>
@@ -141,15 +146,20 @@
 						</Border>
 
 						<StackPanel Orientation="Horizontal" Spacing="10">
-							<Button Content="显示 / 隐藏面板" Click="OnToggleFadeClick" />
-							<ToggleSwitch x:Name="PulseToggle" Content="呼吸边框" IsChecked="True" />
+							<Button Content="显示 / 隐藏面板" Command="{Binding ToggleFadePanelCommand}" />
+							<ToggleSwitch Content="呼吸边框" IsChecked="{Binding IsPulseVisible}" />
 						</StackPanel>
 
-						<Border x:Name="FadePanel" Classes="fade-panel" Background="#2200A2FF" CornerRadius="10" Padding="14">
+						<Border
+							Classes="fade-panel"
+							Classes.hidden="{Binding IsFadePanelHidden}"
+							Background="#2200A2FF"
+							CornerRadius="10"
+							Padding="14">
 							<TextBlock Text="带 Opacity + Translate 过渡的面板" />
 						</Border>
 
-						<Border x:Name="PulseBox" Classes="pulse" Background="#181C24">
+						<Border Classes="pulse" Background="#181C24" IsVisible="{Binding IsPulseVisible}">
 							<TextBlock Text="KeyFrame 呼吸发光" HorizontalAlignment="Center" />
 						</Border>
 					</StackPanel>
@@ -166,16 +176,19 @@
 						<StackPanel Spacing="6">
 							<Grid ColumnDefinitions="*,Auto">
 								<TextBlock Text="进度条" />
-								<TextBlock Grid.Column="1" x:Name="ProgressLabel" Text="0%" Opacity="0.75" />
+								<TextBlock Grid.Column="1" Text="{Binding Progress, StringFormat={}{0:0}%}" Opacity="0.75" />
 							</Grid>
-							<ProgressBar x:Name="DemoProgress" Minimum="0" Maximum="100" Height="10" />
-							<Button Content="播放进度动画" Click="OnPlayProgressClick" HorizontalAlignment="Left" />
+							<ProgressBar Minimum="0" Maximum="100" Height="10" Value="{Binding Progress}" />
+							<Button
+								Content="播放进度动画"
+								Command="{Binding PlayProgressCommand}"
+								HorizontalAlignment="Left" />
 						</StackPanel>
 
 						<StackPanel Spacing="6">
 							<TextBlock Text="滑条 + 实时数值" />
-							<Slider x:Name="DemoSlider" Minimum="0" Maximum="100" Value="35" />
-							<TextBlock Text="{Binding #DemoSlider.Value, StringFormat={}{0:0}}" Opacity="0.75" />
+							<Slider Minimum="0" Maximum="100" Value="{Binding SliderValue}" />
+							<TextBlock Text="{Binding SliderValue, StringFormat={}{0:0}}" Opacity="0.75" />
 						</StackPanel>
 					</StackPanel>
 				</TabItem>
@@ -184,7 +197,7 @@
 				<TabItem Header="控件">
 					<ScrollViewer Margin="8">
 						<StackPanel Spacing="12">
-							<TextBox Watermark="输入点什么…" />
+							<TextBox PlaceholderText="输入点什么…" />
 							<ComboBox SelectedIndex="0" HorizontalAlignment="Stretch">
 								<ComboBoxItem>剑</ComboBoxItem>
 								<ComboBoxItem>弓</ComboBoxItem>
@@ -195,7 +208,7 @@
 							<RadioButton Content="远程" GroupName="atk" />
 							<NumericUpDown Minimum="1" Maximum="99" Value="12" />
 							<CalendarDatePicker HorizontalAlignment="Stretch" />
-							<Button Content="素材按钮（start.png）" Classes="accent" Click="OnStartAssetClick">
+							<Button Content="素材按钮（start.png）" Classes="accent" Command="{Binding PaintOuseCommand}">
 								<Button.Flyout>
 									<Flyout>
 										<Image

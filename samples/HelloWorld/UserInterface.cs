@@ -1,4 +1,6 @@
 using Godot;
+using HelloWorld.ViewModels;
+using HelloWorld.Views;
 using JLeb.Estragonia;
 using AvControl = Avalonia.Controls.Control;
 
@@ -7,10 +9,10 @@ namespace HelloWorld;
 public partial class UserInterface : UiHost {
 
 	protected override AvControl CreateRoot() {
-		var view = new HelloWorldView();
-		view.PaintOuseRequested += () => SetOuseTint(Colors.Red);
-		view.ResetOuseRequested += () => SetOuseTint(Colors.White);
-		return view;
+		var vm = new HelloWorldViewModel();
+		vm.PaintOuseRequested += () => SetOuseTint(Colors.Red);
+		vm.ResetOuseRequested += () => SetOuseTint(Colors.White);
+		return new HelloWorldView { DataContext = vm };
 	}
 
 	private void SetOuseTint(Color tint) {

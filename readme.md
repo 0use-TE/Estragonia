@@ -25,6 +25,27 @@
 
 ## 快速开始
 
+### 用模板新建项目（推荐）
+
+```bash
+# 打包库 Ouse.Estragonia + 模板
+dotnet pack src/JLeb.Estragonia -c Release -o nupkgs
+dotnet pack templates/Ouse.Estragonia.Templates.csproj -c Release -o nupkgs
+dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.0.nupkg
+
+# -n = 解决方案名；--GodotProjectName = Godot/C# 项目名
+dotnet new estragonia -n MySolution --GodotProjectName MyGame -o MySolution
+cd MySolution
+dotnet restore
+```
+
+NuGet 包名：**`Ouse.Estragonia`**（代码命名空间仍为 `JLeb.Estragonia`）。
+
+用 **Godot 4.7+（.NET）打开根目录的 `project.godot`**（不是 `.godot/` 缓存目录）。  
+Autoload `AvaloniaLoader` 与默认 `UserInterface`（`UiHost`）已配好。详见 [`templates/README.md`](templates/README.md)。
+
+### 或运行示例
+
 1. 用 Godot（.NET）打开 `samples/HelloWorld`。
 2. 编译并运行；Autoload `AvaloniaLoader` 负责 `UseGodot()`。
 3. UI 宿主继承 `JLeb.Estragonia.UiHost`，实现 `CreateRoot()` 即可。

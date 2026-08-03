@@ -1,0 +1,37 @@
+<Project Sdk="Godot.NET.Sdk/4.7.1">
+
+	<PropertyGroup>
+		<AssemblyTitle>GodotGame</AssemblyTitle>
+		<TargetFramework>net10.0</TargetFramework>
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<!-- Avalonia designer / previewer needs an Exe entry point (Designer.Main). -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<OutputType>Exe</OutputType>
+		<UseAppHost>false</UseAppHost>
+		<StartupObject>GodotGame.Designer</StartupObject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Ouse.Estragonia" />
+		<PackageReference Include="Semi.Avalonia" />
+		<PackageReference Include="CommunityToolkit.Mvvm" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AvaloniaResource Include="Assets/**" />
+		<!--
+			Godot.NET.Sdk sets EnableDefaultNoneItems=false, and VS often hides AvaloniaXaml
+			items unless the Avalonia extension is installed. Explicit None keeps .axaml visible.
+		-->
+		<None Include="**\*.axaml" />
+		<Compile Update="**\*.axaml.cs">
+			<DependentUpon>%(Filename)</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>
