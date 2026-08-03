@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.8.12023.21 stable
+VisualStudioVersion = 18.8.12023.21
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JLeb.Estragonia", "src\JLeb.Estragonia\JLeb.Estragonia.csproj", "{B3C282DD-56EA-43D7-A31C-BF28AEC62671}"
 EndProject
@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{8BDD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorld", "samples\HelloWorld\HelloWorld.csproj", "{2125B402-E207-4382-AC5E-D8C7A868E2FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ouse.Estragonia.Templates", "templates\Ouse.Estragonia.Templates.csproj", "{9FA4FDAB-71EE-831A-911C-B388FEE6BA17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{2125B402-E207-4382-AC5E-D8C7A868E2FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2125B402-E207-4382-AC5E-D8C7A868E2FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2125B402-E207-4382-AC5E-D8C7A868E2FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA4FDAB-71EE-831A-911C-B388FEE6BA17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA4FDAB-71EE-831A-911C-B388FEE6BA17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA4FDAB-71EE-831A-911C-B388FEE6BA17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA4FDAB-71EE-831A-911C-B388FEE6BA17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,7 @@ Initial release of this maintained fork:
 - `UiHost`, input pass-through, Avalonia 12 dispatcher / asset-loader fixes
 - DocFX documentation + GitHub Pages workflow
 - `dotnet new estragonia` project template
-- NuGet package id: **`Ouse.Estragonia`** (fork; upstream package id remains `JLeb.Estragonia`)
+- NuGet: [Ouse.Estragonia](https://www.nuget.org/packages/Ouse.Estragonia/) + [Ouse.Estragonia.Templates](https://www.nuget.org/packages/Ouse.Estragonia.Templates/)
+- Source: [0use-TE/Estragonia](https://github.com/0use-TE/Estragonia)
 
-Based on [MrJul/Estragonia](https://github.com/MrJul/Estragonia) (MIT). Upstream history remains under that repository.
+Based on [MrJul/Estragonia](https://github.com/MrJul/Estragonia) (MIT). Upstream package id remains `JLeb.Estragonia`.

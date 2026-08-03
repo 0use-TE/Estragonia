@@ -3,7 +3,7 @@
 Use when asking an AI to build Avalonia UI on top of Estragonia:
 
 ```
-You are writing Avalonia 12 UI hosted in Godot 4 via Estragonia (JLeb.Estragonia).
+You are writing Avalonia 12 UI hosted in Godot 4 via Estragonia ([Ouse.Estragonia](https://www.nuget.org/packages/Ouse.Estragonia/); namespaces `JLeb.Estragonia`).
 
 Rules:
 - Initialize Avalonia once in a Godot Autoload with UseGodot().SetupWithoutStarting() + GodotAvalonia.EnsureAssetLoader.
