@@ -2,18 +2,17 @@ using System.ComponentModel;
 using GameMenu.UI;
 using Godot;
 using JLeb.Estragonia;
+using AvControl = Avalonia.Controls.Control;
 
 namespace GameMenu;
 
-public sealed partial class UserInterface : AvaloniaControl {
+public sealed partial class UserInterface : UiHost {
 
 	private UIOptions _uiOptions = null!;
 	private MainViewModel _mainViewModel = null!;
 
 	public override void _Ready() {
 		GetWindow().MinSize = new Vector2I(1152, 648);
-
-		GrabFocus();
 
 		_uiOptions = new UIOptions {
 			UIScale = RenderScaling,
@@ -27,13 +26,13 @@ public sealed partial class UserInterface : AvaloniaControl {
 		};
 		_ = _mainViewModel.EnsureLoadedAsync();
 
-		GodotAvalonia.EnsureAssetLoader(typeof(App).Assembly);
-		Control = new MainView {
-			DataContext = _mainViewModel
-		};
-
 		base._Ready();
 	}
+
+	protected override AvControl CreateRoot()
+		=> new MainView {
+			DataContext = _mainViewModel
+		};
 
 	private void OnUIOptionsPropertyChanged(object? sender, PropertyChangedEventArgs e) {
 		switch (e.PropertyName) {
@@ -55,7 +54,6 @@ public sealed partial class UserInterface : AvaloniaControl {
 
 	public override void _Process(double delta) {
 		_mainViewModel.ProcessFrame();
-
 		base._Process(delta);
 	}
 

@@ -1,24 +1,11 @@
-using Godot;
 using JLeb.Estragonia;
+using AvControl = Avalonia.Controls.Control;
 
 namespace HelloWorld;
 
-public partial class UserInterface : AvaloniaControl {
+public partial class UserInterface : UiHost {
 
-	public override void _Ready() {
-		GetWindow().SetImeActive(true);
-		MouseFilter = MouseFilterEnum.Stop;
-		GrabFocus();
-
-		GodotAvalonia.EnsureAssetLoader(typeof(App).Assembly);
-		Control = new HelloWorldView();
-
-		base._Ready();
-	}
-
-	public override void _Process(double delta) {
-
-		base._Process(delta);
-	}
+	protected override AvControl CreateRoot()
+		=> new HelloWorldView();
 
 }

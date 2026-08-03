@@ -1,4 +1,4 @@
-﻿#if DEBUG
+#if DEBUG
 
 using System;
 using Avalonia;
@@ -16,7 +16,6 @@ internal static class Designer {
 			.Configure<App>()
 			.UseSkia()
 			.UseHarfBuzz();
-
 }
 
 #endif

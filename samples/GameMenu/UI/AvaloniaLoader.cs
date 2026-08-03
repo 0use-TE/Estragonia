@@ -4,6 +4,7 @@ using JLeb.Estragonia;
 
 namespace GameMenu.UI;
 
+/// <summary>Autoload: Avalonia platform init + asset loader + IME. Once per run.</summary>
 public sealed partial class AvaloniaLoader : Node {
 
 	public override void _Ready() {
@@ -14,6 +15,7 @@ public sealed partial class AvaloniaLoader : Node {
 			.SetupWithoutStarting();
 
 		GodotAvalonia.EnsureAssetLoader(typeof(App).Assembly);
+		GetWindow()?.SetImeActive(true);
 	}
 
 }

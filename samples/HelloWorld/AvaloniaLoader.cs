@@ -4,6 +4,7 @@ using JLeb.Estragonia;
 
 namespace HelloWorld;
 
+/// <summary>Autoload: Avalonia platform init + asset loader + IME. Once per run.</summary>
 public partial class AvaloniaLoader : Node {
 
 	public override void _Ready() {
@@ -12,8 +13,8 @@ public partial class AvaloniaLoader : Node {
 			.UseGodot()
 			.SetupWithoutStarting();
 
-		// Make sure XAML image / avares loading works under Godot's assembly load context.
 		GodotAvalonia.EnsureAssetLoader(typeof(App).Assembly);
+		GetWindow()?.SetImeActive(true);
 	}
 
 }

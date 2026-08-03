@@ -344,19 +344,21 @@ public class AvaloniaControl : GdControl {
 	private void OnMouseExited()
 		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
 
+	/// <summary>
+	/// When false (default), only Avalonia-hittable pixels capture the mouse and empty/transparent
+	/// areas pass through to Godot nodes behind. When true, the whole control rect captures input.
+	/// </summary>
+	public bool CaptureEmptyHits { get; set; }
+
 	public override bool _HasPoint(Vector2 point) {
 		if (_topLevel is null)
 			return false;
 
-		// Prefer Avalonia hit-testing so fully transparent areas can pass input through to Godot.
-		// In Avalonia 12 embedding, InputHitTest can return null even over interactive content
-		// (layout/presentation source timing), which would prevent Godot from delivering _GuiInput.
 		var avaloniaPoint = point.ToAvaloniaPoint() / _topLevel.RenderScaling;
 		if (_topLevel.InputHitTest(avaloniaPoint, false) is not null)
 			return true;
 
-		// Fallback: accept the whole control rect so mouse/touch still reach Avalonia.
-		return true;
+		return CaptureEmptyHits;
 	}
 
 	protected override void Dispose(bool disposing) {
