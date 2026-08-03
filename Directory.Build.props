@@ -1,10 +1,14 @@
 <Project>
 
 	<PropertyGroup>
+		<!-- Original author (MIT) — keep attribution -->
 		<Authors>Julien Lebosquain</Authors>
 		<Product>Estragonia</Product>
-		<Copyright>Copyright © $(Authors) – 2023-$([System.DateTime]::Now.ToString('yyyy'))</Copyright>
-		<Version>1.3.1</Version>
+		<Copyright>Copyright © Julien Lebosquain and contributors</Copyright>
+		<Version>1.4.0</Version>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
 	</PropertyGroup>
 
 </Project>

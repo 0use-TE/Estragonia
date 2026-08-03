@@ -1,8 +1,39 @@
+## Build
 bin/
 obj/
+*.user
+*.suo
+*.user
+*.DotSettings.user
+
+## IDE
 .idea/
 .vs/
+.vscode/*
+!.vscode/extensions.json
+
+## Godot
 .godot/
-/_ReSharper.Caches/
-*.user
+*.translation
 *.blend1
+
+## ReSharper / Rider
+_ReSharper.Caches/
+*.DotSettings.user
+
+## DocFX (generated — do not publish API YAML / site)
+api/
+_site/
+docs/**/obj/
+*.log
+
+## Local / temp
+_reflect/
+_reflect.cs
+*.Backup.tmp
+*.tmp
+
+## OS
+Thumbs.db
+Desktop.ini
+.DS_Store

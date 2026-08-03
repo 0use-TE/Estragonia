@@ -1,27 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33502.453
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.12023.21 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JLeb.Estragonia", "src\JLeb.Estragonia\JLeb.Estragonia.csproj", "{B3C282DD-56EA-43D7-A31C-BF28AEC62671}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global Files", "Global Files", "{0C36314E-302D-4A8B-8749-25B1C83A9523}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		NuGet.config = NuGet.config
-		global.json = global.json
+		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
 		license.txt = license.txt
 		readme.md = readme.md
-		.gitattributes = .gitattributes
-		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{8BDD182F-5C11-4089-9703-AD2E3B9B55B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorld", "samples\HelloWorld\HelloWorld.csproj", "{2125B402-E207-4382-AC5E-D8C7A868E2FA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameMenu", "samples\GameMenu\GameMenu.csproj", "{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,21 +33,16 @@ Global
 		{B3C282DD-56EA-43D7-A31C-BF28AEC62671}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2125B402-E207-4382-AC5E-D8C7A868E2FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2125B402-E207-4382-AC5E-D8C7A868E2FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2125B402-E207-4382-AC5E-D8C7A868E2FA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{2125B402-E207-4382-AC5E-D8C7A868E2FA}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{2125B402-E207-4382-AC5E-D8C7A868E2FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2125B402-E207-4382-AC5E-D8C7A868E2FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B6332B4C-6061-4B9D-ADA8-52DF09FE4848}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2125B402-E207-4382-AC5E-D8C7A868E2FA} = {8BDD182F-5C11-4089-9703-AD2E3B9B55B4}
-		{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB} = {8BDD182F-5C11-4089-9703-AD2E3B9B55B4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B6332B4C-6061-4B9D-ADA8-52DF09FE4848}
 	EndGlobalSection
 EndGlobal

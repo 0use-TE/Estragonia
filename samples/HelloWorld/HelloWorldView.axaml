@@ -3,23 +3,214 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-	x:Class="HelloWorld.HelloWorldView">
+	mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+	x:Class="HelloWorld.HelloWorldView"
+	x:Name="Root">
 
-	<StackPanel
-		HorizontalAlignment="Stretch"
-		VerticalAlignment="Center"
-		Margin="16"
-		Spacing="10">
-		<Button Content="Avalonia Button" HorizontalAlignment="Stretch" Padding="12,8" />
-		<TextBlock Text="Drag the Godot sprite where there is no UI" Opacity="0.75" TextWrapping="Wrap" />
-		<Slider />
-		<TabControl MinHeight="180">
-			<TabItem Header="武器" />
-			<TabItem Header="防具" />
-			<TabItem Header="道具" />
-			<TabItem Header="时装" />
-		</TabControl>
-	</StackPanel>
+	<UserControl.Styles>
+
+		<!-- Hover scale -->
+		<Style Selector="Border.card">
+			<Setter Property="Background" Value="#22FFFFFF" />
+			<Setter Property="CornerRadius" Value="12" />
+			<Setter Property="Padding" Value="16" />
+			<Setter Property="RenderTransformOrigin" Value="50%,50%" />
+			<Setter Property="RenderTransform">
+				<ScaleTransform ScaleX="1" ScaleY="1" />
+			</Setter>
+			<Setter Property="Transitions">
+				<Transitions>
+					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.18" />
+					<BrushTransition Property="Background" Duration="0:0:0.18" />
+				</Transitions>
+			</Setter>
+		</Style>
+		<Style Selector="Border.card:pointerover">
+			<Setter Property="Background" Value="#33FFFFFF" />
+			<Setter Property="RenderTransform" Value="scale(1.03)" />
+		</Style>
+
+		<!-- Breathing glow -->
+		<Style Selector="Border.pulse">
+			<Setter Property="CornerRadius" Value="16" />
+			<Setter Property="BorderThickness" Value="2" />
+			<Setter Property="Padding" Value="20" />
+			<Style.Animations>
+				<Animation Duration="0:0:1.6" IterationCount="Infinite" PlaybackDirection="Alternate">
+					<KeyFrame Cue="0%">
+						<Setter Property="BorderBrush" Value="#40F0C070" />
+						<Setter Property="Opacity" Value="0.7" />
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="BorderBrush" Value="#FFF0C070" />
+						<Setter Property="Opacity" Value="1" />
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
+
+		<!-- Spinning ring -->
+		<Style Selector="Border.spinner">
+			<Setter Property="Width" Value="48" />
+			<Setter Property="Height" Value="48" />
+			<Setter Property="CornerRadius" Value="24" />
+			<Setter Property="BorderThickness" Value="4" />
+			<Setter Property="BorderBrush" Value="#FF5B9BD5" />
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="RenderTransformOrigin" Value="50%,50%" />
+			<Setter Property="RenderTransform">
+				<RotateTransform Angle="0" />
+			</Setter>
+			<Style.Animations>
+				<Animation Duration="0:0:1.1" IterationCount="Infinite">
+					<KeyFrame Cue="0%">
+						<Setter Property="RotateTransform.Angle" Value="0" />
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="RotateTransform.Angle" Value="360" />
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
+
+		<!-- Fade slide panel -->
+		<Style Selector="Border.fade-panel">
+			<Setter Property="Opacity" Value="1" />
+			<Setter Property="RenderTransform" Value="translateX(0)" />
+			<Setter Property="Transitions">
+				<Transitions>
+					<DoubleTransition Property="Opacity" Duration="0:0:0.35" />
+					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.35" />
+				</Transitions>
+			</Setter>
+		</Style>
+		<Style Selector="Border.fade-panel.hidden">
+			<Setter Property="Opacity" Value="0" />
+			<Setter Property="RenderTransform" Value="translateX(-24px)" />
+			<Setter Property="IsHitTestVisible" Value="False" />
+		</Style>
+
+		<!-- Image / accent button -->
+		<Style Selector="Button.accent">
+			<Setter Property="HorizontalAlignment" Value="Stretch" />
+			<Setter Property="Padding" Value="14,10" />
+		</Style>
+
+	</UserControl.Styles>
+
+	<Border
+		HorizontalAlignment="Left"
+		Width="420"
+		Margin="12"
+		Background="#CC141820"
+		CornerRadius="14"
+		Padding="12"
+		BoxShadow="0 8 24 0 #66000000">
+
+		<DockPanel>
+
+			<TextBlock
+				DockPanel.Dock="Top"
+				Text="Avalonia 控件 / 动画演示"
+				FontSize="18"
+				FontWeight="SemiBold"
+				Margin="4,0,4,10"
+				Foreground="#F0C070" />
+
+			<TabControl>
+
+				<!-- Godot bridge -->
+				<TabItem Header="交互">
+					<StackPanel Margin="8" Spacing="12">
+						<TextBlock Text="Avalonia → Godot" Opacity="0.75" />
+						<Button Classes="accent" Content="把 Ouse 染红" Click="Button_Click" />
+						<Button Classes="accent" Content="把 Ouse 恢复" Click="OnResetOuseClick" />
+						<TextBlock TextWrapping="Wrap" Opacity="0.65"
+							Text="空白区域可穿透到 Godot；点到控件时由 Avalonia 吞事件。" />
+					</StackPanel>
+				</TabItem>
+
+				<!-- Transitions -->
+				<TabItem Header="过渡">
+					<StackPanel Margin="8" Spacing="14">
+						<Border Classes="card">
+							<StackPanel Spacing="8">
+								<TextBlock Text="Hover 缩放卡片" FontWeight="SemiBold" />
+								<TextBlock Text="鼠标移上去会略微放大 + 背景变亮" Opacity="0.7" TextWrapping="Wrap" />
+							</StackPanel>
+						</Border>
+
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<Button Content="显示 / 隐藏面板" Click="OnToggleFadeClick" />
+							<ToggleSwitch x:Name="PulseToggle" Content="呼吸边框" IsChecked="True" />
+						</StackPanel>
+
+						<Border x:Name="FadePanel" Classes="fade-panel" Background="#2200A2FF" CornerRadius="10" Padding="14">
+							<TextBlock Text="带 Opacity + Translate 过渡的面板" />
+						</Border>
+
+						<Border x:Name="PulseBox" Classes="pulse" Background="#181C24">
+							<TextBlock Text="KeyFrame 呼吸发光" HorizontalAlignment="Center" />
+						</Border>
+					</StackPanel>
+				</TabItem>
+
+				<!-- Motion -->
+				<TabItem Header="运动">
+					<StackPanel Margin="8" Spacing="16">
+						<StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+							<Border Classes="spinner" />
+							<TextBlock Text="旋转 Loading" VerticalAlignment="Center" Opacity="0.8" />
+						</StackPanel>
+
+						<StackPanel Spacing="6">
+							<Grid ColumnDefinitions="*,Auto">
+								<TextBlock Text="进度条" />
+								<TextBlock Grid.Column="1" x:Name="ProgressLabel" Text="0%" Opacity="0.75" />
+							</Grid>
+							<ProgressBar x:Name="DemoProgress" Minimum="0" Maximum="100" Height="10" />
+							<Button Content="播放进度动画" Click="OnPlayProgressClick" HorizontalAlignment="Left" />
+						</StackPanel>
+
+						<StackPanel Spacing="6">
+							<TextBlock Text="滑条 + 实时数值" />
+							<Slider x:Name="DemoSlider" Minimum="0" Maximum="100" Value="35" />
+							<TextBlock Text="{Binding #DemoSlider.Value, StringFormat={}{0:0}}" Opacity="0.75" />
+						</StackPanel>
+					</StackPanel>
+				</TabItem>
+
+				<!-- Controls -->
+				<TabItem Header="控件">
+					<ScrollViewer Margin="8">
+						<StackPanel Spacing="12">
+							<TextBox Watermark="输入点什么…" />
+							<ComboBox SelectedIndex="0" HorizontalAlignment="Stretch">
+								<ComboBoxItem>剑</ComboBoxItem>
+								<ComboBoxItem>弓</ComboBoxItem>
+								<ComboBoxItem>法杖</ComboBoxItem>
+							</ComboBox>
+							<CheckBox Content="启用暴击音效" IsChecked="True" />
+							<RadioButton Content="近战" GroupName="atk" IsChecked="True" />
+							<RadioButton Content="远程" GroupName="atk" />
+							<NumericUpDown Minimum="1" Maximum="99" Value="12" />
+							<CalendarDatePicker HorizontalAlignment="Stretch" />
+							<Button Content="素材按钮（start.png）" Classes="accent" Click="OnStartAssetClick">
+								<Button.Flyout>
+									<Flyout>
+										<Image
+											Source="avares://HelloWorld/Assets/start.png"
+											Width="240"
+											Stretch="Uniform" />
+									</Flyout>
+								</Button.Flyout>
+							</Button>
+						</StackPanel>
+					</ScrollViewer>
+				</TabItem>
+
+			</TabControl>
+		</DockPanel>
+	</Border>
 
 </UserControl>

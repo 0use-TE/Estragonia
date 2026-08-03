@@ -1,0 +1,74 @@
+name: Docs
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install DocFX
+        run: dotnet tool install -g docfx --version 2.78.3
+
+      - name: Resolve repo base path
+        id: base
+        shell: bash
+        run: |
+          # Project Pages: https://<user>.github.io/<repo>/
+          echo "app_base_path=/${GITHUB_REPOSITORY#*/}/" >> "$GITHUB_OUTPUT"
+
+      - name: Set DocFX _appBasePath
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os
+          path = "docfx.json"
+          with open(path, encoding="utf-8") as f:
+              cfg = json.load(f)
+          base = os.environ["APP_BASE_PATH"]
+          cfg.setdefault("build", {}).setdefault("globalMetadata", {})["_appBasePath"] = base
+          with open(path, "w", encoding="utf-8") as f:
+              json.dump(cfg, f, indent=2)
+              f.write("\n")
+          print("Set _appBasePath to", base)
+          PY
+        env:
+          APP_BASE_PATH: ${{ steps.base.outputs.app_base_path }}
+
+      - name: Build documentation
+        run: |
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          docfx metadata docfx.json
+          docfx build docfx.json
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

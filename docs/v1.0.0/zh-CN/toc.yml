@@ -1,0 +1,10 @@
+- name: 快速开始
+  href: getting-started.md
+- name: 宿主与 UI
+  href: hosting.md
+- name: 输入与渲染
+  href: input-and-rendering.md
+- name: 业务 AI 提示词
+  href: ai-prompt.md
+- name: 更新说明
+  href: release-notes.md

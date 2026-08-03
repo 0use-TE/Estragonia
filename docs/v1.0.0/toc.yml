@@ -1,0 +1,10 @@
+- name: Getting started
+  href: getting-started.md
+- name: Hosting UI
+  href: hosting.md
+- name: Input & rendering
+  href: input-and-rendering.md
+- name: AI prompt (app authors)
+  href: ai-prompt.md
+- name: Release notes
+  href: release-notes.md

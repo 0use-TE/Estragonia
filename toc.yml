@@ -1,0 +1,6 @@
+- name: Home
+  href: index.md
+- name: Docs
+  href: docs/v1.0.0/
+- name: API Reference
+  href: api/

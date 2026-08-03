@@ -6,6 +6,11 @@
 
 [node name="Root" type="Node" unique_id=990906724]
 
+[node name="Ouse" type="Sprite2D" parent="." unique_id=1441117401]
+position = Vector2(512.055, 409)
+texture = ExtResource("2_0xm2m")
+script = ExtResource("3_ouse")
+
 [node name="UserInterface" type="Control" parent="." unique_id=2129369076]
 z_index = 1
 layout_mode = 3
@@ -16,8 +21,3 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 2
 script = ExtResource("1_ui")
-
-[node name="Ouse" type="Sprite2D" parent="." unique_id=1441117401]
-position = Vector2(609, 503)
-texture = ExtResource("2_0xm2m")
-script = ExtResource("3_ouse")

@@ -1,0 +1,47 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [ "src/JLeb.Estragonia/JLeb.Estragonia.csproj" ]
+        }
+      ],
+      "dest": "api",
+      "includePrivateMembers": false,
+      "disableGitFeatures": true
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [ "index.md", "toc.yml" ]
+      },
+      {
+        "files": [
+          "docs/v1.0.0/**.md",
+          "docs/v1.0.0/**/toc.yml",
+          "docs/v1.0.0/zh-CN/**.md",
+          "docs/v1.0.0/zh-CN/**/toc.yml"
+        ]
+      },
+      {
+        "files": [ "api/**.yml", "api/index.md" ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [ "docfx/template/public/**" ]
+      }
+    ],
+    "output": "_site",
+    "template": [ "default", "modern", "docfx/template" ],
+    "globalMetadata": {
+      "_appTitle": "Estragonia",
+      "_appName": "Estragonia",
+      "_appFooter": "Based on Estragonia by Julien Lebosquain (MIT). AI-assisted fork — stability not guaranteed.",
+      "_enableSearch": true,
+      "_appBasePath": "",
+      "_disableContribution": true
+    }
+  }
+}

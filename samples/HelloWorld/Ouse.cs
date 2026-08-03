@@ -3,20 +3,29 @@ using Godot;
 namespace HelloWorld;
 
 /// <summary>
-/// Draggable Sprite2D. Listens on <see cref="_UnhandledInput"/> so Avalonia/GUI can swallow first;
-/// leftover clicks (no UI under the cursor) reach this node.
+/// Draggable Sprite2D. Avalonia can change <see cref="Tint"/>; drag highlight is temporary.
 /// </summary>
 public partial class Ouse : Sprite2D {
 
 	private bool _dragging;
 	private Vector2 _grabOffset;
+	private Color _tint = Colors.White;
+
+	/// <summary>Persistent color applied when not dragging.</summary>
+	public Color Tint {
+		get => _tint;
+		set {
+			_tint = value;
+			if (!_dragging)
+				Modulate = value;
+		}
+	}
 
 	public override void _UnhandledInput(InputEvent @event) {
 		if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left } mouseButton)
 			OnMouseButton(mouseButton);
 	}
 
-	// While dragging, keep receiving moves even if the cursor crosses the Avalonia host.
 	public override void _Input(InputEvent @event) {
 		if (!_dragging)
 			return;
@@ -40,9 +49,8 @@ public partial class Ouse : Sprite2D {
 
 			_dragging = true;
 			_grabOffset = GlobalPosition - mouseButton.Position;
-			Modulate = new Color(1.15f, 1.15f, 0.75f);
+			Modulate = _tint * new Color(1.15f, 1.15f, 0.75f);
 			GetViewport().SetInputAsHandled();
-			GD.Print($"[Ouse] drag start at {GlobalPosition}");
 			return;
 		}
 
@@ -52,8 +60,7 @@ public partial class Ouse : Sprite2D {
 
 	private void EndDrag() {
 		_dragging = false;
-		Modulate = Colors.White;
-		GD.Print($"[Ouse] drag end at {GlobalPosition}");
+		Modulate = _tint;
 	}
 
 	private bool IsMouseOverSprite() {
