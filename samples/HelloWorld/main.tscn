@@ -1,15 +1,8 @@
 [gd_scene format=3 uid="uid://deu3k2l3jjyk8"]
 
 [ext_resource type="Script" uid="uid://cgxsi4801y2eq" path="res://UserInterface.cs" id="1_ui"]
-[ext_resource type="Texture2D" uid="uid://vbp54an5411" path="res://icon.svg" id="2_0xm2m"]
-[ext_resource type="Script" uid="uid://cfgh7gtnf74hi" path="res://Ouse.cs" id="3_ouse"]
 
 [node name="Root" type="Node" unique_id=990906724]
-
-[node name="Ouse" type="Sprite2D" parent="." unique_id=1441117401]
-position = Vector2(512.055, 409)
-texture = ExtResource("2_0xm2m")
-script = ExtResource("3_ouse")
 
 [node name="UserInterface" type="Control" parent="." unique_id=2129369076]
 z_index = 1

@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:vm="using:HelloWorld.ViewModels"
-	mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+	mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="700"
 	x:Class="HelloWorld.Views.HelloWorldView"
 	x:DataType="vm:HelloWorldViewModel">
 
@@ -13,217 +13,228 @@
 	</Design.DataContext>
 
 	<UserControl.Styles>
-
-		<!-- Hover scale -->
-		<Style Selector="Border.card">
-			<Setter Property="Background" Value="#22FFFFFF" />
+		<Style Selector="Border.panel">
+			<Setter Property="Background" Value="#CC141820" />
 			<Setter Property="CornerRadius" Value="12" />
-			<Setter Property="Padding" Value="16" />
-			<Setter Property="RenderTransformOrigin" Value="50%,50%" />
-			<Setter Property="RenderTransform">
-				<ScaleTransform ScaleX="1" ScaleY="1" />
-			</Setter>
-			<Setter Property="Transitions">
-				<Transitions>
-					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.18" />
-					<BrushTransition Property="Background" Duration="0:0:0.18" />
-				</Transitions>
-			</Setter>
+			<Setter Property="Padding" Value="12" />
+			<Setter Property="BoxShadow" Value="0 8 24 0 #66000000" />
 		</Style>
-		<Style Selector="Border.card:pointerover">
-			<Setter Property="Background" Value="#33FFFFFF" />
-			<Setter Property="RenderTransform" Value="scale(1.03)" />
+		<Style Selector="TextBlock.caption">
+			<Setter Property="Opacity" Value="0.7" />
+			<Setter Property="FontSize" Value="12" />
 		</Style>
-
-		<!-- Breathing glow -->
-		<Style Selector="Border.pulse">
-			<Setter Property="CornerRadius" Value="16" />
-			<Setter Property="BorderThickness" Value="2" />
-			<Setter Property="Padding" Value="20" />
-			<Style.Animations>
-				<Animation Duration="0:0:1.6" IterationCount="Infinite" PlaybackDirection="Alternate">
-					<KeyFrame Cue="0%">
-						<Setter Property="BorderBrush" Value="#40F0C070" />
-						<Setter Property="Opacity" Value="0.7" />
-					</KeyFrame>
-					<KeyFrame Cue="100%">
-						<Setter Property="BorderBrush" Value="#FFF0C070" />
-						<Setter Property="Opacity" Value="1" />
-					</KeyFrame>
-				</Animation>
-			</Style.Animations>
-		</Style>
-
-		<!-- Spinning ring -->
-		<Style Selector="Border.spinner">
-			<Setter Property="Width" Value="48" />
-			<Setter Property="Height" Value="48" />
-			<Setter Property="CornerRadius" Value="24" />
-			<Setter Property="BorderThickness" Value="4" />
-			<Setter Property="BorderBrush" Value="#FF5B9BD5" />
-			<Setter Property="Background" Value="Transparent" />
-			<Setter Property="RenderTransformOrigin" Value="50%,50%" />
-			<Setter Property="RenderTransform">
-				<RotateTransform Angle="0" />
-			</Setter>
-			<Style.Animations>
-				<Animation Duration="0:0:1.1" IterationCount="Infinite">
-					<KeyFrame Cue="0%">
-						<Setter Property="RotateTransform.Angle" Value="0" />
-					</KeyFrame>
-					<KeyFrame Cue="100%">
-						<Setter Property="RotateTransform.Angle" Value="360" />
-					</KeyFrame>
-				</Animation>
-			</Style.Animations>
-		</Style>
-
-		<!-- Fade slide panel -->
-		<Style Selector="Border.fade-panel">
-			<Setter Property="Opacity" Value="1" />
-			<Setter Property="RenderTransform" Value="translateX(0)" />
-			<Setter Property="Transitions">
-				<Transitions>
-					<DoubleTransition Property="Opacity" Duration="0:0:0.35" />
-					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.35" />
-				</Transitions>
-			</Setter>
-		</Style>
-		<Style Selector="Border.fade-panel.hidden">
-			<Setter Property="Opacity" Value="0" />
-			<Setter Property="RenderTransform" Value="translateX(-24px)" />
-			<Setter Property="IsHitTestVisible" Value="False" />
-		</Style>
-
-		<!-- Image / accent button -->
 		<Style Selector="Button.accent">
-			<Setter Property="HorizontalAlignment" Value="Stretch" />
-			<Setter Property="Padding" Value="14,10" />
+			<Setter Property="Padding" Value="12,8" />
 		</Style>
-
 	</UserControl.Styles>
 
-	<Border
-		HorizontalAlignment="Left"
-		Width="420"
-		Margin="12"
-		Background="#CC141820"
-		CornerRadius="14"
-		Padding="12"
-		BoxShadow="0 8 24 0 #66000000">
+	<Grid Margin="10" RowDefinitions="Auto,*" ColumnDefinitions="*,320">
 
-		<DockPanel>
+		<!-- Top HUD bar -->
+		<Border Grid.Row="0" Grid.ColumnSpan="2" Classes="panel" Margin="0,0,0,10" Padding="14,10">
+			<Grid ColumnDefinitions="Auto,*,Auto,Auto">
+				<StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+					<TextBlock Text="Estragonia · 游戏 UI 示例" FontWeight="SemiBold" FontSize="16" Foreground="#F0C070" />
+					<TextBlock Text="{Binding FpsText}" VerticalAlignment="Center" FontFamily="Consolas,Cascadia Mono,monospace" />
+				</StackPanel>
 
-			<TextBlock
-				DockPanel.Dock="Top"
-				Text="Avalonia 控件 / 动画演示"
-				FontSize="18"
-				FontWeight="SemiBold"
-				Margin="4,0,4,10"
-				Foreground="#F0C070" />
+				<StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="18" HorizontalAlignment="Center" VerticalAlignment="Center">
+					<StackPanel Width="140" Spacing="2">
+						<TextBlock Classes="caption" Text="{Binding Hp, StringFormat=HP {0:0}/100}" />
+						<ProgressBar Minimum="0" Maximum="100" Value="{Binding Hp}" Height="8" />
+					</StackPanel>
+					<StackPanel Width="140" Spacing="2">
+						<TextBlock Classes="caption" Text="{Binding Mp, StringFormat=MP {0:0}/100}" />
+						<ProgressBar Minimum="0" Maximum="100" Value="{Binding Mp}" Height="8" />
+					</StackPanel>
+					<StackPanel Width="140" Spacing="2">
+						<TextBlock Classes="caption" Text="{Binding Exp, StringFormat=EXP {0:0}%}" />
+						<ProgressBar Minimum="0" Maximum="100" Value="{Binding Exp}" Height="8" />
+					</StackPanel>
+				</StackPanel>
 
+				<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center" Margin="12,0">
+					<TextBlock VerticalAlignment="Center" Text="{Binding Gold, StringFormat=金币 {0}}" />
+					<TextBlock VerticalAlignment="Center" Text="{Binding Wave, StringFormat=波次 {0}}" Foreground="#7EC8FF" />
+				</StackPanel>
+
+				<TextBlock Grid.Column="3" VerticalAlignment="Center" Opacity="0.8" Text="{Binding StatusMessage}" MaxWidth="200" TextTrimming="CharacterEllipsis" />
+			</Grid>
+		</Border>
+
+		<!-- Main game panels -->
+		<Border Grid.Row="1" Grid.Column="0" Classes="panel" Margin="0,0,10,0">
 			<TabControl>
-
-				<!-- Godot bridge -->
-				<TabItem Header="交互">
-					<StackPanel Margin="8" Spacing="12">
-						<TextBlock Text="Avalonia → Godot" Opacity="0.75" />
-						<Button Classes="accent" Content="把 Ouse 染红" Command="{Binding PaintOuseCommand}" />
-						<Button Classes="accent" Content="把 Ouse 恢复" Command="{Binding ResetOuseCommand}" />
-						<TextBlock TextWrapping="Wrap" Opacity="0.65"
-							Text="空白区域可穿透到 Godot；点到控件时由 Avalonia 吞事件。" />
-					</StackPanel>
-				</TabItem>
-
-				<!-- Transitions -->
-				<TabItem Header="过渡">
-					<StackPanel Margin="8" Spacing="14">
-						<Border Classes="card">
-							<StackPanel Spacing="8">
-								<TextBlock Text="Hover 缩放卡片" FontWeight="SemiBold" />
-								<TextBlock Text="鼠标移上去会略微放大 + 背景变亮" Opacity="0.7" TextWrapping="Wrap" />
-							</StackPanel>
-						</Border>
-
-						<StackPanel Orientation="Horizontal" Spacing="10">
-							<Button Content="显示 / 隐藏面板" Command="{Binding ToggleFadePanelCommand}" />
-							<ToggleSwitch Content="呼吸边框" IsChecked="{Binding IsPulseVisible}" />
-						</StackPanel>
-
-						<Border
-							Classes="fade-panel"
-							Classes.hidden="{Binding IsFadePanelHidden}"
-							Background="#2200A2FF"
-							CornerRadius="10"
-							Padding="14">
-							<TextBlock Text="带 Opacity + Translate 过渡的面板" />
-						</Border>
-
-						<Border Classes="pulse" Background="#181C24" IsVisible="{Binding IsPulseVisible}">
-							<TextBlock Text="KeyFrame 呼吸发光" HorizontalAlignment="Center" />
-						</Border>
-					</StackPanel>
-				</TabItem>
-
-				<!-- Motion -->
-				<TabItem Header="运动">
-					<StackPanel Margin="8" Spacing="16">
-						<StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
-							<Border Classes="spinner" />
-							<TextBlock Text="旋转 Loading" VerticalAlignment="Center" Opacity="0.8" />
-						</StackPanel>
-
-						<StackPanel Spacing="6">
-							<Grid ColumnDefinitions="*,Auto">
-								<TextBlock Text="进度条" />
-								<TextBlock Grid.Column="1" Text="{Binding Progress, StringFormat={}{0:0}%}" Opacity="0.75" />
+				<!-- Combat / actions -->
+				<TabItem Header="战场">
+					<ScrollViewer>
+						<StackPanel Margin="8" Spacing="14">
+							<TextBlock Text="角色与战斗操作" FontWeight="SemiBold" FontSize="15" />
+							<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" Margin="0,4">
+								<StackPanel Spacing="6" Margin="0,0,8,8">
+									<TextBlock Classes="caption" Text="角色名" />
+									<TextBox Text="{Binding PlayerName}" PlaceholderText="输入角色名" />
+								</StackPanel>
+								<StackPanel Grid.Column="1" Spacing="6" Margin="0,0,0,8">
+									<TextBlock Classes="caption" Text="武器" />
+									<ComboBox ItemsSource="{Binding Weapons}" SelectedItem="{Binding SelectedWeapon}" HorizontalAlignment="Stretch" />
+								</StackPanel>
+								<StackPanel Grid.Row="1" Spacing="6">
+									<TextBlock Classes="caption" Text="攻击方式" />
+									<StackPanel Orientation="Horizontal" Spacing="12">
+										<RadioButton Content="近战" GroupName="atk" IsChecked="True" />
+										<RadioButton Content="远程" GroupName="atk" />
+										<RadioButton Content="魔法" GroupName="atk" />
+									</StackPanel>
+								</StackPanel>
+								<StackPanel Grid.Row="1" Grid.Column="1" Spacing="6">
+									<TextBlock Classes="caption" Text="等级修正" />
+									<NumericUpDown Minimum="1" Maximum="99" Value="12" FormatString="0" />
+								</StackPanel>
 							</Grid>
-							<ProgressBar Minimum="0" Maximum="100" Height="10" Value="{Binding Progress}" />
-							<Button
-								Content="播放进度动画"
-								Command="{Binding PlayProgressCommand}"
-								HorizontalAlignment="Left" />
-						</StackPanel>
 
-						<StackPanel Spacing="6">
-							<TextBlock Text="滑条 + 实时数值" />
-							<Slider Minimum="0" Maximum="100" Value="{Binding SliderValue}" />
-							<TextBlock Text="{Binding SliderValue, StringFormat={}{0:0}}" Opacity="0.75" />
-						</StackPanel>
-					</StackPanel>
-				</TabItem>
+							<Separator />
 
-				<!-- Controls -->
-				<TabItem Header="控件">
-					<ScrollViewer Margin="8">
-						<StackPanel Spacing="12">
-							<TextBox PlaceholderText="输入点什么…" />
-							<ComboBox SelectedIndex="0" HorizontalAlignment="Stretch">
-								<ComboBoxItem>剑</ComboBoxItem>
-								<ComboBoxItem>弓</ComboBoxItem>
-								<ComboBoxItem>法杖</ComboBoxItem>
-							</ComboBox>
-							<CheckBox Content="启用暴击音效" IsChecked="True" />
-							<RadioButton Content="近战" GroupName="atk" IsChecked="True" />
-							<RadioButton Content="远程" GroupName="atk" />
-							<NumericUpDown Minimum="1" Maximum="99" Value="12" />
-							<CalendarDatePicker HorizontalAlignment="Stretch" />
-							<Button Content="素材按钮（start.png）" Classes="accent" Command="{Binding PaintOuseCommand}">
-								<Button.Flyout>
-									<Flyout>
-										<Image
-											Source="avares://HelloWorld/Assets/start.png"
-											Width="240"
-											Stretch="Uniform" />
-									</Flyout>
-								</Button.Flyout>
-							</Button>
+							<WrapPanel ItemSpacing="8" LineSpacing="8">
+								<Button Classes="accent" Content="治疗 (-20 金)" Command="{Binding HealCommand}" />
+								<Button Classes="accent" Content="下一波" Command="{Binding NextWaveCommand}" />
+								<Button Classes="accent" Content="打开 / 关闭商店" Command="{Binding ToggleShopCommand}" />
+								<Button Classes="accent" Content="自动存档" Command="{Binding AutoSaveCommand}" />
+							</WrapPanel>
+
+							<Border IsVisible="{Binding IsShopOpen}" Background="#221E3A5F" CornerRadius="10" Padding="12" Margin="0,4,0,0">
+								<StackPanel Spacing="8">
+									<TextBlock Text="临时商店" FontWeight="SemiBold" Foreground="#F0C070" />
+									<TextBlock Classes="caption" TextWrapping="Wrap" Text="演示 Flyout / 图片资源：点按钮查看 start.png。" />
+									<Button Content="查看商品图鉴" HorizontalAlignment="Left">
+										<Button.Flyout>
+											<Flyout Placement="Bottom">
+												<Image Source="avares://HelloWorld/Assets/start.png" Width="220" Stretch="Uniform" />
+											</Flyout>
+										</Button.Flyout>
+									</Button>
+									<Slider Minimum="0" Maximum="100" Value="{Binding Hp}" />
+									<TextBlock Classes="caption" Text="上面滑条绑定 HP，可直接拖改血量。" />
+								</StackPanel>
+							</Border>
+
+							<Expander Header="任务追踪" IsExpanded="True">
+								<StackPanel Spacing="6" Margin="4">
+									<CheckBox Content="击败第 3 波精英" IsChecked="True" />
+									<CheckBox Content="收集 3 瓶药水" />
+									<CheckBox Content="与铁匠对话" IsChecked="True" />
+									<TextBlock Classes="caption" Text="Expander + CheckBox 组合，适合任务列表。" />
+								</StackPanel>
+							</Expander>
 						</StackPanel>
 					</ScrollViewer>
 				</TabItem>
 
+				<!-- Inventory -->
+				<TabItem Header="背包">
+					<Grid Margin="8" ColumnDefinitions="*,180" RowDefinitions="*,Auto">
+						<DockPanel>
+							<TextBlock DockPanel.Dock="Top" Text="物品列表（ListBox）" FontWeight="SemiBold" Margin="0,0,0,8" />
+							<ListBox ItemsSource="{Binding Inventory}" SelectedItem="{Binding SelectedItem}">
+								<ListBox.ItemTemplate>
+									<DataTemplate x:DataType="vm:InventoryItem">
+										<Grid ColumnDefinitions="*,Auto,Auto" MinWidth="200">
+											<TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+											<TextBlock Grid.Column="1" Text="{Binding Category}" Opacity="0.65" Margin="12,0" />
+											<TextBlock Grid.Column="2" Text="{Binding Count, StringFormat=×{0}}" />
+										</Grid>
+									</DataTemplate>
+								</ListBox.ItemTemplate>
+							</ListBox>
+						</DockPanel>
+
+						<StackPanel Grid.Column="1" Margin="12,0,0,0" Spacing="10">
+							<TextBlock Text="详情" FontWeight="SemiBold" />
+							<TextBlock Text="{Binding SelectedItem.Name, FallbackValue=未选择}" />
+							<TextBlock Classes="caption" Text="{Binding SelectedItem.Category, FallbackValue=—}" />
+							<Button Classes="accent" Content="购买 / +1" Command="{Binding BuySelectedCommand}" HorizontalAlignment="Stretch" />
+							<TextBlock Classes="caption" TextWrapping="Wrap" Text="ListBox + DataTemplate + 选中绑定。" />
+						</StackPanel>
+
+						<StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,12,0,0" Spacing="6">
+							<TextBlock Classes="caption" Text="快捷聊天（TextBox + 按钮）" />
+							<Grid ColumnDefinitions="*,Auto">
+								<TextBox Text="{Binding ChatDraft}" PlaceholderText="说点什么…" />
+								<Button Grid.Column="1" Margin="8,0,0,0" Content="发送" Command="{Binding SendChatCommand}" />
+							</Grid>
+						</StackPanel>
+					</Grid>
+				</TabItem>
+
+				<!-- Settings -->
+				<TabItem Header="设置">
+					<ScrollViewer>
+						<StackPanel Margin="8" Spacing="14">
+							<TextBlock Text="音画设置" FontWeight="SemiBold" FontSize="15" />
+
+							<ToggleSwitch Content="音乐" IsChecked="{Binding MusicEnabled}" />
+							<ToggleSwitch Content="音效" IsChecked="{Binding SfxEnabled}" />
+							<ToggleSwitch Content="垂直同步" IsChecked="{Binding Vsync}" />
+
+							<StackPanel Spacing="4">
+								<TextBlock Classes="caption" Text="{Binding MasterVolume, StringFormat=主音量 {0:0}}" />
+								<Slider Minimum="0" Maximum="100" Value="{Binding MasterVolume}" TickFrequency="10" IsSnapToTickEnabled="True" />
+							</StackPanel>
+							<StackPanel Spacing="4">
+								<TextBlock Classes="caption" Text="{Binding MusicVolume, StringFormat=音乐音量 {0:0}}" />
+								<Slider Minimum="0" Maximum="100" Value="{Binding MusicVolume}" />
+							</StackPanel>
+
+							<StackPanel Spacing="6">
+								<TextBlock Classes="caption" Text="画质" />
+								<ComboBox ItemsSource="{Binding GraphicsOptions}" SelectedItem="{Binding GraphicsQuality}" HorizontalAlignment="Left" MinWidth="160" />
+							</StackPanel>
+
+							<StackPanel Spacing="6">
+								<TextBlock Classes="caption" Text="存档日期（CalendarDatePicker）" />
+								<CalendarDatePicker SelectedDate="{Binding SaveSlotDate}" HorizontalAlignment="Left" />
+							</StackPanel>
+
+							<TextBlock Classes="caption" TextWrapping="Wrap"
+								Text="ToggleSwitch / Slider / ComboBox / CalendarDatePicker — 设置页常用控件都在这里。" />
+						</StackPanel>
+					</ScrollViewer>
+				</TabItem>
+
+				<!-- Godot bridge -->
+				<TabItem Header="Godot">
+					<StackPanel Margin="8" Spacing="12">
+						<TextBlock Text="Avalonia ↔ Godot" FontWeight="SemiBold" FontSize="15" />
+						<TextBlock Classes="caption" TextWrapping="Wrap"
+							Text="空白处可穿透到 Godot；点到控件由 Avalonia 处理。右侧 Sprite（Ouse）可拖拽测输入。" />
+						<Button Classes="accent" Content="把 Ouse 染红" Command="{Binding PaintOuseCommand}" HorizontalAlignment="Left" />
+						<Button Classes="accent" Content="把 Ouse 恢复" Command="{Binding ResetOuseCommand}" HorizontalAlignment="Left" />
+						<TextBlock Classes="caption" TextWrapping="Wrap"
+							Text="左上角 FPS 由 Godot _Process 写入 ViewModel，演示引擎数据驱动 Avalonia 绑定。" />
+					</StackPanel>
+				</TabItem>
 			</TabControl>
-		</DockPanel>
-	</Border>
+		</Border>
+
+		<!-- Right: combat log -->
+		<Border Grid.Row="1" Grid.Column="1" Classes="panel">
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Text="战斗日志" FontWeight="SemiBold" Margin="0,0,0,8" Foreground="#F0C070" />
+				<ListBox ItemsSource="{Binding LogLines}" >
+					<ListBox.Styles>
+						<Style Selector="ListBoxItem">
+							<Setter Property="Padding" Value="6,4" />
+						</Style>
+					</ListBox.Styles>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Opacity="0.9" />
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</DockPanel>
+		</Border>
+
+	</Grid>
 
 </UserControl>
