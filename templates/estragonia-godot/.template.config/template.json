@@ -6,7 +6,7 @@
   "groupIdentity": "Ouse.Estragonia.Templates",
   "name": "Estragonia Godot App",
   "shortName": "estragonia",
-  "description": "Godot 4 + Avalonia (Estragonia) starter with Autoload and UiHost already wired.",
+  "description": "Godot 4 + Avalonia (Estragonia) starter with Autoload, in-project AvaloniaControl/UiHost, and UserInterface already wired.",
   "tags": {
     "language": "C#",
     "type": "solution"

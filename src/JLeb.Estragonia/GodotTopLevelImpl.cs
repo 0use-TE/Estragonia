@@ -18,7 +18,7 @@ using GdMouseButton = Godot.MouseButton;
 namespace JLeb.Estragonia;
 
 /// <summary>Implementation of Avalonia <see cref="ITopLevelImpl"/> that renders to a Godot texture.</summary>
-internal sealed class GodotTopLevelImpl : ITopLevelImpl {
+public sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	private readonly GodotVkPlatformGraphics _platformGraphics;
 	private readonly IClipboard _clipboard;
@@ -92,11 +92,19 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		return _platformGraphics.GetSharedContext().CreateSurface(_renderSize, RenderScaling);
 	}
 
-	public GodotSkiaSurface? TryGetSurface()
+	internal GodotSkiaSurface? TryGetSurface()
 		=> _surface;
 
-	public GodotSkiaSurface GetOrCreateSurface()
+	internal GodotSkiaSurface GetOrCreateSurface()
 		=> _surface ??= CreateSurface();
+
+	/// <summary>Godot texture that Avalonia renders into (for the project-side host <c>_Draw</c>).</summary>
+	public Texture2Drd GetGdTexture()
+		=> GetOrCreateSurface().GdTexture;
+
+	/// <summary>How many times the current surface has been drawn (used to detect post-resize redraws).</summary>
+	public ulong SurfaceDrawCount
+		=> TryGetSurface()?.DrawCount ?? 0;
 
 	[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Doesn't affect correctness")]
 	public void SetRenderSize(PixelSize renderSize, double renderScaling) {

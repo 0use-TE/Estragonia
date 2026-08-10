@@ -8,7 +8,7 @@
 | Template | [Ouse.Estragonia.Templates](https://www.nuget.org/packages/Ouse.Estragonia.Templates/) |
 | Source | [0use-TE/Estragonia](https://github.com/0use-TE/Estragonia) |
 
-Package id is **`Ouse.Estragonia`**; C# namespaces remain **`JLeb.Estragonia`**.
+Package id is **`Ouse.Estragonia`**; bridge namespaces remain **`JLeb.Estragonia`**.
 
 ## Requirements
 
@@ -50,6 +50,7 @@ Do **not** open the `.godot/` cache folder.
 Already wired:
 
 - Autoload `AvaloniaLoader` → `UseGodot()` once
+- **`AvaloniaControl.cs` + `UiHost.cs` in the Godot project** (required host scripts)
 - `UserInterface` : `UiHost` → `CreateRoot()`
 - `Designer.cs` for Avalonia XAML preview (`Main` + `BuildAvaloniaApp`)
 
@@ -63,13 +64,36 @@ Already wired:
 
 ## Tutorial B — add the package to an existing Godot C# project
 
+NuGet alone is **not** enough. You must also copy the host scripts into the Godot project.
+
 ```bash
 dotnet add package Ouse.Estragonia
 dotnet add package Semi.Avalonia
 ```
 
-1. Create an Avalonia `Application` with a theme (e.g. Semi).
-2. Autoload (once per run):
+### 1. Copy host scripts into your Godot project root
+
+From this repo (or an installed template project), copy **both** files next to your `.csproj` / `project.godot`:
+
+| File | Role |
+|------|------|
+| `AvaloniaControl.cs` | Godot `Control` that renders Avalonia |
+| `UiHost.cs` | Focus + `CreateRoot()` boilerplate |
+
+Sources:
+
+- `templates/estragonia-godot/AvaloniaControl.cs`
+- `templates/estragonia-godot/UiHost.cs`
+- or the same names under `samples/HelloWorld/`
+
+Keep the `JLeb.Estragonia` namespace inside those files (or adjust `UserInterface` accordingly).  
+**Class name must match file name.** Do not put these types only in a class library.
+
+### 2. Avalonia `Application` + theme
+
+Create `App.axaml` / `App.axaml.cs` with a theme (e.g. Semi).
+
+### 3. Autoload (once per run)
 
 ```csharp
 using Avalonia;
@@ -90,7 +114,9 @@ public partial class AvaloniaLoader : Node
 }
 ```
 
-3. Scene `Control` script:
+Register it as an Autoload in `project.godot`.
+
+### 4. Scene host script
 
 ```csharp
 using Avalonia.Controls;
@@ -103,18 +129,22 @@ public partial class UserInterface : UiHost
 }
 ```
 
-See [Hosting UI](hosting.md).
+Attach `UserInterface.cs` to a full-rect `Control` in your main scene.
+
+See [Hosting UI](hosting.md) for the full file checklist.
 
 ---
 
 ## Sample in this repo
 
-Open `samples/HelloWorld` in Godot (uses a project reference to the library source).
+Open `samples/HelloWorld` in Godot (uses a project reference to the library source).  
+That sample already contains `AvaloniaControl.cs` and `UiHost.cs`.
 
 ## Hot reload
 
-If Godot reports `Failed to unload assemblies` or  
-`An item with the same key has already been added` for `AvaloniaControl` / `UiHost`, **fully restart the editor**. Estragonia + Avalonia often prevent clean unload.
+`AvaloniaControl` / `UiHost` now live in the Godot project so Godot can reload them as normal scripts.
+
+You may still see **Failed to unload assemblies** when Avalonia (or other libraries) keep references across rebuilds. If the editor gets stuck: fully restart Godot; if needed, delete `.godot` and reopen.
 
 ## Disclaimer
 

@@ -7,7 +7,7 @@ using Avalonia.Platform;
 namespace JLeb.Estragonia;
 
 /// <summary>Godot Vulkan-based <see cref="IPlatformGraphics"/> implementation.</summary>
-internal sealed class GodotVkPlatformGraphics : IPlatformGraphics, IDisposable {
+public sealed class GodotVkPlatformGraphics : IPlatformGraphics, IDisposable {
 
 	private GodotVkSkiaGpu? _context;
 	private int _refCount;
@@ -15,7 +15,7 @@ internal sealed class GodotVkPlatformGraphics : IPlatformGraphics, IDisposable {
 	bool IPlatformGraphics.UsesSharedContext
 		=> true;
 
-	public GodotVkSkiaGpu GetSharedContext() {
+	internal GodotVkSkiaGpu GetSharedContext() {
 		if (Volatile.Read(ref _refCount) == 0)
 			ThrowDisposed();
 

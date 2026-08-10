@@ -13,6 +13,14 @@ Game-oriented Avalonia UI sample for Estragonia (single project).
 | Godot | Avalonia → tint Sprite; empty area pass-through |
 | 右侧 | Combat log `ListBox` |
 
+## Host scripts
+
+This sample keeps Godot host types **in the project** (not in the NuGet assembly):
+
+- `AvaloniaControl.cs`
+- `UiHost.cs`
+- `UserInterface.cs` → `CreateRoot()`
+
 ## Run
 
 1. Open this folder in **Godot 4.7+ (.NET)**.

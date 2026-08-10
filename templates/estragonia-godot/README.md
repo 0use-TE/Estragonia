@@ -13,14 +13,19 @@ Godot 4 + Avalonia starter from **[Ouse.Estragonia.Templates](https://www.nuget.
 
 Autoload `AvaloniaLoader` and the default `UserInterface` (`UiHost`) are already configured.
 
+**`AvaloniaControl.cs` and `UiHost.cs` must stay in this Godot project.**  
+They are not shipped as Godot scripts inside the `Ouse.Estragonia` NuGet package (Godot cannot hot-reload node types from external assemblies).
+
 ## Layout
 
 | Path | Role |
 |------|------|
 | `project.godot` | Open this in Godot |
 | `Views/` / `ViewModels/` | Avalonia MVVM UI |
+| `AvaloniaControl.cs` | Godot host — renders Avalonia (required, in-project) |
+| `UiHost.cs` | Godot host — focus + `CreateRoot()` (required, in-project) |
 | `AvaloniaLoader.cs` | Autoload — `UseGodot()` once |
-| `UserInterface.cs` | `UiHost` — `CreateRoot()` |
+| `UserInterface.cs` | Your `UiHost` — implement `CreateRoot()` |
 | `Directory.Packages.props` | NuGet versions (solution-level) |
 | `global.json` | .NET SDK pin |
 

@@ -70,6 +70,7 @@ dotnet restore
 模板已配置好：
 
 - Autoload：`AvaloniaLoader`（`UseGodot()` 只初始化一次）
+- **宿主脚本在 Godot 工程内**：`AvaloniaControl.cs`、`UiHost.cs`（不要指望 NuGet 自带）
 - 默认宿主：`UserInterface`（`UiHost` + `Views` / `ViewModels`）
 - `Designer.cs`：供 Avalonia 预览器用（`Main` + `BuildAvaloniaApp`）
 
@@ -94,8 +95,13 @@ dotnet add package Semi.Avalonia
 dotnet add package CommunityToolkit.Mvvm
 ```
 
-1. 增加 Avalonia `Application`（含主题）。
-2. Autoload 里调用一次：
+**只加 NuGet 不够。** Godot 节点宿主必须是工程内的脚本文件：
+
+1. 从 `templates/estragonia-godot/`（或 `samples/HelloWorld/`）复制到你的 Godot 工程根目录：
+   - `AvaloniaControl.cs`
+   - `UiHost.cs`
+2. 增加 Avalonia `Application`（含主题）。
+3. Autoload 里调用一次：
 
 ```csharp
 AppBuilder.Configure<App>()
@@ -106,9 +112,9 @@ GodotAvalonia.EnsureAssetLoader(typeof(App).Assembly);
 GetWindow()?.SetImeActive(true);
 ```
 
-3. 场景里挂一个 `Control`，脚本继承 `JLeb.Estragonia.UiHost`，实现 `CreateRoot()`。
+4. 场景里挂一个 `Control`，脚本继承工程内的 `UiHost`，实现 `CreateRoot()`。
 
-详见 [docs/v1.0.0/zh-CN/hosting.md](docs/v1.0.0/zh-CN/hosting.md)。
+详见 [docs/v1.0.0/zh-CN/hosting.md](docs/v1.0.0/zh-CN/hosting.md)（含「宿主必须在 Godot 工程内」说明）。
 
 ---
 
@@ -120,16 +126,16 @@ GetWindow()?.SetImeActive(true);
 ## 仓库结构
 
 ```
-src/JLeb.Estragonia/   # 桥接库（NuGet: Ouse.Estragonia）
-templates/             # dotnet new 模板（NuGet: Ouse.Estragonia.Templates）
-samples/HelloWorld/    # 示例
+src/JLeb.Estragonia/   # 桥接库（NuGet: Ouse.Estragonia）——不含 AvaloniaControl/UiHost
+templates/             # dotnet new 模板（含宿主脚本；NuGet: Ouse.Estragonia.Templates）
+samples/HelloWorld/    # 示例（含 AvaloniaControl.cs / UiHost.cs）
 docs/v1.0.0/           # 手写文档（英 / 中）
 ```
 
 ## 热重载提示
 
-Estragonia + Avalonia 容易触发 Godot「无法卸载程序集」。若出现  
-`An item with the same key has already been added` 或 unload 失败，**完全重启 Godot** 再运行。
+`AvaloniaControl` / `UiHost` 放在 Godot 工程内，可避免「外部程序集 Godot 类型」导致的 ScriptTypeBiMap 重复 key。  
+Avalonia 仍可能触发「无法卸载程序集」；编辑器卡死时 **完全重启 Godot**，必要时删 `.godot`。
 
 ## 文档 / GitHub Pages
 

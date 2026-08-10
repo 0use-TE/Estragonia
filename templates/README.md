@@ -36,7 +36,10 @@ Open **`project.godot`** with Godot 4.7+ (.NET).
 | Godot project name | `--GodotProjectName` | Godot project name | C# project / assembly / namespace |
 
 The generated project references **`Ouse.Estragonia`** from nuget.org.  
-C# namespaces remain **`JLeb.Estragonia`**.
+Bridge namespaces remain **`JLeb.Estragonia`**.
+
+**Host scripts are part of the generated Godot project** (`AvaloniaControl.cs`, `UiHost.cs`).  
+They are not provided as Godot scripts by the NuGet library — see [docs/v1.0.0/hosting.md](../docs/v1.0.0/hosting.md).
 
 ## Solution layout
 
@@ -51,9 +54,11 @@ Solution 'MySolution'
 └── MyGame
     ├── Views/ / ViewModels/
     ├── App.axaml
+    ├── AvaloniaControl.cs     ← Godot host (in project, required)
+    ├── UiHost.cs              ← Godot host (in project, required)
     ├── AvaloniaLoader.cs      ← Autoload
     ├── Designer.cs            ← Avalonia previewer (Main + BuildAvaloniaApp)
-    └── UserInterface.cs       ← UiHost
+    └── UserInterface.cs       ← your UiHost subclass
 ```
 
 ## Local pack (contributors)

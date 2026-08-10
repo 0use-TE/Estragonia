@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
@@ -6,7 +6,6 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Platform;
 using Godot;
-using Godot.NativeInterop;
 using JLeb.Estragonia.Input;
 using AvControl = Avalonia.Controls.Control;
 using GdControl = Godot.Control;
@@ -15,12 +14,20 @@ using GdKey = Godot.Key;
 
 namespace JLeb.Estragonia;
 
-/// <summary>Renders an Avalonia control and forwards input to it.</summary>
-public class AvaloniaControl : GdControl {
+/// <summary>
+/// Avalonia render / input engine used by the Godot-project <c>AvaloniaControl</c> script.
+/// Stays in this assembly so it can use Avalonia private platform APIs; the Godot node subclass itself must live in your Godot project.
+/// </summary>
+public sealed class AvaloniaControlEngine : IDisposable {
 
+	private readonly GdControl _owner;
 	private AvControl? _control;
 	private double _renderScaling = 1.0;
 	private GodotTopLevel? _topLevel;
+	private bool _disposed;
+
+	public AvaloniaControlEngine(GdControl owner)
+		=> _owner = owner ?? throw new ArgumentNullException(nameof(owner));
 
 	/// <summary>Gets or sets the underlying Avalonia control that will be rendered.</summary>
 	public AvControl? Control {
@@ -49,7 +56,7 @@ public class AvaloniaControl : GdControl {
 
 			_renderScaling = value;
 			OnResized();
-			QueueRedraw();
+			_owner.QueueRedraw();
 		}
 	}
 
@@ -60,65 +67,26 @@ public class AvaloniaControl : GdControl {
 	/// </summary>
 	public bool AutoConvertUIActionToKeyDown { get; set; } = true;
 
+	/// <summary>
+	/// When false (default), only Avalonia-hittable pixels capture the mouse and empty/transparent
+	/// areas pass through to Godot nodes behind. When true, the whole control rect captures input.
+	/// </summary>
+	public bool CaptureEmptyHits { get; set; }
+
 	/// <summary>Gets the underlying Avalonia top-level element.</summary>
-	/// <returns>The Avalonia top-level element.</returns>
-	/// <exception cref="InvalidOperationException">Thrown if the control isn't ready or has been disposed.</exception>
 	public GodotTopLevel GetTopLevel()
-		=> _topLevel ?? throw new InvalidOperationException($"The {nameof(AvaloniaControl)} isn't initialized");
+		=> _topLevel ?? throw new InvalidOperationException($"The {nameof(AvaloniaControlEngine)} isn't initialized");
 
 	/// <summary>Gets the underlying Godot texture where <see cref="Control"/> is rendered.</summary>
-	/// <returns>A texture.</returns>
-	/// <exception cref="InvalidOperationException">Thrown if the control isn't ready or has been disposed.</exception>
 	public Texture2D GetTexture()
-		=> GetTopLevel().Impl.GetOrCreateSurface().GdTexture;
+		=> GetTopLevel().Impl.GetGdTexture();
 
-	protected override bool InvokeGodotClassMethod(in godot_string_name method, NativeVariantPtrArgs args, out godot_variant ret) {
-		if (method == Node.MethodName._Ready && args.Count == 0) {
-			_Ready();
-			ret = default;
-			return true;
-		}
-
-		if (method == Node.MethodName._Process && args.Count == 1) {
-			_Process(VariantUtils.ConvertTo<double>(args[0]));
-			ret = default;
-			return true;
-		}
-
-		if (method == CanvasItem.MethodName._Draw && args.Count == 0) {
-			_Draw();
-			ret = default;
-			return true;
-		}
-
-		if (method == MethodName._GuiInput && args.Count == 1) {
-			_GuiInput(VariantUtils.ConvertTo<InputEvent>(args[0]));
-			ret = default;
-			return true;
-		}
-
-		if (method == MethodName._HasPoint && args.Count == 1) {
-			ret = VariantUtils.CreateFrom(_HasPoint(VariantUtils.ConvertTo<Vector2>(args[0])));
-			return true;
-		}
-
-		return base.InvokeGodotClassMethod(method, args, out ret);
-	}
-
-	protected override bool HasGodotClassMethod(in godot_string_name method)
-		=> method == Node.MethodName._Ready
-			|| method == Node.MethodName._Process
-			|| method == CanvasItem.MethodName._Draw
-			|| method == MethodName._GuiInput
-			|| method == MethodName._HasPoint
-			|| base.HasGodotClassMethod(method);
-
-	public override void _Ready() {
+	public void Ready() {
 		if (Engine.IsEditorHint())
 			return;
 
 		// Skia outputs a premultiplied alpha image, ensure we got the correct blend mode if the user didn't specify any
-		Material ??= new CanvasItemMaterial {
+		_owner.Material ??= new CanvasItemMaterial {
 			BlendMode = CanvasItemMaterial.BlendModeEnum.PremultAlpha,
 			LightMode = CanvasItemMaterial.LightModeEnum.Unshaded
 		};
@@ -145,32 +113,68 @@ public class AvaloniaControl : GdControl {
 		_topLevel.Prepare();
 		_topLevel.StartRendering();
 
-		Resized += OnResized;
-		FocusEntered += OnFocusEntered;
-		FocusExited += OnFocusExited;
-		MouseExited += OnMouseExited;
+		_owner.Resized += OnResized;
+		_owner.FocusEntered += OnFocusEntered;
+		_owner.FocusExited += OnFocusExited;
+		_owner.MouseExited += OnMouseExited;
 
-		if (HasFocus())
+		if (_owner.HasFocus())
 			OnFocusEntered();
 	}
 
-	public override void _Process(double delta) {
+	public void Process() {
 		GodotPlatform.TriggerRenderTick();
 
 		// We might have cleared the texture after resize to prevent corruption on AMD GPU (see GodotSkiaGpuRenderSession),
 		// force a re-render.
-		if (_topLevel?.Impl.TryGetSurface()?.DrawCount <= 2)
+		if (_topLevel?.Impl.SurfaceDrawCount <= 2)
 			RenderAvalonia();
 	}
 
+	public void Draw() {
+		if (_topLevel is null)
+			return;
+
+		_owner.DrawTexture(_topLevel.Impl.GetGdTexture(), Vector2.Zero);
+	}
+
+	public void GuiInput(InputEvent @event) {
+		if (_topLevel is null)
+			return;
+
+		var handled = TryHandleInput(_topLevel.Impl, @event) || TryHandleAction(@event);
+
+		// Always consume pointer events while the cursor is over this control.
+		// Avalonia often leaves RawPointerEventArgs.Handled == false; without AcceptEvent,
+		// Godot can let the 3D viewport steal the mouse after Button press.
+		if (handled
+			|| @event is InputEventMouseButton
+			|| @event is InputEventMouseMotion
+			|| @event is InputEventScreenTouch
+			|| @event is InputEventScreenDrag) {
+			_owner.AcceptEvent();
+		}
+	}
+
+	public bool HasPoint(Vector2 point) {
+		if (_topLevel is null)
+			return false;
+
+		var avaloniaPoint = point.ToAvaloniaPoint() / _topLevel.RenderScaling;
+		if (_topLevel.InputHitTest(avaloniaPoint, false) is not null)
+			return true;
+
+		return CaptureEmptyHits;
+	}
+
 	private PixelSize GetFrameSize()
-		=> PixelSize.FromSize(Size.ToAvaloniaSize(), 1.0);
+		=> PixelSize.FromSize(_owner.Size.ToAvaloniaSize(), 1.0);
 
 	private void RenderAvalonia()
-		=> _topLevel!.Impl.OnDraw(new Rect(Size.ToAvaloniaSize()));
+		=> _topLevel!.Impl.OnDraw(new Rect(_owner.Size.ToAvaloniaSize()));
 
-	private void OnAvaloniaCursorChanged(CursorShape cursor)
-		=> MouseDefaultCursorShape = cursor;
+	private void OnAvaloniaCursorChanged(GdControl.CursorShape cursor)
+		=> _owner.MouseDefaultCursorShape = cursor;
 
 	private void OnResized() {
 		if (_topLevel is null)
@@ -203,34 +207,6 @@ public class AvaloniaControl : GdControl {
 
 	private void OnFocusExited()
 		=> _topLevel?.Impl.OnLostFocus();
-
-	public override void _Draw() {
-		if (_topLevel is null)
-			return;
-
-
-		var surface = _topLevel.Impl.GetOrCreateSurface();
-
-		DrawTexture(surface.GdTexture, Vector2.Zero);
-	}
-
-	public override void _GuiInput(InputEvent @event) {
-		if (_topLevel is null)
-			return;
-
-		var handled = TryHandleInput(_topLevel.Impl, @event) || TryHandleAction(@event);
-
-		// Always consume pointer events while the cursor is over this control.
-		// Avalonia often leaves RawPointerEventArgs.Handled == false; without AcceptEvent,
-		// Godot can let the 3D viewport steal the mouse after Button press.
-		if (handled
-			|| @event is InputEventMouseButton
-			|| @event is InputEventMouseMotion
-			|| @event is InputEventScreenTouch
-			|| @event is InputEventScreenDrag) {
-			AcceptEvent();
-		}
-	}
 
 	private bool TryHandleAction(InputEvent inputEvent) {
 		if (!inputEvent.IsActionType())
@@ -307,12 +283,12 @@ public class AvaloniaControl : GdControl {
 		var nextElement = GetNextTabElement(currentElement, direction);
 		if (nextElement is null) {
 			var nextGdControl = direction switch {
-				NavigationDirection.Next => FindNextValidFocus(),
-				NavigationDirection.Previous => FindPrevValidFocus(),
+				NavigationDirection.Next => _owner.FindNextValidFocus(),
+				NavigationDirection.Previous => _owner.FindPrevValidFocus(),
 				_ => null
 			};
 
-			if ((nextGdControl is null || nextGdControl == this) && (object) currentElement != _topLevel)
+			if ((nextGdControl is null || nextGdControl == _owner) && (object) currentElement != _topLevel)
 				nextElement = GetNextTabElement(_topLevel, direction);
 		}
 
@@ -344,36 +320,21 @@ public class AvaloniaControl : GdControl {
 	private void OnMouseExited()
 		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
 
-	/// <summary>
-	/// When false (default), only Avalonia-hittable pixels capture the mouse and empty/transparent
-	/// areas pass through to Godot nodes behind. When true, the whole control rect captures input.
-	/// </summary>
-	public bool CaptureEmptyHits { get; set; }
+	public void Dispose() {
+		if (_disposed)
+			return;
 
-	public override bool _HasPoint(Vector2 point) {
-		if (_topLevel is null)
-			return false;
+		_disposed = true;
 
-		var avaloniaPoint = point.ToAvaloniaPoint() / _topLevel.RenderScaling;
-		if (_topLevel.InputHitTest(avaloniaPoint, false) is not null)
-			return true;
-
-		return CaptureEmptyHits;
-	}
-
-	protected override void Dispose(bool disposing) {
-		if (disposing && _topLevel is not null) {
-
-			Resized -= OnResized;
-			FocusEntered -= OnFocusEntered;
-			FocusExited -= OnFocusExited;
-			MouseExited -= OnMouseExited;
+		if (_topLevel is not null) {
+			_owner.Resized -= OnResized;
+			_owner.FocusEntered -= OnFocusEntered;
+			_owner.FocusExited -= OnFocusExited;
+			_owner.MouseExited -= OnMouseExited;
 
 			_topLevel.Dispose();
 			_topLevel = null;
 		}
-
-		base.Dispose(disposing);
 	}
 
 }

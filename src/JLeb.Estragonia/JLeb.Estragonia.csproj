@@ -10,7 +10,7 @@
 		<PackageId>Ouse.Estragonia</PackageId>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Description>Bridge embedding Avalonia UI inside Godot 4 (Vulkan / Skia).</Description>
+		<Description>Bridge embedding Avalonia UI inside Godot 4 (Vulkan / Skia). Host scripts AvaloniaControl/UiHost must live in your Godot project (see template/sample).</Description>
 		<PackageTags>avalonia;godot;ui;game</PackageTags>
 	</PropertyGroup>
 
