@@ -173,8 +173,24 @@ public sealed class AvaloniaControlEngine : IDisposable {
 	private void RenderAvalonia()
 		=> _topLevel!.Impl.OnDraw(new Rect(_owner.Size.ToAvaloniaSize()));
 
-	private void OnAvaloniaCursorChanged(GdControl.CursorShape cursor)
-		=> _owner.MouseDefaultCursorShape = cursor;
+	private bool _hasCustomMouseCursor;
+
+	private void OnAvaloniaCursorChanged(ICursorImpl? cursor) {
+		if (cursor is GodotCustomCursorImpl custom) {
+			GdInput.SetCustomMouseCursor(custom.Texture, GdInput.CursorShape.Arrow, custom.Hotspot);
+			_hasCustomMouseCursor = true;
+			_owner.MouseDefaultCursorShape = GdControl.CursorShape.Arrow;
+			return;
+		}
+
+		if (_hasCustomMouseCursor) {
+			GdInput.SetCustomMouseCursor(null);
+			_hasCustomMouseCursor = false;
+		}
+
+		_owner.MouseDefaultCursorShape =
+			(cursor as GodotStandardCursorImpl)?.CursorShape ?? GdControl.CursorShape.Arrow;
+	}
 
 	private void OnResized() {
 		if (_topLevel is null)

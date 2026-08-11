@@ -29,6 +29,7 @@ public sealed class GodotTopLevelImpl : ITopLevelImpl {
 	private PixelSize _renderSize;
 	private IInputRoot? _inputRoot;
 	private GdCursorShape _cursorShape;
+	private GodotCustomCursorImpl? _customCursor;
 	private bool _isDisposed;
 	private int _lastMouseDeviceId = GodotDevices.EmulatedDeviceId;
 
@@ -65,7 +66,7 @@ public sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Action? LostFocus { get;set; }
 
-	public Action<GdCursorShape>? CursorChanged { get; set; }
+	public Action<ICursorImpl?>? CursorChanged { get; set; }
 
 	public Action<double>? ScalingChanged { get; set; }
 
@@ -368,12 +369,22 @@ public sealed class GodotTopLevelImpl : ITopLevelImpl {
 		=> PixelPoint.FromPoint(point, RenderScaling);
 
 	void ITopLevelImpl.SetCursor(ICursorImpl? cursor) {
+		if (cursor is GodotCustomCursorImpl custom) {
+			if (ReferenceEquals(_customCursor, custom))
+				return;
+
+			_customCursor = custom;
+			CursorChanged?.Invoke(custom);
+			return;
+		}
+
 		var cursorShape = (cursor as GodotStandardCursorImpl)?.CursorShape ?? GdCursorShape.Arrow;
-		if (_cursorShape == cursorShape)
+		if (_customCursor is null && _cursorShape == cursorShape)
 			return;
 
+		_customCursor = null;
 		_cursorShape = cursorShape;
-		CursorChanged?.Invoke(cursorShape);
+		CursorChanged?.Invoke(cursor);
 	}
 
 	IPopupImpl? ITopLevelImpl.CreatePopup()

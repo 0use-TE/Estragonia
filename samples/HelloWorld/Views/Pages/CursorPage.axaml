@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:HelloWorld.ViewModels.Pages"
+             x:Class="HelloWorld.Views.Pages.CursorPage"
+             x:DataType="vm:CursorViewModel">
+	<StackPanel Spacing="16" MaxWidth="640" HorizontalAlignment="Left">
+		<TextBlock Text="自定义光标" FontSize="22" FontWeight="SemiBold" />
+		<TextBlock Opacity="0.75" TextWrapping="Wrap"
+		           Text="标准光标走 Godot CursorShape；下方色块使用 Avalonia CreateCursor(Bitmap) → Input.SetCustomMouseCursor。" />
+
+		<WrapPanel ItemWidth="160" ItemHeight="100">
+			<Border Background="#334455" CornerRadius="8" Margin="4" Cursor="Arrow">
+				<TextBlock Text="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" />
+			</Border>
+			<Border Background="#334455" CornerRadius="8" Margin="4" Cursor="Hand">
+				<TextBlock Text="Hand" HorizontalAlignment="Center" VerticalAlignment="Center" />
+			</Border>
+			<Border Background="#334455" CornerRadius="8" Margin="4" Cursor="Ibeam">
+				<TextBlock Text="Ibeam" HorizontalAlignment="Center" VerticalAlignment="Center" />
+			</Border>
+			<Border Background="#334455" CornerRadius="8" Margin="4" Cursor="Wait">
+				<TextBlock Text="Wait" HorizontalAlignment="Center" VerticalAlignment="Center" />
+			</Border>
+			<Border Background="#1B3A4A" CornerRadius="8" Margin="4" Cursor="{Binding CrosshairCursor}">
+				<TextBlock Text="准星 (自定义)" HorizontalAlignment="Center" VerticalAlignment="Center" />
+			</Border>
+			<Border Background="#4A1B1B" CornerRadius="8" Margin="4" Cursor="{Binding TargetCursor}">
+				<TextBlock Text="准心 (自定义)" HorizontalAlignment="Center" VerticalAlignment="Center" />
+			</Border>
+		</WrapPanel>
+	</StackPanel>
+</UserControl>

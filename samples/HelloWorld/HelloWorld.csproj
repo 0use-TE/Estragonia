@@ -6,6 +6,7 @@
 		<EnableDynamicLoading>true</EnableDynamicLoading>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 

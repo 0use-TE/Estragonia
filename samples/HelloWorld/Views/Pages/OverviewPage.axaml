@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:HelloWorld.ViewModels.Pages"
+             x:Class="HelloWorld.Views.Pages.OverviewPage"
+             x:DataType="vm:OverviewViewModel">
+	<Border MaxWidth="720"
+	        HorizontalAlignment="Left"
+	        VerticalAlignment="Top"
+	        Background="#CC22252B"
+	        CornerRadius="12"
+	        Padding="24"
+	        BorderBrush="#33FFFFFF"
+	        BorderThickness="1">
+		<StackPanel Spacing="12">
+			<TextBlock Text="{Binding Title}" FontSize="28" FontWeight="Bold" />
+			<TextBlock Text="{Binding Subtitle}" Opacity="0.8" FontSize="14" />
+			<TextBlock Text="{Binding Body}" TextWrapping="Wrap" LineHeight="22" Opacity="0.9" />
+			<Separator Margin="0,8" />
+			<TextBlock Opacity="0.7" TextWrapping="Wrap"
+			           Text="推荐顺序：基础控件 → 自定义光标 → 游戏 HUD → 输入穿透。" />
+		</StackPanel>
+	</Border>
+</UserControl>

@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:HelloWorld.ViewModels.Pages"
+             x:Class="HelloWorld.Views.Pages.PassThroughPage"
+             x:DataType="vm:PassThroughViewModel"
+             Background="Transparent">
+	<Panel Background="Transparent">
+		<Border Width="360"
+		        Height="200"
+		        HorizontalAlignment="Center"
+		        VerticalAlignment="Center"
+		        Background="#DD1E2430"
+		        CornerRadius="14"
+		        Padding="20"
+		        BorderBrush="#55FFFFFF"
+		        BorderThickness="1">
+			<StackPanel Spacing="10" VerticalAlignment="Center">
+				<TextBlock Text="输入穿透" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center" />
+				<TextBlock Text="{Binding Hint}"
+				           TextWrapping="Wrap"
+				           Opacity="0.85"
+				           TextAlignment="Center" />
+				<Button Content="只有这张卡片会吃点击"
+				        HorizontalAlignment="Center"
+				        Classes="Accent" />
+			</StackPanel>
+		</Border>
+	</Panel>
+</UserControl>

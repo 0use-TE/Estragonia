@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:HelloWorld.ViewModels.Pages"
+             x:Class="HelloWorld.Views.Pages.ControlsPage"
+             x:DataType="vm:ControlsViewModel">
+	<ScrollViewer>
+		<StackPanel Spacing="16" MaxWidth="520" HorizontalAlignment="Left">
+			<TextBlock Text="基础控件" FontSize="22" FontWeight="SemiBold" />
+
+			<TextBox PlaceholderText="角色名" Text="{Binding Name}" />
+			<ComboBox ItemsSource="{Binding Classes}"
+			          SelectedItem="{Binding SelectedClass}"
+			          Width="200"
+			          HorizontalAlignment="Left" />
+
+			<StackPanel Orientation="Horizontal" Spacing="16">
+				<ToggleSwitch Content="背景音乐" IsChecked="{Binding MusicEnabled}" />
+				<CheckBox Content="显示伤害数字" IsChecked="True" />
+			</StackPanel>
+
+			<StackPanel Spacing="4">
+				<TextBlock Text="{Binding Volume, StringFormat=音量: {0:P0}}" />
+				<Slider Minimum="0" Maximum="1" Value="{Binding Volume}" />
+			</StackPanel>
+
+			<NumericUpDown Minimum="1" Maximum="99" Value="12" Width="140" HorizontalAlignment="Left" />
+
+			<StackPanel Orientation="Horizontal" Spacing="8">
+				<Button Content="确认" Classes="Accent" />
+				<Button Content="取消" />
+			</StackPanel>
+
+			<Expander Header="更多选项">
+				<StackPanel Spacing="8" Margin="8">
+					<RadioButton Content="窗口模式" GroupName="display" IsChecked="True" />
+					<RadioButton Content="无边框" GroupName="display" />
+					<RadioButton Content="全屏" GroupName="display" />
+				</StackPanel>
+			</Expander>
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

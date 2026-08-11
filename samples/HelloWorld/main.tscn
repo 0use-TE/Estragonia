@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://deu3k2l3jjyk8"]
 
 [ext_resource type="Script" uid="uid://cgxsi4801y2eq" path="res://UserInterface.cs" id="1_ui"]
+[ext_resource type="Texture2D" uid="uid://vbp54an5411" path="res://icon.svg" id="2_0xm2m"]
 
 [node name="Root" type="Node" unique_id=990906724]
 
-[node name="UserInterface" type="Control" parent="." unique_id=2129369076]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2016700714]
+
+[node name="UserInterface" type="Control" parent="CanvasLayer" unique_id=2129369076]
 z_index = 1
 layout_mode = 3
 anchors_preset = 15
@@ -14,3 +17,11 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 2
 script = ExtResource("1_ui")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1096855951]
+position = Vector2(622, 324)
+zoom = Vector2(2, 2)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1045355369]
+position = Vector2(618, 329)
+texture = ExtResource("2_0xm2m")

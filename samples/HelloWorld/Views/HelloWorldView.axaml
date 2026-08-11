@@ -4,37 +4,71 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:vm="using:HelloWorld.ViewModels"
+	xmlns:pages="using:HelloWorld.ViewModels.Pages"
+	xmlns:pageViews="using:HelloWorld.Views.Pages"
 	mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="700"
 	x:Class="HelloWorld.Views.HelloWorldView"
-	x:DataType="vm:HelloWorldViewModel">
+	x:DataType="vm:HelloWorldViewModel"
+	Background="Transparent">
 
 	<Design.DataContext>
 		<vm:HelloWorldViewModel />
 	</Design.DataContext>
 
-<StackPanel Spacing="4">
-	<TextBlock HorizontalAlignment="Center">Hello, World!</TextBlock>
-	<Button>Ouse</Button>
-	<TabControl Height="100">
-		<TabItem Header="Ouse" ></TabItem>
-		<TabItem Header="Another Tab"></TabItem>
-	</TabControl>
-	<TimePicker></TimePicker>
-	<DatePicker></DatePicker>
-	<Grid Height="200" Width="100" ColumnDefinitions="*,2,*">
-		<Grid.Styles >
-			<Style Selector="TextBlock">
-				<Setter Property="FontSize" Value="20"></Setter>
-			</Style>
-		</Grid.Styles>
-		<Panel Grid.Column="0" VerticalAlignment="Center">
-			<TextBlock Text="1"></TextBlock>
-		</Panel>
-		<GridSplitter Grid.Column="1"></GridSplitter>
-		<Panel Grid.Column="2">
-			<TextBlock VerticalAlignment="Center"  Text="3"></TextBlock>
-		</Panel>
+	<UserControl.DataTemplates>
+		<DataTemplate DataType="pages:OverviewViewModel">
+			<pageViews:OverviewPage />
+		</DataTemplate>
+		<DataTemplate DataType="pages:ControlsViewModel">
+			<pageViews:ControlsPage />
+		</DataTemplate>
+		<DataTemplate DataType="pages:CursorViewModel">
+			<pageViews:CursorPage />
+		</DataTemplate>
+		<DataTemplate DataType="pages:HudViewModel">
+			<pageViews:HudPage />
+		</DataTemplate>
+		<DataTemplate DataType="pages:PassThroughViewModel">
+			<pageViews:PassThroughPage />
+		</DataTemplate>
+		<DataTemplate DataType="pages:BindingViewModel">
+			<pageViews:BindingPage />
+		</DataTemplate>
+	</UserControl.DataTemplates>
+
+	<Grid ColumnDefinitions="220,*">
+		<Border Grid.Column="0"
+		        Background="#CC1A1D23"
+		        BorderBrush="#33FFFFFF"
+		        BorderThickness="0,0,1,0"
+		        Padding="12">
+			<DockPanel>
+				<StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,12">
+					<TextBlock Text="Estragonia" FontSize="20" FontWeight="SemiBold" />
+					<TextBlock Text="HelloWorld 演示" Opacity="0.7" FontSize="12" />
+				</StackPanel>
+
+				<ListBox ItemsSource="{Binding Scenes}"
+				         SelectedItem="{Binding SelectedScene}"
+				         Background="Transparent"
+				         BorderThickness="0">
+					<ListBox.ItemTemplate>
+						<DataTemplate x:DataType="vm:DemoScene">
+							<StackPanel Spacing="2" Margin="4,6">
+								<TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+								<TextBlock Text="{Binding Description}"
+								           Opacity="0.65"
+								           FontSize="11"
+								           TextWrapping="Wrap" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</DockPanel>
+		</Border>
+
+		<ContentControl Grid.Column="1"
+		                Content="{Binding SelectedScene.Content}"
+		                Margin="16" />
 	</Grid>
-		<ItemsControl ItemsSource="{Binding Messages}"></ItemsControl>
-</StackPanel>
 </UserControl>

@@ -1,30 +1,28 @@
 # HelloWorld
 
-Game-oriented Avalonia UI sample for Estragonia (single project).
+Estragonia 场景演示（左侧列表切换）。
 
-## What it shows
+## 场景
 
-| Area | Controls / features |
-|------|---------------------|
-| Top HUD | HP/MP/EXP `ProgressBar`, gold, wave, **FPS** from Godot |
-| 战场 | `TextBox`, `ComboBox`, `RadioButton`, `NumericUpDown`, `Button`, `Expander`, `CheckBox`, `Flyout` + image |
-| 背包 | `ListBox` + `DataTemplate`, selection, chat `TextBox` |
-| 设置 | `ToggleSwitch`, `Slider`, `CalendarDatePicker` |
-| Godot | Avalonia → tint Sprite; empty area pass-through |
-| 右侧 | Combat log `ListBox` |
+| 场景 | 内容 |
+|------|------|
+| 总览 | 简介与推荐体验顺序 |
+| 基础控件 | TextBox / ComboBox / Slider / Toggle / Expander 等 |
+| 自定义光标 | 标准 CursorShape + `CreateCursor(Bitmap)` 位图光标 |
+| 游戏 HUD | HP/MP/EXP、金币、波次、战斗日志 |
+| 输入穿透 | 透明区把鼠标交给背后 Godot Sprite |
+| 数据绑定 | MVVM 列表增删 |
 
-## Host scripts
+## 宿主脚本
 
-This sample keeps Godot host types **in the project** (not in the NuGet assembly):
+本示例的 Godot 宿主类型在工程内（不在 NuGet）：
 
 - `AvaloniaControl.cs`
 - `UiHost.cs`
 - `UserInterface.cs` → `CreateRoot()`
 
-## Run
+## 运行
 
-1. Open this folder in **Godot 4.7+ (.NET)**.
-2. Run the main scene.
-3. Drag the Godot sprite on the right to test input vs Avalonia.
-
-FPS is written from `UserInterface._Process` → `HelloWorldViewModel.ReportFrame`.
+1. 用 **Godot 4.7+（.NET）** 打开本目录。
+2. 运行主场景。
+3. 切到「输入穿透」或「自定义光标」验证对应能力。
