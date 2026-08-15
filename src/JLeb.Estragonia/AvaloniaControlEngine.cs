@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
@@ -26,8 +27,39 @@ public sealed class AvaloniaControlEngine : IDisposable {
 	private GodotTopLevel? _topLevel;
 	private bool _disposed;
 
-	public AvaloniaControlEngine(GdControl owner)
-		=> _owner = owner ?? throw new ArgumentNullException(nameof(owner));
+	private static readonly List<AvaloniaControlEngine> s_instances = [];
+
+	public AvaloniaControlEngine(GdControl owner) {
+		_owner = owner ?? throw new ArgumentNullException(nameof(owner));
+		lock (s_instances)
+			s_instances.Add(this);
+	}
+
+	/// <summary>True after <see cref="Dispose"/>; the project-side host must treat this engine as dead.</summary>
+	public bool IsDisposed
+		=> _disposed;
+
+	/// <summary>
+	/// Disposes every live engine so Avalonia view types / GPU TopLevels no longer pin the game ALC.
+	/// Called from <see cref="GodotAvalonia.PrepareForUnload"/>.
+	/// </summary>
+	internal static void DisposeAll() {
+		AvaloniaControlEngine[] engines;
+		lock (s_instances) {
+			engines = s_instances.ToArray();
+			s_instances.Clear();
+		}
+
+		foreach (var engine in engines) {
+			try {
+				engine.Control = null;
+				engine.Dispose();
+			}
+			catch (Exception ex) {
+				GD.PrintErr($"Estragonia: host detach failed: {ex.Message}");
+			}
+		}
+	}
 
 	/// <summary>Gets or sets the underlying Avalonia control that will be rendered.</summary>
 	public AvControl? Control {
@@ -358,6 +390,9 @@ public sealed class AvaloniaControlEngine : IDisposable {
 			return;
 
 		_disposed = true;
+
+		lock (s_instances)
+			s_instances.Remove(this);
 
 		if (_topLevel is not null) {
 			_topLevel.Dispose();

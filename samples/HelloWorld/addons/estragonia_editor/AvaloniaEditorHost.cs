@@ -16,6 +16,28 @@ public partial class AvaloniaEditorHost : AvaloniaControl {
 	public Func<AvControl>? CreateRoot { get; set; }
 
 	public override void _Ready() {
+		ApplyHostLayout();
+		TryCreateRoot();
+		if (Size.X > 1f && Size.Y > 1f)
+			base._Ready();
+	}
+
+	public override void _Process(double delta) {
+		if (!CanCreateEngine) {
+			base._Process(delta);
+			return;
+		}
+
+		TryCreateRoot();
+
+		if (LiveEngine is not { IsInitialized: true } && Size.X > 1f && Size.Y > 1f)
+			base._Ready();
+
+		base._Process(delta);
+		QueueRedraw();
+	}
+
+	private void ApplyHostLayout() {
 		SizeFlagsHorizontal = SizeFlags.ExpandFill;
 		SizeFlagsVertical = SizeFlags.ExpandFill;
 		SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
@@ -23,19 +45,23 @@ public partial class AvaloniaEditorHost : AvaloniaControl {
 		CaptureEmptyHits = true;
 		FocusMode = FocusModeEnum.All;
 		MouseFilter = MouseFilterEnum.Stop;
-		Control ??= CreateRoot?.Invoke();
-		base._Ready();
+		SetProcess(true);
 	}
 
-	public override void _Process(double delta) {
-		if (Control is null)
-			Control = CreateRoot?.Invoke();
+	private void TryCreateRoot() {
+		if (Control is not null || !CanCreateEngine)
+			return;
 
-		if (Size.X > 1f && Size.Y > 1f)
-			base._Ready();
+		if (CreateRoot is not null)
+			Control = CreateRoot();
+		else {
+			var viewType = GetMeta("estragonia_view_type", "").AsString();
+			if (!string.IsNullOrEmpty(viewType))
+				Control = AvaloniaEditorRuntime.CreateView(viewType);
+		}
 
-		base._Process(delta);
-		QueueRedraw();
+		if (Control is not null)
+			SetMeta("estragonia_view_type", Control.GetType().FullName);
 	}
 
 }

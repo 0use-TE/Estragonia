@@ -16,7 +16,9 @@ Godot Editor process
 Shared: `Application`, theme, `UseGodot()` platform services (Vulkan/Skia, clipboard, cursor).  
 Not shared: each dock’s `TopLevel` and GPU texture.
 
-Disable a plugin with `_ExitTree` → remove the host. **Do not** shut Avalonia down; other plugins still need it.
+Disable a plugin with `_ExitTree` → remove the host. **Do not** shut Avalonia down from `_ExitTree`; other plugins still need it.
+
+Godot does **not** call `_ExitTree` when you Build / save C#. Estragonia hooks `GodotTools.BuildStarted` and the collectible ALC `Unloading` event, then runs `GodotAvalonia.PrepareForUnload()` (dispose every host engine, reset Avalonia, drop the thread-pool timer). Without that, any code change fails hot-reload with “Failed to unload assemblies”.
 
 ## What you reference
 

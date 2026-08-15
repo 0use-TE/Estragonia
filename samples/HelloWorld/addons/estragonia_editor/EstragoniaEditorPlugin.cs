@@ -18,6 +18,7 @@ public partial class EstragoniaEditorPlugin : EditorPlugin {
 			CustomMinimumSize = new Vector2(320, 240),
 			CreateRoot = static () => new DemoView()
 		};
+		_host.SetMeta("estragonia_view_type", typeof(DemoView).FullName);
 
 		_dock = new EditorDock {
 			Title = "Estragonia",

@@ -8,6 +8,7 @@
 - Template references `Ouse.Estragonia` via NuGet only (`Version="1.*"` float on 1.x).
 - HelloWorld sample: left scene list (controls, cursor, HUD, pass-through, binding).
 - Editor plugins: process-wide `AvaloniaEditorRuntime` / `GodotAvalonia.EnsureStarted`; HelloWorld ships two sample addons (left dock + bottom panel).
+- C# hot-reload: `GodotAvalonia.PrepareForUnload` on GodotTools `BuildStarted` and ALC `Unloading` so Avalonia no longer pins the collectible ALC after every code change.
 
 ## 1.0.0
 

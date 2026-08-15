@@ -16,7 +16,9 @@ Godot 编辑器进程
 共享：`Application`、主题、`UseGodot()` 平台服务（Vulkan/Skia、剪贴板、光标）。  
 不共享：每个 Dock 自己的 `TopLevel` 和 GPU 纹理。
 
-禁用插件时在 `_ExitTree` 里卸掉宿主即可。**不要** Shutdown 整个 Avalonia，其它插件还在用。
+禁用插件时在 `_ExitTree` 里卸掉宿主即可。**不要**在 `_ExitTree` 里 Shutdown 整个 Avalonia，其它插件还在用。
+
+Godot 在 Build / 保存 C# 时**不会**走 `_ExitTree`。Estragonia 会挂 `GodotTools.BuildStarted` 和 collectible ALC 的 `Unloading`，然后执行 `GodotAvalonia.PrepareForUnload()`（拆掉所有宿主引擎、重置 Avalonia、停掉线程池 Timer）。不做这一步，只要改代码，热重载就会报 `Failed to unload assemblies`。
 
 ## 怎么引用
 

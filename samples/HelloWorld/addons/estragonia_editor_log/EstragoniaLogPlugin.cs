@@ -19,6 +19,7 @@ public partial class EstragoniaLogPlugin : EditorPlugin {
 			CustomMinimumSize = new Vector2(420, 160),
 			CreateRoot = static () => new LogView()
 		};
+		_host.SetMeta("estragonia_view_type", typeof(LogView).FullName);
 
 		_dock = new EditorDock {
 			Title = "Estragonia Log",

@@ -8,7 +8,7 @@ public partial class AvaloniaLoader : Node {
 
 	public override void _Ready() {
 		if (Engine.IsEditorHint())
-			GodotAvalonia.EnsureStarted();
+			GodotAvalonia.HookReload();
 		else
 			GodotAvalonia.EnsureStarted<App>();
 

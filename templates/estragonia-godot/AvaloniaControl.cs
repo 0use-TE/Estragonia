@@ -17,19 +17,21 @@ public partial class AvaloniaControl : Control {
 
 	/// <summary>Gets or sets the underlying Avalonia control that will be rendered.</summary>
 	public AvControl? Control {
-		get => _engine?.Control;
+		get => LiveEngine?.Control;
 		set {
 			EnsureEngine();
-			_engine!.Control = value;
+			if (LiveEngine is { } engine)
+				engine.Control = value;
 		}
 	}
 
 	/// <summary>Gets or sets the render scaling for the Avalonia control. Defaults to 1.0.</summary>
 	public double RenderScaling {
-		get => _engine?.RenderScaling ?? 1.0;
+		get => LiveEngine?.RenderScaling ?? 1.0;
 		set {
 			EnsureEngine();
-			_engine!.RenderScaling = value;
+			if (LiveEngine is { } engine)
+				engine.RenderScaling = value;
 		}
 	}
 
@@ -38,10 +40,11 @@ public partial class AvaloniaControl : Control {
 	/// Defaults to true.
 	/// </summary>
 	public bool AutoConvertUIActionToKeyDown {
-		get => _engine?.AutoConvertUIActionToKeyDown ?? true;
+		get => LiveEngine?.AutoConvertUIActionToKeyDown ?? true;
 		set {
 			EnsureEngine();
-			_engine!.AutoConvertUIActionToKeyDown = value;
+			if (LiveEngine is { } engine)
+				engine.AutoConvertUIActionToKeyDown = value;
 		}
 	}
 
@@ -49,10 +52,11 @@ public partial class AvaloniaControl : Control {
 	/// When false (default), only Avalonia-hittable pixels capture the mouse; empty areas pass through to Godot.
 	/// </summary>
 	public bool CaptureEmptyHits {
-		get => _engine?.CaptureEmptyHits ?? false;
+		get => LiveEngine?.CaptureEmptyHits ?? false;
 		set {
 			EnsureEngine();
-			_engine!.CaptureEmptyHits = value;
+			if (LiveEngine is { } engine)
+				engine.CaptureEmptyHits = value;
 		}
 	}
 
@@ -64,11 +68,30 @@ public partial class AvaloniaControl : Control {
 	public Texture2D GetTexture()
 		=> EngineOrThrow.GetTexture();
 
-	private AvaloniaControlEngine EngineOrThrow
-		=> _engine ?? throw new System.InvalidOperationException($"{nameof(AvaloniaControl)} isn't ready yet.");
+	/// <summary>Live engine, or <c>null</c> after <see cref="GodotAvalonia.PrepareForUnload"/> disposed it.</summary>
+	protected AvaloniaControlEngine? LiveEngine
+		=> _engine is { IsDisposed: false } engine ? engine : ClearDeadEngine();
 
-	private void EnsureEngine()
-		=> _engine ??= new AvaloniaControlEngine(this);
+	/// <summary>False while Godot is compiling / unloading the collectible ALC.</summary>
+	protected static bool CanCreateEngine
+		=> GodotAvalonia.IsStarted && !GodotAvalonia.IsUnloading;
+
+	private AvaloniaControlEngine EngineOrThrow
+		=> LiveEngine ?? throw new System.InvalidOperationException($"{nameof(AvaloniaControl)} isn't ready yet.");
+
+	private AvaloniaControlEngine? ClearDeadEngine() {
+		_engine = null;
+		return null;
+	}
+
+	private void EnsureEngine() {
+		if (LiveEngine is not null)
+			return;
+		if (!CanCreateEngine)
+			return;
+
+		_engine = new AvaloniaControlEngine(this);
+	}
 
 	/// <summary>Drops the Avalonia root and GPU top-level so this host no longer pins view types.</summary>
 	public void Detach() {
@@ -81,25 +104,29 @@ public partial class AvaloniaControl : Control {
 	}
 
 	public override void _Ready() {
+		if (!CanCreateEngine)
+			return;
+
 		EnsureEngine();
-		_engine!.Ready();
+		LiveEngine?.Ready();
 	}
 
 	public override void _Notification(int what) {
 		// Use notifications instead of Control.Resized / MouseExited C# events.
 		// Those become dead ManagedCallables after editor assembly reload.
+		var engine = LiveEngine;
 		switch ((long) what) {
 			case NotificationResized:
-				_engine?.NotifyResized();
+				engine?.NotifyResized();
 				break;
 			case NotificationFocusEnter:
-				_engine?.NotifyFocusEntered();
+				engine?.NotifyFocusEntered();
 				break;
 			case NotificationFocusExit:
-				_engine?.NotifyFocusExited();
+				engine?.NotifyFocusExited();
 				break;
 			case NotificationMouseExit:
-				_engine?.NotifyMouseExited();
+				engine?.NotifyMouseExited();
 				break;
 		}
 
@@ -107,16 +134,16 @@ public partial class AvaloniaControl : Control {
 	}
 
 	public override void _Process(double delta)
-		=> _engine?.Process();
+		=> LiveEngine?.Process();
 
 	public override void _Draw()
-		=> _engine?.Draw();
+		=> LiveEngine?.Draw();
 
 	public override void _GuiInput(InputEvent @event)
-		=> _engine?.GuiInput(@event);
+		=> LiveEngine?.GuiInput(@event);
 
 	public override bool _HasPoint(Vector2 point)
-		=> _engine?.HasPoint(point) ?? false;
+		=> LiveEngine?.HasPoint(point) ?? false;
 
 	protected override void Dispose(bool disposing) {
 		if (disposing) {

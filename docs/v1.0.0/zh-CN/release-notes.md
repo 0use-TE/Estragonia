@@ -8,6 +8,7 @@
 - 模板仅通过 NuGet 引用 `Ouse.Estragonia`（`Version="1.*"` 浮动 1.x）。
 - HelloWorld 示例：左侧场景列表（控件、光标、HUD、输入穿透、数据绑定）。
 - 编辑器插件：进程内共享 `AvaloniaEditorRuntime` / `GodotAvalonia.EnsureStarted`；HelloWorld 带两个示例 addon（左侧 Dock + 底栏）。
+- C# 热重载：在 GodotTools `BuildStarted` 和 ALC `Unloading` 上执行 `GodotAvalonia.PrepareForUnload`，避免每次改代码都被 Avalonia 钉住旧程序集。
 
 ## 1.0.0
 
