@@ -21,7 +21,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-AvaloniaLoader="res://AvaloniaLoader.gd"
+AvaloniaLoader="res://AvaloniaLoader.cs"
 
 [dotnet]
 

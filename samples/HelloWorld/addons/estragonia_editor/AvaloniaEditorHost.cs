@@ -1,49 +1,41 @@
 #if TOOLS
+using System;
 using Godot;
-using JLeb.Estragonia;
+using AvControl = Avalonia.Controls.Control;
 
-namespace HelloWorld.Editor;
+namespace JLeb.Estragonia;
 
 /// <summary>
-/// C# Control that hosts Avalonia in the editor. Godot only reliably calls
-/// overridden engine methods (<c>_Draw</c>, <c>_Process</c>, …) on C# scripts;
-/// GDScript cannot invoke custom C# methods on a preloaded CSharpScript.
+/// Godot dock host for Avalonia. Must live in this Godot project (class name = file name).
+/// Each dock has its own host / TopLevel; the Avalonia <c>Application</c> is process-wide.
 /// </summary>
 [Tool]
-public partial class AvaloniaEditorHost : Control {
+public partial class AvaloniaEditorHost : AvaloniaControl {
+
+	/// <summary>Creates the Avalonia root when this host enters the editor tree.</summary>
+	public Func<AvControl>? CreateRoot { get; set; }
 
 	public override void _Ready() {
 		SizeFlagsHorizontal = SizeFlags.ExpandFill;
 		SizeFlagsVertical = SizeFlags.ExpandFill;
 		SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
 		ClipContents = true;
+		CaptureEmptyHits = true;
 		FocusMode = FocusModeEnum.All;
 		MouseFilter = MouseFilterEnum.Stop;
-		SetProcess(true);
-
-		var viewType = GetMeta("estragonia_view_type", "").AsString();
-		if (!string.IsNullOrEmpty(viewType))
-			AvaloniaEditorRuntime.Attach(this, viewType);
+		Control ??= CreateRoot?.Invoke();
+		base._Ready();
 	}
 
-	public override void _ExitTree()
-		=> AvaloniaEditorRuntime.Detach(this);
+	public override void _Process(double delta) {
+		if (Control is null)
+			Control = CreateRoot?.Invoke();
 
-	public override void _Process(double delta)
-		=> AvaloniaEditorRuntime.Process(this);
+		if (Size.X > 1f && Size.Y > 1f)
+			base._Ready();
 
-	public override void _Draw()
-		=> AvaloniaEditorRuntime.Draw(this);
-
-	public override void _GuiInput(InputEvent @event)
-		=> AvaloniaEditorRuntime.GuiInput(this, @event);
-
-	public override bool _HasPoint(Vector2 point)
-		=> AvaloniaEditorRuntime.HasPoint(this, point);
-
-	public override void _Notification(int what) {
-		AvaloniaEditorRuntime.Notification(this, what);
-		base._Notification(what);
+		base._Process(delta);
+		QueueRedraw();
 	}
 
 }

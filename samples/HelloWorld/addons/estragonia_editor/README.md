@@ -1,7 +1,7 @@
 # Estragonia Editor (sample addon)
 
-- `plugin.gd` — Godot `EditorPlugin` shell (not C#)
-- `AvaloniaEditorHost.cs` — C# `Control` that overrides `_Draw` / `_Process` / input
-- Your Avalonia view type name goes in `estragonia_view_type`
+Left-dock Avalonia UI. Shares one process-wide `Application` with `addons/estragonia_editor_log`.
 
-GDScript cannot call custom C# methods on a preloaded `.cs` script. The host must be a C# `Control` so Godot calls the engine virtuals.
+1. `AvaloniaEditorRuntime.EnsureStarted()` — first caller starts Avalonia; later callers no-op.
+2. `new AvaloniaEditorHost { CreateRoot = () => new YourView() }`
+3. Wrap in `EditorDock`, then `AddDock`.

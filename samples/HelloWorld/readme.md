@@ -30,7 +30,7 @@ Estragonia 场景演示（左侧列表切换）。
 | `addons/estragonia_editor` | 左侧 Dock |
 | `addons/estragonia_editor_log` | 底栏「Estragonia Log」 |
 
-插件入口是 GDScript（`plugin.gd`）。C# 只提供 Avalonia 页和静态 `EstragoniaEditorBridge`，不要把 `EditorPlugin` 写成 C#。
+各插件 `_EnterTree` 调 `AvaloniaEditorRuntime.EnsureStarted()`，进程内共用一个 Avalonia `Application`。开着这些插件时不要用 Godot C# 热重载，改 C# 后重启编辑器。
 
 ## 运行
 
