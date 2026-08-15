@@ -38,6 +38,8 @@ public sealed class AvaloniaControlEngine : IDisposable {
 
 			if (value is not null)
 				GodotPlatform.EnsureAssetLoader(value.GetType().Assembly);
+			else
+				GodotPlatform.EnsureAssetLoader(typeof(EditorAvaloniaApp).Assembly);
 
 			_control = value;
 
@@ -55,7 +57,7 @@ public sealed class AvaloniaControlEngine : IDisposable {
 				return;
 
 			_renderScaling = value;
-			OnResized();
+			NotifyResized();
 			_owner.QueueRedraw();
 		}
 	}
@@ -81,9 +83,20 @@ public sealed class AvaloniaControlEngine : IDisposable {
 	public Texture2D GetTexture()
 		=> GetTopLevel().Impl.GetGdTexture();
 
+	public bool IsInitialized
+		=> _topLevel is not null && !_disposed;
+
 	public void Ready() {
-		if (Engine.IsEditorHint())
+		if (_disposed)
 			return;
+
+		if (_topLevel is not null) {
+			NotifyResized();
+			return;
+		}
+
+		// Game hosts and editor docks share this path. A [Tool] host in the editor
+		// must be allowed to create a TopLevel once UseGodot() has run.
 
 		// Skia outputs a premultiplied alpha image, ensure we got the correct blend mode if the user didn't specify any
 		_owner.Material ??= new CanvasItemMaterial {
@@ -113,14 +126,26 @@ public sealed class AvaloniaControlEngine : IDisposable {
 		_topLevel.Prepare();
 		_topLevel.StartRendering();
 
-		_owner.Resized += OnResized;
-		_owner.FocusEntered += OnFocusEntered;
-		_owner.FocusExited += OnFocusExited;
-		_owner.MouseExited += OnMouseExited;
-
 		if (_owner.HasFocus())
-			OnFocusEntered();
+			NotifyFocusEntered();
 	}
+
+	public void NotifyResized() {
+		if (_topLevel is null)
+			return;
+
+		_topLevel.Impl.SetRenderSize(GetFrameSize(), RenderScaling);
+		RenderAvalonia();
+	}
+
+	public void NotifyFocusEntered()
+		=> OnFocusEntered();
+
+	public void NotifyFocusExited()
+		=> _topLevel?.Impl.OnLostFocus();
+
+	public void NotifyMouseExited()
+		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
 
 	public void Process() {
 		GodotPlatform.TriggerRenderTick();
@@ -157,8 +182,14 @@ public sealed class AvaloniaControlEngine : IDisposable {
 	}
 
 	public bool HasPoint(Vector2 point) {
-		if (_topLevel is null)
+		// Godot may call _HasPoint with any local point (not pre-clipped to Size).
+		// CaptureEmptyHits must mean "empty pixels inside this control", not the whole editor.
+		var size = _owner.Size;
+		if (point.X < 0f || point.Y < 0f || point.X > size.X || point.Y > size.Y)
 			return false;
+
+		if (_topLevel is null)
+			return CaptureEmptyHits;
 
 		var avaloniaPoint = point.ToAvaloniaPoint() / _topLevel.RenderScaling;
 		if (_topLevel.InputHitTest(avaloniaPoint, false) is not null)
@@ -192,14 +223,6 @@ public sealed class AvaloniaControlEngine : IDisposable {
 			(cursor as GodotStandardCursorImpl)?.CursorShape ?? GdControl.CursorShape.Arrow;
 	}
 
-	private void OnResized() {
-		if (_topLevel is null)
-			return;
-
-		_topLevel.Impl.SetRenderSize(GetFrameSize(), RenderScaling);
-		RenderAvalonia();
-	}
-
 	private void OnFocusEntered() {
 		if (_topLevel is null)
 			return;
@@ -220,9 +243,6 @@ public sealed class AvaloniaControlEngine : IDisposable {
 
 		inputElement.Focus(navigationMethod);
 	}
-
-	private void OnFocusExited()
-		=> _topLevel?.Impl.OnLostFocus();
 
 	private bool TryHandleAction(InputEvent inputEvent) {
 		if (!inputEvent.IsActionType())
@@ -333,9 +353,6 @@ public sealed class AvaloniaControlEngine : IDisposable {
 		}
 	}
 
-	private void OnMouseExited()
-		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
-
 	public void Dispose() {
 		if (_disposed)
 			return;
@@ -343,11 +360,6 @@ public sealed class AvaloniaControlEngine : IDisposable {
 		_disposed = true;
 
 		if (_topLevel is not null) {
-			_owner.Resized -= OnResized;
-			_owner.FocusEntered -= OnFocusEntered;
-			_owner.FocusExited -= OnFocusExited;
-			_owner.MouseExited -= OnMouseExited;
-
 			_topLevel.Dispose();
 			_topLevel = null;
 		}

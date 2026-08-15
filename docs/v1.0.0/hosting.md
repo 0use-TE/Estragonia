@@ -77,3 +77,7 @@ public partial class UserInterface : UiHost
 By default `AvaloniaControl.CaptureEmptyHits` is `false`: only Avalonia-hittable pixels capture the mouse; empty areas pass through to Godot (e.g. a `Sprite2D` behind the host).
 
 Set `CaptureEmptyHits = true` to capture the whole control rect.
+
+## Editor plugins
+
+To host Avalonia inside the Godot editor (shared `Application`, one host per dock), see [Editor plugins](editor-plugins.md).

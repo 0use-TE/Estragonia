@@ -12,14 +12,14 @@ namespace JLeb.Estragonia;
 [SuppressMessage(
 	"Design",
 	"CA1001:Types that own disposable fields should be disposable",
-	Justification = "This type has equivalent to a static lifetime"
+	Justification = "Disposed by GodotPlatform.Reset when the editor unloads assemblies"
 )]
 internal sealed class GodotDispatcherImpl : IDispatcherImpl {
 
 	private readonly Thread _mainThread;
-	private readonly SysTimer _timer;
-	private readonly SendOrPostCallback _invokeSignaled; // cached delegate
-	private readonly SendOrPostCallback _invokeTimer;  // cached delegate
+	private readonly SendOrPostCallback _invokeSignaled;
+	private readonly SendOrPostCallback _invokeTimer;
+	private SysTimer? _timer;
 
 	public long Now
 		=> (long) Time.GetTicksMsec();
@@ -39,11 +39,31 @@ internal sealed class GodotDispatcherImpl : IDispatcherImpl {
 	}
 
 	public void UpdateTimer(long? dueTimeInMs) {
+		if (_timer is null)
+			return;
+
 		var interval = dueTimeInMs is { } value
 			? Math.Clamp(value - Now, 0L, 0xFFFFFFFEL)
 			: Timeout.Infinite;
 
 		_timer.Change(interval, Timeout.Infinite);
+	}
+
+	/// <summary>
+	/// Drops the thread-pool timer. That timer is a GC root outside the collectible ALC
+	/// and will block Godot assembly unload if left alive.
+	/// </summary>
+	public void Pause() {
+		_timer?.Change(Timeout.Infinite, Timeout.Infinite);
+		_timer?.Dispose();
+		_timer = null;
+		Signaled = null;
+		Timer = null;
+	}
+
+	/// <summary>Recreates the thread-pool timer after <see cref="Pause"/>.</summary>
+	public void Resume() {
+		_timer ??= new(OnTimerTick, this, Timeout.Infinite, Timeout.Infinite);
 	}
 
 	private void OnTimerTick(object? state)

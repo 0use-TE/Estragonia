@@ -19,9 +19,7 @@
 		<PackageReference Include="Avalonia" />
 		<PackageReference Include="Semi.Avalonia" />
 		<PackageReference Include="CommunityToolkit.Mvvm" />
-		<!-- Packaged `dotnet new` output: NuGet. In-repo template: local ProjectReference. -->
-		<PackageReference Include="Ouse.Estragonia" Condition="!Exists('..\..\src\JLeb.Estragonia\JLeb.Estragonia.csproj')" />
-		<ProjectReference Include="..\..\src\JLeb.Estragonia\JLeb.Estragonia.csproj" Condition="Exists('..\..\src\JLeb.Estragonia\JLeb.Estragonia.csproj')" />
+		<PackageReference Include="Ouse.Estragonia" />
 	</ItemGroup>
 
 	<ItemGroup>

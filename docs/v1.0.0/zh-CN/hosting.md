@@ -77,3 +77,7 @@ public partial class UserInterface : UiHost
 默认 `CaptureEmptyHits = false`：只有 Avalonia 命中到的像素吃鼠标，空白可穿透到 Godot。
 
 设 `CaptureEmptyHits = true` 则整块控件矩形都吃输入。
+
+## 编辑器插件
+
+要在 Godot 编辑器里嵌 Avalonia（进程内共享一份 `Application`，每个 Dock 一个宿主），见 [编辑器插件](editor-plugins.md)。

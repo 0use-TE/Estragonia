@@ -8,6 +8,9 @@
 
 		<IsPackable>true</IsPackable>
 		<PackageId>Ouse.Estragonia</PackageId>
+		<Authors>0use-TE; Julien Lebosquain</Authors>
+		<PackageProjectUrl>https://github.com/0use-TE/Estragonia</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/0use-TE/Estragonia</RepositoryUrl>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Description>Bridge embedding Avalonia UI inside Godot 4 (Vulkan / Skia). Host scripts AvaloniaControl/UiHost must live in your Godot project (see template/sample).</Description>
@@ -18,6 +21,7 @@
 		<PackageReference Include="GodotSharp" VersionOverride="4.7.1" />
 		<PackageReference Include="Avalonia.Skia" />
 		<PackageReference Include="Avalonia.HarfBuzz" />
+		<PackageReference Include="Avalonia.Themes.Fluent" />
 		<!-- Avalonia 12: ISkiaGpu / related types are internal; required for the shared-VkImage path. -->
 		<PackageReference Include="IgnoresAccessChecksToGenerator" PrivateAssets="all" />
 	</ItemGroup>

@@ -2,10 +2,13 @@
 	<PropertyGroup>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 		<CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+		<!-- Allow Version="1.*" for Ouse.Estragonia so new templates float on the latest 1.x. -->
+		<CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageVersion Include="Avalonia" Version="12.0.0" />
-		<PackageVersion Include="Ouse.Estragonia" Version="1.0.1" />
+		<!-- NuGet float: use 1.* (not 1.*.*). Picks the latest published 1.x on restore. -->
+		<PackageVersion Include="Ouse.Estragonia" Version="1.*" />
 		<PackageVersion Include="Semi.Avalonia" Version="12.0.0" />
 		<PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 	</ItemGroup>

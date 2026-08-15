@@ -21,8 +21,19 @@ Estragonia 场景演示（左侧列表切换）。
 - `UiHost.cs`
 - `UserInterface.cs` → `CreateRoot()`
 
+## 编辑器插件
+
+打开本工程后，编辑器会启用两个 Avalonia 插件（共享一份 `Application`）：
+
+| 插件 | 位置 |
+|------|------|
+| `addons/estragonia_editor` | 左侧 Dock |
+| `addons/estragonia_editor_log` | 底栏「Estragonia Log」 |
+
+插件入口是 GDScript（`plugin.gd`）。C# 只提供 Avalonia 页和静态 `EstragoniaEditorBridge`，不要把 `EditorPlugin` 写成 C#。
+
 ## 运行
 
-1. 用 **Godot 4.7+（.NET）** 打开本目录。
-2. 运行主场景。
-3. 切到「输入穿透」或「自定义光标」验证对应能力。
+1. 用 **Godot 4.7+（.NET）** 打开本目录（Forward+）。
+2. 编译 C# 后查看左侧 Dock / 底栏插件。
+3. 运行主场景；切到「输入穿透」或「自定义光标」验证运行时能力。

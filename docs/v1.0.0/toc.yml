@@ -2,6 +2,8 @@
   href: getting-started.md
 - name: Hosting UI
   href: hosting.md
+- name: Editor plugins
+  href: editor-plugins.md
 - name: Input & rendering
   href: input-and-rendering.md
 - name: AI prompt (app authors)

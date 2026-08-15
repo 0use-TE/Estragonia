@@ -4,6 +4,10 @@
 
 - **对包消费者的破坏性变更：** `AvaloniaControl` / `UiHost` 不再作为 Godot 节点类型打进 `Ouse.Estragonia`。请从模板/示例复制进 Godot 工程（或用 `dotnet new estragonia`）。实现逻辑在 NuGet 内的 `AvaloniaControlEngine`。
 - 规避宿主类型在外部程序集时 Godot ScriptTypeBiMap 重复 key 热重载错误。
+- 自定义光标：Avalonia `CreateCursor(Bitmap)` → Godot `Input.SetCustomMouseCursor`。
+- 模板仅通过 NuGet 引用 `Ouse.Estragonia`（`Version="1.*"` 浮动 1.x）。
+- HelloWorld 示例：左侧场景列表（控件、光标、HUD、输入穿透、数据绑定）。
+- 编辑器插件：进程内共享 `AvaloniaEditorRuntime` / `GodotAvalonia.EnsureStarted`；HelloWorld 带两个示例 addon（左侧 Dock + 底栏）。
 
 ## 1.0.0
 

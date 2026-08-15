@@ -70,9 +70,40 @@ public partial class AvaloniaControl : Control {
 	private void EnsureEngine()
 		=> _engine ??= new AvaloniaControlEngine(this);
 
+	/// <summary>Drops the Avalonia root and GPU top-level so this host no longer pins view types.</summary>
+	public void Detach() {
+		if (_engine is null)
+			return;
+
+		_engine.Control = null;
+		_engine.Dispose();
+		_engine = null;
+	}
+
 	public override void _Ready() {
 		EnsureEngine();
 		_engine!.Ready();
+	}
+
+	public override void _Notification(int what) {
+		// Use notifications instead of Control.Resized / MouseExited C# events.
+		// Those become dead ManagedCallables after editor assembly reload.
+		switch ((long) what) {
+			case NotificationResized:
+				_engine?.NotifyResized();
+				break;
+			case NotificationFocusEnter:
+				_engine?.NotifyFocusEntered();
+				break;
+			case NotificationFocusExit:
+				_engine?.NotifyFocusExited();
+				break;
+			case NotificationMouseExit:
+				_engine?.NotifyMouseExited();
+				break;
+		}
+
+		base._Notification(what);
 	}
 
 	public override void _Process(double delta)

@@ -21,11 +21,15 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-AvaloniaLoader="res://AvaloniaLoader.cs"
+AvaloniaLoader="res://AvaloniaLoader.gd"
 
 [dotnet]
 
 project/assembly_name="HelloWorld"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/estragonia_editor/plugin.cfg", "res://addons/estragonia_editor_log/plugin.cfg")
 
 [rendering]
 

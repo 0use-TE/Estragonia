@@ -24,6 +24,9 @@ public static class GodotPlatform {
 
 	private static AvCompositor? s_compositor;
 	private static ManualRenderTimer? s_renderTimer;
+	private static GodotVkPlatformGraphics? s_platformGraphics;
+	private static GodotDispatcherImpl? s_dispatcherImpl;
+	private static bool s_dispatcherInitialized;
 	private static ulong s_lastProcessFrame = UInt64.MaxValue;
 
 	public static AvCompositor Compositor
@@ -34,10 +37,16 @@ public static class GodotPlatform {
 
 		EnsureAssetLoader(null);
 
-		// Avalonia 12 no longer reads IDispatcherImpl from AvaloniaLocator (that path is obsolete / DEBUG-throws).
-		// Platforms must call InitializeUIThreadDispatcher, same as Win32/Browser/etc.
-		var dispatcherImpl = new GodotDispatcherImpl(Thread.CurrentThread);
-		Avalonia.Threading.Dispatcher.InitializeUIThreadDispatcher(dispatcherImpl);
+		// Dispatcher.InitializeUIThreadDispatcher can run only once; reuse the impl and only
+		// recreate its thread-pool timer after a Shutdown.
+		if (!s_dispatcherInitialized) {
+			s_dispatcherImpl = new GodotDispatcherImpl(Thread.CurrentThread);
+			Avalonia.Threading.Dispatcher.InitializeUIThreadDispatcher(s_dispatcherImpl);
+			s_dispatcherInitialized = true;
+		}
+		else {
+			s_dispatcherImpl?.Resume();
+		}
 
 		var platformGraphics = new GodotVkPlatformGraphics();
 		var renderTimer = new ManualRenderTimer();
@@ -57,8 +66,29 @@ public static class GodotPlatform {
 			.Bind<PlatformHotkeyConfiguration>().ToConstant(CreatePlatformHotKeyConfiguration())
 			.Bind<ManagedFileDialogOptions>().ToConstant(new ManagedFileDialogOptions { AllowDirectorySelection = true });
 
+		s_platformGraphics = platformGraphics;
 		s_renderTimer = renderTimer;
 		s_compositor = new AvCompositor(platformGraphics);
+	}
+
+	/// <summary>
+	/// Drops Godot/Avalonia platform services so <see cref="Initialize"/> can run again.
+	/// Does not reset the UI dispatcher (Avalonia forbids that).
+	/// </summary>
+	public static void Reset() {
+		s_compositor = null;
+		s_renderTimer = null;
+		s_lastProcessFrame = UInt64.MaxValue;
+
+		if (s_platformGraphics is not null) {
+			s_platformGraphics.Dispose();
+			s_platformGraphics = null;
+		}
+
+		s_dispatcherImpl?.Pause();
+
+		// Drop Application.Current and every Godot/Avalonia service that could pin the game ALC.
+		AvaloniaLocator.Current = AvaloniaLocator.CurrentMutable = new AvaloniaLocator();
 	}
 
 	/// <summary>

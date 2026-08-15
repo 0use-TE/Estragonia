@@ -14,6 +14,7 @@
 		<PackageVersion Include="Avalonia" Version="12.0.0" />
 		<PackageVersion Include="Avalonia.Skia" Version="12.0.0" />
 		<PackageVersion Include="Avalonia.HarfBuzz" Version="12.0.0" />
+		<PackageVersion Include="Avalonia.Themes.Fluent" Version="12.0.0" />
 		<PackageVersion Include="IgnoresAccessChecksToGenerator" Version="0.8.0" />
 
 		<PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />

@@ -35,7 +35,7 @@ Open **`project.godot`** with Godot 4.7+ (.NET).
 | Output folder | `-o` | Location | Output directory |
 | Godot project name | `--GodotProjectName` | Godot project name | C# project / assembly / namespace |
 
-The generated project references **`Ouse.Estragonia`** from nuget.org.  
+The generated project references **`Ouse.Estragonia`** from nuget.org only (`PackageReference`, version float `1.*`).  
 Bridge namespaces remain **`JLeb.Estragonia`**.
 
 **Host scripts are part of the generated Godot project** (`AvaloniaControl.cs`, `UiHost.cs`).  
@@ -67,5 +67,5 @@ Solution 'MySolution'
 dotnet pack src/JLeb.Estragonia -c Release -o nupkgs
 dotnet pack templates/Ouse.Estragonia.Templates.csproj -c Release -o nupkgs
 dotnet new uninstall Ouse.Estragonia.Templates
-dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.0.nupkg
+dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.1.nupkg
 ```

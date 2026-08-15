@@ -1,0 +1,18 @@
+<UserControl
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="HelloWorld.Editor.DemoView">
+
+	<Border Padding="14" Background="#CC1A1D23">
+		<StackPanel Spacing="10">
+			<TextBlock Text="se.Estragonia Editor" FontSize="18" FontWeight="SemiBold" />
+			<TextBlock
+				Opacity="0.75"
+				TextWrapping="Wrap"
+				Text="This dock is Avalonia XAML. The Application and Godot platform bridge are process-wide; other plugins must not start Avalonia again." />
+			<TextBox x:Name="NameBox" PlaceholderText="Type in the editor dock" />
+			<Button Content="Ping shared runtime" Click="OnPing" HorizontalAlignment="Left" />
+			<TextBlock x:Name="StatusText" TextWrapping="Wrap" />
+		</StackPanel>
+	</Border>
+</UserControl>

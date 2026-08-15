@@ -2,6 +2,8 @@
   href: getting-started.md
 - name: 宿主与 UI
   href: hosting.md
+- name: 编辑器插件
+  href: editor-plugins.md
 - name: 输入与渲染
   href: input-and-rendering.md
 - name: 业务 AI 提示词

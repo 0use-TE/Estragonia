@@ -1,0 +1,23 @@
+<UserControl
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="HelloWorld.Editor.LogView">
+
+	<DockPanel Margin="12">
+		<StackPanel DockPanel.Dock="Top" Spacing="6" Margin="0,0,0,8">
+			<TextBlock Text="Second plugin" FontWeight="SemiBold" />
+			<TextBlock
+				Opacity="0.75"
+				TextWrapping="Wrap"
+				Text="Bottom panel from addons/estragonia_editor_log. It shares Application / UseGodot with the left dock." />
+			<Button Content="Append log line" Click="OnAppend" HorizontalAlignment="Left" />
+		</StackPanel>
+		<ListBox x:Name="LogList" />
+
+
+
+
+
+
+	</DockPanel>
+</UserControl>
