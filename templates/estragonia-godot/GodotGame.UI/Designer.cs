@@ -1,12 +1,12 @@
 using System;
 using Avalonia;
 
-namespace GodotGame;
+namespace GodotGame.UI;
 
 /// <summary>
-/// Avalonia designer / previewer host.
+/// Avalonia designer / previewer host for the UI project.
 /// Provides Main (Debug Exe entry point) and BuildAvaloniaApp.
-/// Do not run this assembly as a standalone app — open project.godot in Godot instead.
+/// Do not start this project as a console app — open project.godot in Godot to run the game.
 /// </summary>
 internal static class Designer {
 

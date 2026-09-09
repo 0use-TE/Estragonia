@@ -2,7 +2,7 @@
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:semi="https://irihi.tech/semi"
-	x:Class="HelloWorld.App"
+	x:Class="HelloWorld.UI.App"
 	RequestedThemeVariant="Dark">
 
 	<Application.Styles>

@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GodotSharp" VersionOverride="4.7.1" />
+		<PackageReference Include="GodotSharp" VersionOverride="4.7.2" />
 		<PackageReference Include="Avalonia.Skia" />
 		<PackageReference Include="Avalonia.HarfBuzz" />
 		<!-- Avalonia 12: ISkiaGpu / related types are internal; required for the shared-VkImage path. -->

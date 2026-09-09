@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace HelloWorld.Views;
+namespace HelloWorld.UI.Views;
 
 public partial class HelloWorldView : UserControl {
 

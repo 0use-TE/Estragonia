@@ -26,8 +26,9 @@
   },
   "primaryOutputs": [
     { "path": "EstragoniaApp.sln" },
-    { "path": "project.godot" },
-    { "path": "GodotGame.csproj" },
+    { "path": "GodotGame/project.godot" },
+    { "path": "GodotGame/GodotGame.csproj" },
+    { "path": "GodotGame.UI/GodotGame.UI.csproj" },
     { "path": "README.md" }
   ]
 }

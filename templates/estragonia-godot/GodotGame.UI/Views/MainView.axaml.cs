@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace GodotGame.Views;
+namespace GodotGame.UI.Views;
 
 public partial class MainView : UserControl {
 

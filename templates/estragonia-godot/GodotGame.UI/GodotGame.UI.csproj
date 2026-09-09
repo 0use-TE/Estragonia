@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyTitle>GodotGame.UI</AssemblyTitle>
+		<RootNamespace>GodotGame.UI</RootNamespace>
+		<TargetFramework>net10.0</TargetFramework>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<!-- Avalonia designer / previewer needs an Exe entry point (Designer.Main). -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<OutputType>Exe</OutputType>
+		<UseAppHost>false</UseAppHost>
+		<StartupObject>GodotGame.UI.Designer</StartupObject>
+	</PropertyGroup>
+
+	<!-- Godot export configurations flow through ProjectReference. -->
+	<PropertyGroup Condition="'$(Configuration)' == 'ExportDebug'">
+		<Optimize>false</Optimize>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'ExportRelease'">
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Avalonia.Skia" />
+		<PackageReference Include="Avalonia.HarfBuzz" />
+		<PackageReference Include="Semi.Avalonia" />
+		<PackageReference Include="CommunityToolkit.Mvvm" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AvaloniaResource Include="Assets/**" />
+		<None Include="**\*.axaml" />
+		<Compile Update="**\*.axaml.cs">
+			<DependentUpon>%(Filename)</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

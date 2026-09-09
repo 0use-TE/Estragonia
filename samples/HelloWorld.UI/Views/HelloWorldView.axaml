@@ -3,9 +3,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:vm="using:HelloWorld.ViewModels"
+	xmlns:vm="using:HelloWorld.UI.ViewModels"
 	mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="700"
-	x:Class="HelloWorld.Views.HelloWorldView"
+	x:Class="HelloWorld.UI.Views.HelloWorldView"
 	x:DataType="vm:HelloWorldViewModel">
 
 	<Design.DataContext>
@@ -109,7 +109,7 @@
 									<Button Content="查看商品图鉴" HorizontalAlignment="Left">
 										<Button.Flyout>
 											<Flyout Placement="Bottom">
-												<Image Source="avares://HelloWorld/Assets/start.png" Width="220" Stretch="Uniform" />
+												<Image Source="avares://HelloWorld.UI/Assets/start.png" Width="220" Stretch="Uniform" />
 											</Flyout>
 										</Button.Flyout>
 									</Button>

@@ -7,9 +7,9 @@ Godot 4 + Avalonia starter from **[Ouse.Estragonia.Templates](https://www.nuget.
 
 ## Open in Godot
 
-1. Install [.NET 10 SDK](https://dotnet.microsoft.com/download) and **Godot 4.7+ (.NET)**.
-2. Run `dotnet restore` in this folder.
-3. Open **`project.godot`** here with Godot (not the `.godot/` cache directory).
+1. Install [.NET 10 SDK](https://dotnet.microsoft.com/download) and **Godot 4.7.2+ (.NET)**.
+2. Run `dotnet restore` in this folder (the solution root).
+3. Open **`GodotGame/project.godot`** with Godot (not the `.godot/` cache directory).
 
 Autoload `AvaloniaLoader` and the default `UserInterface` (`UiHost`) are already configured.
 
@@ -17,18 +17,24 @@ Autoload `AvaloniaLoader` and the default `UserInterface` (`UiHost`) are already
 
 | Path | Role |
 |------|------|
-| `project.godot` | Open this in Godot |
-| `Views/` / `ViewModels/` | Avalonia MVVM UI |
-| `AvaloniaLoader.cs` | Autoload — `UseGodot()` once |
-| `UserInterface.cs` | `UiHost` — `CreateRoot()` |
+| `EstragoniaApp.sln` | Solution (parent of the two projects) |
+| `GodotGame/project.godot` | Open this in Godot |
+| `GodotGame/GodotGame.csproj` | Godot assembly — Autoload + `UiHost` |
+| `GodotGame.UI/GodotGame.UI.csproj` | Avalonia assembly — views / previewer |
+| `GodotGame.UI/Views/` / `ViewModels/` | Avalonia MVVM UI |
+| `GodotGame.UI/App.axaml` | Avalonia application + theme |
+| `GodotGame.UI/Designer.cs` | Avalonia previewer (`Main` + `BuildAvaloniaApp`) |
+| `GodotGame/AvaloniaLoader.cs` | Autoload — `UseGodot()` once |
+| `GodotGame/UserInterface.cs` | `UiHost` — `CreateRoot()` |
 | `Directory.Packages.props` | NuGet versions (solution-level) |
 | `global.json` | .NET SDK pin |
 
-Edit `Views/MainView.axaml` and `ViewModels/MainViewModel.cs` to build your UI.
+Edit `GodotGame.UI/Views/MainView.axaml` and `GodotGame.UI/ViewModels/MainViewModel.cs` to build your UI.
 
 ## Visual Studio / previewer
 
 - Install the **Avalonia for Visual Studio** extension.
-- `Designer.cs` provides `Main` + `BuildAvaloniaApp` (Debug `OutputType=Exe`) so AXAML preview works.
+- Open AXAML under **`GodotGame.UI`** (not the Godot project). That assembly has no Godot scripts, so the previewer can load it.
+- `GodotGame.UI/Designer.cs` provides `Main` + `BuildAvaloniaApp` (Debug `OutputType=Exe`).
   (Keep that file free of C# `#if …` directives — `dotnet new` would strip them and leave an empty file.)
-- Runtime still runs inside Godot via `project.godot` — do not start the C# project as a normal console app.
+- Runtime still runs inside Godot via `GodotGame/project.godot` — do not start either C# project as a normal console app.

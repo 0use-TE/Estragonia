@@ -12,7 +12,7 @@ Package id is **`Ouse.Estragonia`**; C# namespaces remain **`JLeb.Estragonia`**.
 
 ## Requirements
 
-- Godot **4.7+** (.NET build), renderer **Forward+** or **Mobile** (Vulkan)
+- Godot **4.7.2+** (.NET build), renderer **Forward+** or **Mobile** (Vulkan)
 - .NET SDK **10**
 - Avalonia **12**
 
@@ -44,20 +44,21 @@ Visual Studio: **Create a new project** → **Estragonia Godot App** (restart VS
 
 ### 3. Open in Godot
 
-Open **`project.godot`** at the solution root with Godot 4.7+ (.NET).  
+Open **`MyGame/project.godot`** with Godot 4.7.2+ (.NET). The `.sln` sits one level above the two projects.  
 Do **not** open the `.godot/` cache folder.
 
 Already wired:
 
 - Autoload `AvaloniaLoader` → `UseGodot()` once
 - `UserInterface` : `UiHost` → `CreateRoot()`
-- `Designer.cs` for Avalonia XAML preview (`Main` + `BuildAvaloniaApp`)
+- Separate `MyGame.UI` project for Avalonia (`App`, views, previewer)
 
 ### 4. Edit the UI
 
-- View: `Views/MainView.axaml`
-- ViewModel: `ViewModels/MainViewModel.cs`
-- Theme: `App.axaml`
+- View: `MyGame.UI/Views/MainView.axaml`
+- ViewModel: `MyGame.UI/ViewModels/MainViewModel.cs`
+- Theme: `MyGame.UI/App.axaml`
+- Previewer: open AXAML in the **UI project** (not the Godot project)
 
 ---
 
@@ -109,7 +110,7 @@ See [Hosting UI](hosting.md).
 
 ## Sample in this repo
 
-Open `samples/HelloWorld` in Godot (uses a project reference to the library source).
+Open `samples/HelloWorld` in Godot (Avalonia lives in sibling `samples/HelloWorld.UI`; uses a project reference to the library source).
 
 ## Hot reload
 

@@ -1,5 +1,10 @@
 # 更新说明
 
+## 1.0.2
+
+- Godot **4.7.2**（`Godot.NET.Sdk` / `GodotSharp`）
+- 模板将 Avalonia 拆到 `GodotGame.UI`（预览器），Godot 脚本单独一个程序集；`.sln` 在两个项目的上一级
+
 ## 1.0.0
 
 本维护分支的首个版本：

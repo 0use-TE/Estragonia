@@ -27,7 +27,7 @@ cd MySolution
 dotnet restore
 ```
 
-Open **`project.godot`** with Godot 4.7+ (.NET).
+Open **`MyGame/project.godot`** with Godot 4.7.2+ (.NET).
 
 | Parameter | CLI | Visual Studio | Meaning |
 |-----------|-----|---------------|---------|
@@ -41,19 +41,17 @@ C# namespaces remain **`JLeb.Estragonia`**.
 ## Solution layout
 
 ```
-Solution 'MySolution'
-├── Solution Items
-│   ├── README.md
-│   ├── global.json
-│   ├── Directory.Build.props
-│   ├── Directory.Packages.props
-│   └── project.godot          ← open in Godot
-└── MyGame
-    ├── Views/ / ViewModels/
+Solution 'MySolution'                    ← .sln at the parent folder
+├── README.md / global.json / Directory.*.props
+├── MyGame/                              ← Godot project (open project.godot here)
+│   ├── project.godot
+│   ├── AvaloniaLoader.cs
+│   └── UserInterface.cs
+└── MyGame.UI/                           ← Avalonia project (previewer)
     ├── App.axaml
-    ├── AvaloniaLoader.cs      ← Autoload
-    ├── Designer.cs            ← Avalonia previewer (Main + BuildAvaloniaApp)
-    └── UserInterface.cs       ← UiHost
+    ├── Designer.cs
+    ├── Views/
+    └── ViewModels/
 ```
 
 ## Local pack (contributors)
@@ -62,5 +60,5 @@ Solution 'MySolution'
 dotnet pack src/JLeb.Estragonia -c Release -o nupkgs
 dotnet pack templates/Ouse.Estragonia.Templates.csproj -c Release -o nupkgs
 dotnet new uninstall Ouse.Estragonia.Templates
-dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.0.nupkg
+dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.2.nupkg
 ```

@@ -12,7 +12,7 @@ NuGet 包名是 **`Ouse.Estragonia`**；代码命名空间仍是 **`JLeb.Estrago
 
 ## 环境
 
-- Godot **4.7+**（.NET），渲染器 **Forward+** 或 **Mobile**（Vulkan）
+- Godot **4.7.2+**（.NET），渲染器 **Forward+** 或 **Mobile**（Vulkan）
 - .NET SDK **10**
 - Avalonia **12**
 
@@ -44,20 +44,21 @@ Visual Studio：新建项目 → 搜 **Estragonia Godot App**（装完模板后�
 
 ### 3. 用 Godot 打开
 
-用 Godot 4.7+（.NET）打开根目录的 **`project.godot`**。  
+用 Godot 4.7.2+（.NET）打开 **`MyGame/project.godot`**。`.sln` 在两个项目的上一级。  
 不要打开 `.godot/` 缓存目录。
 
 模板已配置：
 
 - Autoload `AvaloniaLoader` → 只初始化一次 `UseGodot()`
 - `UserInterface` : `UiHost` → `CreateRoot()`
-- `Designer.cs` 供 Avalonia 预览（`Main` + `BuildAvaloniaApp`）
+- 独立 `MyGame.UI` 项目承载 Avalonia（`App`、视图、预览器）
 
 ### 4. 改 UI
 
-- 视图：`Views/MainView.axaml`
-- 视图模型：`ViewModels/MainViewModel.cs`
-- 主题：`App.axaml`
+- 视图：`MyGame.UI/Views/MainView.axaml`
+- 视图模型：`MyGame.UI/ViewModels/MainViewModel.cs`
+- 主题：`MyGame.UI/App.axaml`
+- 预览：在 **UI 项目** 里打开 AXAML（不要用 Godot 项目预览）
 
 ---
 
@@ -109,7 +110,7 @@ public partial class UserInterface : UiHost
 
 ## 本仓库示例
 
-用 Godot 打开 `samples/HelloWorld`（通过工程引用本地库源码）。
+用 Godot 打开 `samples/HelloWorld`（Avalonia 在旁边的 `samples/HelloWorld.UI`；通过工程引用本地库源码）。
 
 ## 热重载
 

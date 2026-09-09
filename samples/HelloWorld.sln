@@ -1,12 +1,18 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "HelloWorld.csproj", "{CD71F416-3754-4729-8B9A-A8626F8C1B1E}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "HelloWorld\HelloWorld.csproj", "{CD71F416-3754-4729-8B9A-A8626F8C1B1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.UI", "HelloWorld.UI\HelloWorld.UI.csproj", "{D8E2F527-4865-483A-9C0B-B9737A9D2C2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-	Debug|Any CPU = Debug|Any CPU
-	ExportDebug|Any CPU = ExportDebug|Any CPU
-	ExportRelease|Any CPU = ExportRelease|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CD71F416-3754-4729-8B9A-A8626F8C1B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -15,5 +21,15 @@ Global
 		{CD71F416-3754-4729-8B9A-A8626F8C1B1E}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{CD71F416-3754-4729-8B9A-A8626F8C1B1E}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{CD71F416-3754-4729-8B9A-A8626F8C1B1E}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{CD71F416-3754-4729-8B9A-A8626F8C1B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD71F416-3754-4729-8B9A-A8626F8C1B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8E2F527-4865-483A-9C0B-B9737A9D2C2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E2F527-4865-483A-9C0B-B9737A9D2C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E2F527-4865-483A-9C0B-B9737A9D2C2F}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E2F527-4865-483A-9C0B-B9737A9D2C2F}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E2F527-4865-483A-9C0B-B9737A9D2C2F}.ExportRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E2F527-4865-483A-9C0B-B9737A9D2C2F}.ExportRelease|Any CPU.Build.0 = Release|Any CPU
+		{D8E2F527-4865-483A-9C0B-B9737A9D2C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E2F527-4865-483A-9C0B-B9737A9D2C2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

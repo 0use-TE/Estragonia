@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace GodotGame.ViewModels;
+namespace GodotGame.UI.ViewModels;
 
 public sealed partial class MainViewModel : ObservableObject {
 

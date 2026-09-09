@@ -1,6 +1,10 @@
 # HelloWorld
 
-Game-oriented Avalonia UI sample for Estragonia (single project).
+Game-oriented Avalonia UI sample for Estragonia.
+
+Godot project: this folder (`project.godot`).  
+Avalonia UI: sibling `../HelloWorld.UI` (open AXAML there for the previewer).  
+Solution: `../HelloWorld.sln`.
 
 ## What it shows
 
@@ -15,8 +19,9 @@ Game-oriented Avalonia UI sample for Estragonia (single project).
 
 ## Run
 
-1. Open this folder in **Godot 4.7+ (.NET)**.
-2. Run the main scene.
-3. Drag the Godot sprite on the right to test input vs Avalonia.
+1. Restore from the repo / `samples/HelloWorld.sln`.
+2. Open **this folder** in **Godot 4.7.2+ (.NET)**.
+3. Run the main scene.
+4. Drag the Godot sprite on the right to test input vs Avalonia.
 
 FPS is written from `UserInterface._Process` → `HelloWorldViewModel.ReportFrame`.

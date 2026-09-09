@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.0.2
+
+- Godot **4.7.2** (`Godot.NET.Sdk` / `GodotSharp`)
+- Template splits Avalonia into `GodotGame.UI` (previewer) vs Godot scripts (`AvaloniaLoader` / `UiHost`); `.sln` sits one level above the two projects
+
 ## 1.0.0
 
 Initial release of this maintained fork:

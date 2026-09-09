@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Markup.Xaml;
 
-namespace GodotGame;
+namespace GodotGame.UI;
 
 public class App : Application {
 

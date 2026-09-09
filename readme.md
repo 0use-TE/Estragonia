@@ -17,7 +17,7 @@
 
 ## 重要声明
 
-- 本仓库大量代码由 **AI 辅助编写与改写**（含 Avalonia 12 / Godot 4.7 / .NET 10 适配）。
+- 本仓库大量代码由 **AI 辅助编写与改写**（含 Avalonia 12 / Godot 4.7.2 / .NET 10 适配）。
 - **不保证稳定性**，请勿在未验证的情况下直接用于生产。
 - **维护者会审查**关键改动；欢迎 Issue / PR，但请自行充分测试。
 
@@ -31,7 +31,7 @@
 | 项 | 版本 |
 |----|------|
 | .NET SDK | 10.x |
-| Godot | 4.7.x（.NET / Forward+ 或 Mobile） |
+| Godot | 4.7.2+（.NET / Forward+ 或 Mobile） |
 | Avalonia | 12.x |
 
 ---
@@ -64,20 +64,21 @@ dotnet restore
 
 ### 3. 用 Godot 打开
 
-用 **Godot 4.7+（.NET）** 打开项目根目录的 **`project.godot`**  
-（不要打开 `.godot/` 缓存目录）。
+用 **Godot 4.7.2+（.NET）** 打开 **`MyGame/project.godot`**  
+（`.sln` 在上一级；不要打开 `.godot/` 缓存目录）。
 
 模板已配置好：
 
 - Autoload：`AvaloniaLoader`（`UseGodot()` 只初始化一次）
-- 默认宿主：`UserInterface`（`UiHost` + `Views` / `ViewModels`）
-- `Designer.cs`：供 Avalonia 预览器用（`Main` + `BuildAvaloniaApp`）
+- 默认宿主：`UserInterface`（`UiHost`，引用独立的 UI 项目）
+- `MyGame.UI`：Avalonia 程序集（`App` / `Views` / `ViewModels` / 预览器）
 
 ### 4. 改 UI
 
-- 界面：`Views/MainView.axaml`
-- 逻辑：`ViewModels/MainViewModel.cs`
-- 主题：`App.axaml`（默认 Semi.Avalonia）
+- 界面：`MyGame.UI/Views/MainView.axaml`
+- 逻辑：`MyGame.UI/ViewModels/MainViewModel.cs`
+- 主题：`MyGame.UI/App.axaml`（默认 Semi.Avalonia）
+- 预览：在 Visual Studio 里打开 **UI 项目** 中的 AXAML（不要用 Godot 项目预览）
 
 更多说明见 [`templates/README.md`](templates/README.md) 与 [文档 · 快速开始](docs/v1.0.0/zh-CN/getting-started.md)。
 
@@ -122,7 +123,8 @@ GetWindow()?.SetImeActive(true);
 ```
 src/JLeb.Estragonia/   # 桥接库（NuGet: Ouse.Estragonia）
 templates/             # dotnet new 模板（NuGet: Ouse.Estragonia.Templates）
-samples/HelloWorld/    # 示例
+samples/HelloWorld/    # Godot 示例
+samples/HelloWorld.UI/ # 示例 Avalonia 程序集
 docs/v1.0.0/           # 手写文档（英 / 中）
 ```
 

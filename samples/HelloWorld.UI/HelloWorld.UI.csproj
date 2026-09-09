@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyTitle>Estragonia HelloWorld UI</AssemblyTitle>
+		<RootNamespace>HelloWorld.UI</RootNamespace>
+		<TargetFramework>net10.0</TargetFramework>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<OutputType>Exe</OutputType>
+		<UseAppHost>false</UseAppHost>
+		<StartupObject>HelloWorld.UI.Designer</StartupObject>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'ExportDebug'">
+		<Optimize>false</Optimize>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'ExportRelease'">
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Avalonia.Skia" />
+		<PackageReference Include="Avalonia.HarfBuzz" />
+		<PackageReference Include="Semi.Avalonia" />
+		<PackageReference Include="CommunityToolkit.Mvvm" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AvaloniaResource Include="*.png" />
+		<AvaloniaResource Include="Assets/**" />
+		<None Include="**\*.axaml" />
+		<Compile Update="**\*.axaml.cs">
+			<DependentUpon>%(Filename)</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

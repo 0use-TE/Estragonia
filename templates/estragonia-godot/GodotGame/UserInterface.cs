@@ -1,5 +1,5 @@
-using GodotGame.ViewModels;
-using GodotGame.Views;
+using GodotGame.UI.ViewModels;
+using GodotGame.UI.Views;
 using JLeb.Estragonia;
 using AvControl = Avalonia.Controls.Control;
 

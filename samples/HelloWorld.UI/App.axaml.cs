@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Markup.Xaml;
 
-namespace HelloWorld;
+namespace HelloWorld.UI;
 
 public class App : Application {
 

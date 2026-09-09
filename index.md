@@ -21,7 +21,7 @@ dotnet new install Ouse.Estragonia.Templates
 dotnet new estragonia -n MySolution --GodotProjectName MyGame -o MySolution
 ```
 
-Then open `project.godot` with Godot 4.7+ (.NET).
+Then open `MyGame/project.godot` with Godot 4.7.2+ (.NET).
 
 ## Docs
 

@@ -1,6 +1,6 @@
 using Godot;
-using HelloWorld.ViewModels;
-using HelloWorld.Views;
+using HelloWorld.UI.ViewModels;
+using HelloWorld.UI.Views;
 using JLeb.Estragonia;
 using AvControl = Avalonia.Controls.Control;
 
