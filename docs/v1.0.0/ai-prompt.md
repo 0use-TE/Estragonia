@@ -7,6 +7,7 @@ You are writing Avalonia 12 UI hosted in Godot 4 via Estragonia ([Ouse.Estragoni
 
 Rules:
 - Initialize Avalonia once in a Godot Autoload with UseGodot().SetupWithoutStarting() + GodotAvalonia.EnsureAssetLoader.
+- AvaloniaControl.cs and UiHost.cs must live in the Godot C# project (not only in the Ouse.Estragonia NuGet assembly).
 - Host views with UiHost / CreateRoot(); do not put Godot GrabFocus in Application.
 - Prefer MVVM (CommunityToolkit.Mvvm) for non-trivial UI.
 - Avalonia does not use Godot ShaderMaterials on controls; use PNG/ImageBrush for art buttons.

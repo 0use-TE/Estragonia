@@ -45,8 +45,7 @@ Solution 'MySolution'                    ← .sln at the parent folder
 ├── README.md / global.json / Directory.*.props
 ├── MyGame/                              ← Godot project (open project.godot here)
 │   ├── project.godot
-│   ├── AvaloniaLoader.cs
-│   └── UserInterface.cs
+│   └── Estragonia/                      ← AvaloniaControl / UiHost / Autoload / UserInterface
 └── MyGame.UI/                           ← Avalonia project (previewer)
     ├── App.axaml
     ├── Designer.cs

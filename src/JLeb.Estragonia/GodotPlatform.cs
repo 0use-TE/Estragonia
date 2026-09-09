@@ -16,7 +16,11 @@ using AvCompositor = Avalonia.Rendering.Composition.Compositor;
 namespace JLeb.Estragonia;
 
 /// <summary>Contains Godot to Avalonia platform initialization.</summary>
-internal static class GodotPlatform {
+/// <remarks>
+/// Used by the Godot-project host scripts (<c>AvaloniaControl</c> / <c>UiHost</c>).
+/// Those scripts must live in your Godot C# project, not in this NuGet assembly.
+/// </remarks>
+public static class GodotPlatform {
 
 	private static AvCompositor? s_compositor;
 	private static ManualRenderTimer? s_renderTimer;

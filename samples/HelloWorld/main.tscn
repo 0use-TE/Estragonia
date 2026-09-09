@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://deu3k2l3jjyk8"]
 
-[ext_resource type="Script" uid="uid://cgxsi4801y2eq" path="res://UserInterface.cs" id="1_ui"]
+[ext_resource type="Script" uid="uid://cgxsi4801y2eq" path="res://Estragonia/UserInterface.cs" id="1_ui"]
 
 [node name="Root" type="Node" unique_id=990906724]
 

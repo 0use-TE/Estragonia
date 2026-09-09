@@ -107,7 +107,7 @@ GodotAvalonia.EnsureAssetLoader(typeof(App).Assembly);
 GetWindow()?.SetImeActive(true);
 ```
 
-3. 场景里挂一个 `Control`，脚本继承 `JLeb.Estragonia.UiHost`，实现 `CreateRoot()`。
+3. 把模板/示例里 `Estragonia/` 下的宿主脚本复制进 **Godot 工程**（不要放 NuGet 程序集）。场景脚本继承 `UiHost`，实现 `CreateRoot()`。
 
 详见 [docs/v1.0.0/zh-CN/hosting.md](docs/v1.0.0/zh-CN/hosting.md)。
 
@@ -130,8 +130,8 @@ docs/v1.0.0/           # 手写文档（英 / 中）
 
 ## 热重载提示
 
-Estragonia + Avalonia 容易触发 Godot「无法卸载程序集」。若出现  
-`An item with the same key has already been added` 或 unload 失败，**完全重启 Godot** 再运行。
+`AvaloniaControl` / `UiHost` 必须放在 **Godot 工程程序集**里。库里只保留 `AvaloniaControlEngine`。  
+若仍出现 `Failed to unload assemblies`，**完全重启 Godot**（当前日志是 4.7.1 时请改用 **4.7.2**）。
 
 ## 文档 / GitHub Pages
 

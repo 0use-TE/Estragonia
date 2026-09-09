@@ -24,8 +24,7 @@ Autoload `AvaloniaLoader` and the default `UserInterface` (`UiHost`) are already
 | `GodotGame.UI/Views/` / `ViewModels/` | Avalonia MVVM UI |
 | `GodotGame.UI/App.axaml` | Avalonia application + theme |
 | `GodotGame.UI/Designer.cs` | Avalonia previewer (`Main` + `BuildAvaloniaApp`) |
-| `GodotGame/AvaloniaLoader.cs` | Autoload — `UseGodot()` once |
-| `GodotGame/UserInterface.cs` | `UiHost` — `CreateRoot()` |
+| `GodotGame/Estragonia/` | Host scripts: Autoload, `AvaloniaControl`, `UiHost`, `UserInterface` |
 | `Directory.Packages.props` | NuGet versions (solution-level) |
 | `global.json` | .NET SDK pin |
 
