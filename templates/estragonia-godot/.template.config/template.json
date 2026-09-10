@@ -6,10 +6,11 @@
   "groupIdentity": "Ouse.Estragonia.Templates",
   "name": "Estragonia Godot App",
   "shortName": "estragonia",
-  "description": "Godot 4 + Avalonia (Estragonia) starter with Autoload, in-project AvaloniaControl/UiHost, and UserInterface already wired.",
+  "description": "Godot 4 + Avalonia (Estragonia) solution template: Autoload, in-project AvaloniaControl/UiHost, sibling Godot + UI projects.",
   "tags": {
     "language": "C#",
-    "type": "solution"
+    "type": "solution",
+    "editorTreatAs": "solution"
   },
   "sourceName": "EstragoniaApp",
   "preferNameDirectory": false,
@@ -26,6 +27,7 @@
   },
   "primaryOutputs": [
     { "path": "EstragoniaApp.sln" },
+    { "path": "EstragoniaApp.slnx" },
     { "path": "GodotGame/project.godot" },
     { "path": "GodotGame/GodotGame.csproj" },
     { "path": "GodotGame.UI/GodotGame.UI.csproj" },

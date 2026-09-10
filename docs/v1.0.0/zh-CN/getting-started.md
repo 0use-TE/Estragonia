@@ -40,7 +40,8 @@ dotnet restore
 | `--GodotProjectName` | Godot / C# 项目名（合法 C# 标识符） |
 | `-o` | 输出目录 |
 
-Visual Studio：新建项目 → 搜 **Estragonia Godot App**（装完模板后若没有，请重启 VS）。
+Visual Studio：新建项目 → 搜 **Estragonia Godot App**（装完模板后请完全重启 VS）。  
+对话框应出现 **Create in new folder**。勾选后，解决方案文件和 `MyGame`、`MyGame.UI` 在同一层。
 
 ### 3. 用 Godot 打开
 

@@ -60,7 +60,10 @@ cd MySolution
 dotnet restore
 ```
 
-或在 **Visual Studio**：新建项目 → 搜索 **Estragonia Godot App**（装模板后若看不到请重启 VS）。
+Visual Studio：新建项目 → 搜 **Estragonia Godot App**（装模板后请**关掉再开 VS**）。  
+对话框应出现 **Create in new folder**（不要再用会套一层的「将解决方案和项目放在同一目录」旧选项）。勾选后得到：
+
+`输出目录/项目名/` 里同时有解决方案文件、`GodotGame/`、`GodotGame.UI/`。
 
 ### 3. 用 Godot 打开
 

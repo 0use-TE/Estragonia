@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.0.5
+
+- Template: `editorTreatAs: solution` so Visual Studio does not wrap the output in an extra folder + parent `.slnx`
+
 ## 1.0.4
 
 - First nuget.org release of the in-project `Estragonia/` hosts, separate `*.UI` previewer project, and solution files next to `GodotGame` / `GodotGame.UI` (no extra parent folder)

@@ -1,5 +1,9 @@
 # 更新说明
 
+## 1.0.5
+
+- 模板加上 `editorTreatAs: solution`，避免 Visual Studio 再套一层文件夹并在上一级生成 `.slnx`
+
 ## 1.0.4
 
 - 首次把工程内 `Estragonia/` 宿主、独立 `*.UI` 预览项目、以及 `.sln` 与 `GodotGame` / `GodotGame.UI` 同层（不再多套一层）发到 nuget.org

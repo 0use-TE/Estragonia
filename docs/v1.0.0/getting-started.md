@@ -40,7 +40,8 @@ dotnet restore
 | `--GodotProjectName` | Godot / C# project name (valid C# identifier) |
 | `-o` | Output folder |
 
-Visual Studio: **Create a new project** → **Estragonia Godot App** (restart VS after installing the template).
+Visual Studio: **Create a new project** → **Estragonia Godot App** (fully restart VS after installing).  
+The dialog should show **Create in new folder** (solution-template mode). That puts the solution file next to `GodotGame` and `GodotGame.UI`.
 
 ### 3. Open in Godot
 

@@ -17,7 +17,7 @@ dotnet new uninstall Ouse.Estragonia.Templates
 dotnet new install Ouse.Estragonia.Templates
 ```
 
-Then **restart Visual Studio** if you use the New Project dialog.
+Then **fully restart Visual Studio** (it caches templates). In the New Project dialog you should see **Create in new folder**, not an extra nested project folder + a parent `.slnx`.
 
 ## Create a project
 
@@ -54,7 +54,7 @@ MySolution/                              ← 这一层就是解决方案根目�
     └── ViewModels/
 ```
 
-CLI 请用 `-o` 指到最终目录，不要再套一层同名文件夹。Visual Studio 勾选 **将解决方案和项目放在同一目录中**。
+CLI：`-o` 指最终目录。Visual Studio：装 **1.0.5+** 后完全重启，对话框应是 **Create in new folder**（不要再套一层 `Project2/Project2`）。
 
 ## Local pack (contributors)
 
@@ -62,5 +62,5 @@ CLI 请用 `-o` 指到最终目录，不要再套一层同名文件夹。Visual 
 dotnet pack src/JLeb.Estragonia -c Release -o nupkgs
 dotnet pack templates/Ouse.Estragonia.Templates.csproj -c Release -o nupkgs
 dotnet new uninstall Ouse.Estragonia.Templates
-dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.4.nupkg
+dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.5.nupkg
 ```
