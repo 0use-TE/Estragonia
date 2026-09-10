@@ -12,7 +12,7 @@
     "type": "solution"
   },
   "sourceName": "EstragoniaApp",
-  "preferNameDirectory": true,
+  "preferNameDirectory": false,
   "symbols": {
     "GodotProjectName": {
       "type": "parameter",

@@ -1,0 +1,37 @@
+name: NuGet publish
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Pack
+        run: |
+          mkdir -p nupkgs
+          dotnet pack src/JLeb.Estragonia -c Release -o nupkgs --nologo
+          dotnet pack templates/Ouse.Estragonia.Templates.csproj -c Release -o nupkgs --nologo
+
+      - name: NuGet login (OIDC)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: Ouse
+
+      - name: Push to nuget.org
+        run: >
+          dotnet nuget push nupkgs/*.nupkg
+          --api-key ${{ steps.login.outputs.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate

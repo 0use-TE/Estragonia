@@ -1,9 +1,15 @@
 # Release notes
 
+## 1.0.3
+
+- Godot host scripts (`AvaloniaControl`, `UiHost`, Autoload, `UserInterface`) live in the Godot project under `Estragonia/`; the NuGet library only ships `AvaloniaControlEngine` so editor hot-reload can unload the game assembly
+- Template/sample keep a separate Avalonia UI project (`*.UI`) for the designer previewer
+- Template output is the solution root (`.sln` next to `GodotGame` / `GodotGame.UI`); no extra parent folder (`preferNameDirectory` off)
+
 ## 1.0.2
 
 - Godot **4.7.2** (`Godot.NET.Sdk` / `GodotSharp`)
-- Template splits Avalonia into `GodotGame.UI` (previewer) vs Godot scripts (`AvaloniaLoader` / `UiHost`); `.sln` sits one level above the two projects
+- Template splits Avalonia into `GodotGame.UI` (previewer) vs Godot scripts (`AvaloniaLoader` / `UiHost`); `.sln` sits next to the two projects
 
 ## 1.0.0
 

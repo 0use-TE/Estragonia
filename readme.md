@@ -64,8 +64,8 @@ dotnet restore
 
 ### 3. 用 Godot 打开
 
-用 **Godot 4.7.2+（.NET）** 打开 **`MyGame/project.godot`**  
-（`.sln` 在上一级；不要打开 `.godot/` 缓存目录）。
+用 **Godot 4.7.2+（.NET）** 打开 **`MyGame/project.godot`**。  
+`.sln` 和 `MyGame`、`MyGame.UI` 在同一层；不要打开 `.godot/` 缓存目录。
 
 模板已配置好：
 

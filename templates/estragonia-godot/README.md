@@ -17,7 +17,7 @@ Autoload `AvaloniaLoader` and the default `UserInterface` (`UiHost`) are already
 
 | Path | Role |
 |------|------|
-| `EstragoniaApp.sln` | Solution (parent of the two projects) |
+| `EstragoniaApp.sln` | Solution (same folder as `GodotGame` and `GodotGame.UI`) |
 | `GodotGame/project.godot` | Open this in Godot |
 | `GodotGame/GodotGame.csproj` | Godot assembly — Autoload + `UiHost` |
 | `GodotGame.UI/GodotGame.UI.csproj` | Avalonia assembly — views / previewer |

@@ -44,8 +44,10 @@ Visual Studio: **Create a new project** → **Estragonia Godot App** (restart VS
 
 ### 3. Open in Godot
 
-Open **`MyGame/project.godot`** with Godot 4.7.2+ (.NET). The `.sln` sits one level above the two projects.  
+Open **`MyGame/project.godot`** with Godot 4.7.2+ (.NET). The `.sln` is in the **same folder** as `MyGame` and `MyGame.UI`.  
 Do **not** open the `.godot/` cache folder.
+
+CLI: pass `-o` as the final directory (no extra nested name folder). Visual Studio: check **Place solution and project in the same directory**.
 
 Already wired:
 

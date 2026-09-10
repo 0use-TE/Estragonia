@@ -44,8 +44,10 @@ Visual Studio：新建项目 → 搜 **Estragonia Godot App**（装完模板后�
 
 ### 3. 用 Godot 打开
 
-用 Godot 4.7.2+（.NET）打开 **`MyGame/project.godot`**。`.sln` 在两个项目的上一级。  
+用 Godot 4.7.2+（.NET）打开 **`MyGame/project.godot`**。`.sln` 和 `MyGame`、`MyGame.UI` **同一层**。  
 不要打开 `.godot/` 缓存目录。
+
+CLI：`-o` 直接指最终目录，不要再套一层同名文件夹。Visual Studio：勾选 **将解决方案和项目放在同一目录中**。
 
 模板已配置：
 

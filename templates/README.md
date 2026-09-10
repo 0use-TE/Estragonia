@@ -41,17 +41,20 @@ C# namespaces remain **`JLeb.Estragonia`**.
 ## Solution layout
 
 ```
-Solution 'MySolution'                    ← .sln at the parent folder
+MySolution/                              ← 这一层就是解决方案根目录
+├── MySolution.sln
 ├── README.md / global.json / Directory.*.props
-├── MyGame/                              ← Godot project (open project.godot here)
+├── MyGame/                              ← Godot 工程（打开 project.godot）
 │   ├── project.godot
-│   └── Estragonia/                      ← AvaloniaControl / UiHost / Autoload / UserInterface
-└── MyGame.UI/                           ← Avalonia project (previewer)
+│   └── Estragonia/
+└── MyGame.UI/                           ← Avalonia（预览器）
     ├── App.axaml
     ├── Designer.cs
     ├── Views/
     └── ViewModels/
 ```
+
+CLI 请用 `-o` 指到最终目录，不要再套一层同名文件夹。Visual Studio 勾选 **将解决方案和项目放在同一目录中**。
 
 ## Local pack (contributors)
 
@@ -59,5 +62,5 @@ Solution 'MySolution'                    ← .sln at the parent folder
 dotnet pack src/JLeb.Estragonia -c Release -o nupkgs
 dotnet pack templates/Ouse.Estragonia.Templates.csproj -c Release -o nupkgs
 dotnet new uninstall Ouse.Estragonia.Templates
-dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.2.nupkg
+dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.3.nupkg
 ```
