@@ -41,27 +41,26 @@ dotnet restore
 | `-o` | Output folder |
 
 Visual Studio: **Create a new project** → **Estragonia Godot App** (fully restart VS after installing).  
-The dialog should show **Create in new folder** (solution-template mode). That puts the solution file next to `GodotGame` and `GodotGame.UI`.
+The dialog should show **Create in new folder** (solution-template mode). That puts the solution file next to `GodotGame`.
 
 ### 3. Open in Godot
 
-Open **`MyGame/project.godot`** with Godot 4.7.2+ (.NET). The `.sln` is in the **same folder** as `MyGame` and `MyGame.UI`.  
+Open **`MyGame/project.godot`** with Godot 4.7.2+ (.NET). The `.sln` is in the **same folder** as `MyGame`.  
 Do **not** open the `.godot/` cache folder.
 
-CLI: pass `-o` as the final directory (no extra nested name folder). Visual Studio: check **Place solution and project in the same directory**.
+CLI: pass `-o` as the final directory (no extra nested name folder).
 
 Already wired:
 
 - Autoload `AvaloniaLoader` → `UseGodot()` once
 - `UserInterface` : `UiHost` → `CreateRoot()`
-- Separate `MyGame.UI` project for Avalonia (`App`, views, previewer)
+- Avalonia `App` / views live in the same Godot project
 
 ### 4. Edit the UI
 
-- View: `MyGame.UI/Views/MainView.axaml`
-- ViewModel: `MyGame.UI/ViewModels/MainViewModel.cs`
-- Theme: `MyGame.UI/App.axaml`
-- Previewer: open AXAML in the **UI project** (not the Godot project)
+- View: `MyGame/UI/Views/MainView.axaml`
+- ViewModel: `MyGame/UI/ViewModels/MainViewModel.cs`
+- Theme: `MyGame/UI/App.axaml`
 
 ---
 
@@ -113,7 +112,7 @@ See [Hosting UI](hosting.md).
 
 ## Sample in this repo
 
-Open `samples/HelloWorld` in Godot (Avalonia lives in sibling `samples/HelloWorld.UI`; uses a project reference to the library source).
+Open `samples/HelloWorld` in Godot (single Godot + Avalonia project; uses a project reference to the library source).
 
 ## Hot reload
 

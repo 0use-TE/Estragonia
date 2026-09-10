@@ -2,8 +2,7 @@
 
 Game-oriented Avalonia UI sample for Estragonia.
 
-Godot project: this folder (`project.godot`). Host scripts live in `Estragonia/`.  
-Avalonia UI: sibling `../HelloWorld.UI` (open AXAML there for the previewer).  
+Godot project: this folder (`project.godot`). Avalonia and host scripts: `UI/`.  
 Solution: `../HelloWorld.sln`.
 
 ## What it shows

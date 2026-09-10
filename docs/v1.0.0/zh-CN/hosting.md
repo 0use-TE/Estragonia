@@ -6,7 +6,7 @@
 
 | 放哪 | 可以吗 |
 |------|--------|
-| 你的 Godot 工程（`res://Estragonia/AvaloniaControl.cs` …） | 可以 |
+| 你的 Godot 工程（`res://UI/Estragonia/AvaloniaControl.cs` …） | 可以 |
 | 从 `templates/estragonia-godot` 或 `samples/HelloWorld` 复制 | 可以 |
 | 只引用 `Ouse.Estragonia` NuGet / 库程序集 | **不行** |
 
@@ -32,14 +32,14 @@ NuGet 包（`Ouse.Estragonia`）提供平台桥接（`UseGodot`、Vulkan/Skia、
 
 ```
 YourGodotProject/
-├── Estragonia/
-│   ├── AvaloniaControl.cs   ← 从模板/示例复制（不能省）
-│   ├── UiHost.cs            ← 从模板/示例复制（不能省）
-│   ├── AvaloniaLoader.cs    ← Autoload
-│   └── UserInterface.cs     ← 你的宿主：CreateRoot()
-YourGodotProject.UI/
-├── App.axaml (+ .cs)
-└── Views/ …
+└── UI/
+    ├── Estragonia/
+    │   ├── AvaloniaControl.cs   ← 从模板/示例复制（不能省）
+    │   ├── UiHost.cs            ← 从模板/示例复制（不能省）
+    │   ├── AvaloniaLoader.cs    ← Autoload
+    │   └── UserInterface.cs     ← 你的宿主：CreateRoot()
+    ├── App.axaml (+ .cs)
+    └── Views/ …
 ```
 
 ## UiHost

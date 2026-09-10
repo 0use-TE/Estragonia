@@ -109,7 +109,7 @@
 									<Button Content="查看商品图鉴" HorizontalAlignment="Left">
 										<Button.Flyout>
 											<Flyout Placement="Bottom">
-												<Image Source="avares://HelloWorld.UI/Assets/start.png" Width="220" Stretch="Uniform" />
+												<Image Source="avares://HelloWorld/UI/Assets/start.png" Width="220" Stretch="Uniform" />
 											</Flyout>
 										</Button.Flyout>
 									</Button>

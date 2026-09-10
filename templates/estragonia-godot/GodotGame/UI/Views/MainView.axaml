@@ -25,7 +25,7 @@
 		<StackPanel Spacing="12">
 			<TextBlock Text="{Binding Title}" FontSize="24" FontWeight="SemiBold" Foreground="#F0C070" />
 			<TextBlock
-				Text="Edit Views/MainView.axaml and ViewModels/MainViewModel.cs to build your UI."
+				Text="Edit UI/Views/MainView.axaml and UI/ViewModels/MainViewModel.cs to build your UI."
 				TextWrapping="Wrap"
 				Opacity="0.75" />
 			<Button Content="Say hello" Command="{Binding GreetCommand}" HorizontalAlignment="Left" />

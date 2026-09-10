@@ -6,6 +6,7 @@
 		<EnableDynamicLoading>true</EnableDynamicLoading>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<IsPackable>false</IsPackable>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 		<EnableDefaultAvaloniaItems>false</EnableDefaultAvaloniaItems>
 	</PropertyGroup>
 
@@ -15,7 +16,17 @@
 
 	<ItemGroup>
 		<ProjectReference Include="../../src/JLeb.Estragonia/JLeb.Estragonia.csproj" />
-		<ProjectReference Include="../HelloWorld.UI/HelloWorld.UI.csproj" />
+		<PackageReference Include="Semi.Avalonia" />
+		<PackageReference Include="CommunityToolkit.Mvvm" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AvaloniaResource Include="UI/*.png" />
+		<AvaloniaResource Include="UI/Assets/**" />
+		<None Include="**\*.axaml" />
+		<Compile Update="**\*.axaml.cs">
+			<DependentUpon>%(Filename)</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 </Project>

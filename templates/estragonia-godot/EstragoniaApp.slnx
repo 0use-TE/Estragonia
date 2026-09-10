@@ -6,5 +6,4 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="GodotGame/GodotGame.csproj" />
-  <Project Path="GodotGame.UI/GodotGame.UI.csproj" />
 </Solution>

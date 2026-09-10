@@ -1,5 +1,9 @@
 # 更新说明
 
+## 1.0.6
+
+- 模板和示例是 **一个 Godot 工程**（Avalonia 和宿主脚本都在 `UI/` 下）。
+
 ## 1.0.5
 
 - 模板加上 `editorTreatAs: solution`，避免 Visual Studio 再套一层文件夹并在上一级生成 `.slnx`

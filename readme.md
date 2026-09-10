@@ -63,25 +63,24 @@ dotnet restore
 Visual Studio：新建项目 → 搜 **Estragonia Godot App**（装模板后请**关掉再开 VS**）。  
 对话框应出现 **Create in new folder**（不要再用会套一层的「将解决方案和项目放在同一目录」旧选项）。勾选后得到：
 
-`输出目录/项目名/` 里同时有解决方案文件、`GodotGame/`、`GodotGame.UI/`。
+`输出目录/项目名/` 里同时有解决方案文件和 `GodotGame/`（Avalonia 也在这个工程里）。
 
 ### 3. 用 Godot 打开
 
 用 **Godot 4.7.2+（.NET）** 打开 **`MyGame/project.godot`**。  
-`.sln` 和 `MyGame`、`MyGame.UI` 在同一层；不要打开 `.godot/` 缓存目录。
+`.sln` 和 `MyGame` 在同一层；不要打开 `.godot/` 缓存目录。
 
 模板已配置好：
 
 - Autoload：`AvaloniaLoader`（`UseGodot()` 只初始化一次）
-- 默认宿主：`UserInterface`（`UiHost`，引用独立的 UI 项目）
-- `MyGame.UI`：Avalonia 程序集（`App` / `Views` / `ViewModels` / 预览器）
+- 默认宿主：`UserInterface`（`UiHost`）
+- Avalonia：`App` / `Views` / `ViewModels` 与 Godot 脚本同一个工程
 
 ### 4. 改 UI
 
-- 界面：`MyGame.UI/Views/MainView.axaml`
-- 逻辑：`MyGame.UI/ViewModels/MainViewModel.cs`
-- 主题：`MyGame.UI/App.axaml`（默认 Semi.Avalonia）
-- 预览：在 Visual Studio 里打开 **UI 项目** 中的 AXAML（不要用 Godot 项目预览）
+- 界面：`MyGame/UI/Views/MainView.axaml`
+- 逻辑：`MyGame/UI/ViewModels/MainViewModel.cs`
+- 主题：`MyGame/UI/App.axaml`（默认 Semi.Avalonia）
 
 更多说明见 [`templates/README.md`](templates/README.md) 与 [文档 · 快速开始](docs/v1.0.0/zh-CN/getting-started.md)。
 
@@ -110,7 +109,7 @@ GodotAvalonia.EnsureAssetLoader(typeof(App).Assembly);
 GetWindow()?.SetImeActive(true);
 ```
 
-3. 把模板/示例里 `Estragonia/` 下的宿主脚本复制进 **Godot 工程**（不要放 NuGet 程序集）。场景脚本继承 `UiHost`，实现 `CreateRoot()`。
+3. 把模板/示例里 `UI/Estragonia/` 下的宿主脚本复制进 **Godot 工程**（不要放 NuGet 程序集）。场景脚本继承 `UiHost`，实现 `CreateRoot()`。
 
 详见 [docs/v1.0.0/zh-CN/hosting.md](docs/v1.0.0/zh-CN/hosting.md)。
 
@@ -126,8 +125,7 @@ GetWindow()?.SetImeActive(true);
 ```
 src/JLeb.Estragonia/   # 桥接库（NuGet: Ouse.Estragonia）
 templates/             # dotnet new 模板（NuGet: Ouse.Estragonia.Templates）
-samples/HelloWorld/    # Godot 示例
-samples/HelloWorld.UI/ # 示例 Avalonia 程序集
+samples/HelloWorld/    # Godot + Avalonia 示例
 docs/v1.0.0/           # 手写文档（英 / 中）
 ```
 

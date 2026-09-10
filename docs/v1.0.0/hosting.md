@@ -6,7 +6,7 @@
 
 | Location | OK? |
 |----------|-----|
-| Your Godot project (`res://Estragonia/AvaloniaControl.cs`, …) | Yes |
+| Your Godot project (`res://UI/Estragonia/AvaloniaControl.cs`, …) | Yes |
 | Copied from `templates/estragonia-godot` or `samples/HelloWorld` | Yes |
 | Only referencing `Ouse.Estragonia` NuGet / library assembly | **No** |
 
@@ -32,14 +32,14 @@ Do **not** call `GrabFocus` / `GetWindow` from Avalonia `App`.
 
 ```
 YourGodotProject/
-├── Estragonia/
-│   ├── AvaloniaControl.cs   ← copy from template/sample (do not omit)
-│   ├── UiHost.cs            ← copy from template/sample (do not omit)
-│   ├── AvaloniaLoader.cs    ← Autoload
-│   └── UserInterface.cs     ← your host: CreateRoot()
-YourGodotProject.UI/
-├── App.axaml (+ .cs)
-└── Views/ …
+└── UI/
+    ├── Estragonia/
+    │   ├── AvaloniaControl.cs   ← copy from template/sample (do not omit)
+    │   ├── UiHost.cs            ← copy from template/sample (do not omit)
+    │   ├── AvaloniaLoader.cs    ← Autoload
+    │   └── UserInterface.cs     ← your host: CreateRoot()
+    ├── App.axaml (+ .cs)
+    └── Views/ …
 ```
 
 ## UiHost

@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.0.6
+
+- Template and sample are a **single Godot project** (Avalonia and host scripts under `UI/`).
+
 ## 1.0.5
 
 - Template: `editorTreatAs: solution` so Visual Studio does not wrap the output in an extra folder + parent `.slnx`
