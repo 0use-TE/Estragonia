@@ -62,5 +62,5 @@ CLI 请用 `-o` 指到最终目录，不要再套一层同名文件夹。Visual 
 dotnet pack src/JLeb.Estragonia -c Release -o nupkgs
 dotnet pack templates/Ouse.Estragonia.Templates.csproj -c Release -o nupkgs
 dotnet new uninstall Ouse.Estragonia.Templates
-dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.3.nupkg
+dotnet new install ./nupkgs/Ouse.Estragonia.Templates.1.0.4.nupkg
 ```

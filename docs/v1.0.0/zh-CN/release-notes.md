@@ -1,5 +1,10 @@
 # 更新说明
 
+## 1.0.4
+
+- 首次把工程内 `Estragonia/` 宿主、独立 `*.UI` 预览项目、以及 `.sln` 与 `GodotGame` / `GodotGame.UI` 同层（不再多套一层）发到 nuget.org
+- 通过 GitHub Actions + nuget.org Trusted Publishing 发布（`nuget-publish.yml`）
+
 ## 1.0.3
 
 - Godot 宿主脚本（`AvaloniaControl`、`UiHost`、Autoload、`UserInterface`）放在工程内 `Estragonia/`；NuGet 库只带 `AvaloniaControlEngine`，便于编辑器热重载卸载游戏程序集

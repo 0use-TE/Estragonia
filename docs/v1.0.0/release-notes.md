@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.0.4
+
+- First nuget.org release of the in-project `Estragonia/` hosts, separate `*.UI` previewer project, and solution files next to `GodotGame` / `GodotGame.UI` (no extra parent folder)
+- Publish from GitHub Actions via nuget.org Trusted Publishing (`nuget-publish.yml`)
+
 ## 1.0.3
 
 - Godot host scripts (`AvaloniaControl`, `UiHost`, Autoload, `UserInterface`) live in the Godot project under `Estragonia/`; the NuGet library only ships `AvaloniaControlEngine` so editor hot-reload can unload the game assembly
